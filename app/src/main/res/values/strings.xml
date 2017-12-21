@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">DeepWaterOilTools_001</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--Welcome screen strings-->
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="inpField_pw">Password</string>
+    <string name="inpField_email">Email</string>
+    <string name="btn_login">Login btn Welcome Screen</string>
+    <string name="btn_register">Register btn Welcome Screen</string>
+
+    <string name="title_activity_welcome_screen">WelcomeScreen</string>
+
+
+</resources>
