@@ -5,12 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="project.deepwateroiltools_001.WelcomeScreen"
+    tools:context="project.deepwateroiltools_001.LoginScreen"
     android:focusableInTouchMode="true"
     android:clickable="true"
     android:focusable="true"
     >
-
 
     <ImageView
         android:id="@+id/background_welcomeScreen"
@@ -63,32 +62,34 @@
         android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:text="@string/inpField_email"
-        tools:text="password"
-
         android:backgroundTint="#ffffff"
+        android:ems="10"
+        android:gravity="center"
+
+        android:inputType="textPassword"
+        android:text="@string/inpField_pw"
         android:textColor="#ffffff"
         android:textCursorDrawable="@null"
-        android:gravity = "center"
-        />
+        tools:text="password" />
 
     <EditText
         android:id="@+id/inpField_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="14dp"
         android:backgroundTint="#ffffff"
+        android:contentDescription="@string/inpField_email"
         android:ems="10"
         android:gravity="center"
+        android:hint="@string/inpField_email"
         android:inputType="textEmailAddress"
         android:text="@string/inpField_email"
         android:textColor="#ffffff"
         android:textCursorDrawable="@null"
-        tools:text="Email address" />
+        tools:text="Email address"
+        android:layout_below="@+id/logo"
+        android:layout_alignLeft="@+id/inpField_pw"
+        android:layout_alignStart="@+id/inpField_pw" />
 
 
 </RelativeLayout>

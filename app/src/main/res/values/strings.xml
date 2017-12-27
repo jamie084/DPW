@@ -11,11 +11,12 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="inpField_pw">Password</string>
-    <string name="inpField_email">Email</string>
+    <string name="inpField_email">Email address</string>
     <string name="btn_login">Login btn Welcome Screen</string>
     <string name="btn_register">Register btn Welcome Screen</string>
 
     <string name="title_activity_welcome_screen">WelcomeScreen</string>
+    <string name="loadingGif">Loading animation</string>
 
 
 </resources>

@@ -29,4 +29,22 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <!-- Alert dialog login screen-->
+    <style name="LightDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="colorAccent">#808080</item>
+        <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">#808080</item>
+    </style>
+
+    <!-- Dialog box styling for bacground processes-->
+    <style name="DialogBoxStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>

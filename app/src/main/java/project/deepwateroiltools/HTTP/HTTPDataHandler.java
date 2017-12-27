@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
@@ -34,8 +35,12 @@ public class HTTPDataHandler {
       //  urlString = Common.getAddressAPI();
 
         try{
-            URL url =new URL(Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"test2\",\"user\":\"avgUser\"}" );
+         //   URL url =new URL(Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"test2\",\"user\":\"avgUser\"}" );
+            Log.d("URLstring", urlString);
+            URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection.setConnectTimeout(10 *1000);
+            urlConnection.setReadTimeout(10 * 1000);
             urlConnection.connect();
 
 
@@ -59,9 +64,12 @@ public class HTTPDataHandler {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
+            Log.d("MalformedURLException", e.toString());
         } catch (IOException e){
             e.printStackTrace();
+            Log.d("IOException", e.toString());
         }
+
         return stream;
     }
 
