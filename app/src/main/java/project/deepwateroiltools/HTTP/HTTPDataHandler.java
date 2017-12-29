@@ -32,10 +32,8 @@ public class HTTPDataHandler {
 
     public String GetHTTPData(String urlString){
         String stream=null;
-      //  urlString = Common.getAddressAPI();
 
         try{
-         //   URL url =new URL(Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"test2\",\"user\":\"avgUser\"}" );
             Log.d("URLstring", urlString);
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
@@ -64,74 +62,47 @@ public class HTTPDataHandler {
 
         } catch (MalformedURLException e){
             e.printStackTrace();
-            Log.d("MalformedURLException", e.toString());
         } catch (IOException e){
             e.printStackTrace();
-            Log.d("IOException", e.toString());
         }
 
         return stream;
     }
 
-    public String GetHTTPData2(String urlString){
-        try{
-            URL url =new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 
-            if(urlConnection.getResponseCode() == 200){
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-                BufferedReader r = new BufferedReader(new InputStreamReader(in));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line=r.readLine()) != null){
-                    sb.append(line);
-                    stream = sb.toString();
-                    urlConnection.disconnect();
-                }
+    public String PostHTTPData(String urlString, String json) {
+          try{
+             URL url = new URL(urlString);
+             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            byte[] out = json.getBytes(StandardCharsets.UTF_8);
+            int length = out.length;
+
+            urlConnection.setFixedLengthStreamingMode(length);
+            urlConnection.setRequestProperty("Content-Type","application/json; charset-UTF-8");
+
+            urlConnection.connect();
+            try(OutputStream os = urlConnection.getOutputStream())
+            {
+                os.write(out);
             }
-            else{
+            InputStream response = urlConnection.getInputStream();
 
-            }
-        } catch (MalformedURLException e){
+              return response.toString();
+        }
+        catch (MalformedURLException e){
             e.printStackTrace();
-        } catch (IOException e){
+        }
+        catch (ProtocolException e){
+            e.printStackTrace();
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
         return null;
     }
-
-//    public String PostHTTPData(String urlString, String json) {
-        //  try{
-        //        URL url = new URL(urlString);
-        //     HttpsURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-//
-//            urlConnection.setRequestMethod("POST");
-//            urlConnection.setDoOutput(true);
-//            byte[] out = json.getBytes(StandardCharsets.UTF_8);
-//            int length = out.length;
-//
-//            urlConnection.setFixedLengthStreamingMode(length);
-//            urlConnection.setRequestProperty("Content-Type","application/json; charset-UTF-8");
-//
-//            urlConnection.connect();
-//            try(OutputStream os = urlConnection.getOutputStream())
-//            {
-//                os.write(out);
-//            }
-//            InputStream response = urlConnection.getInputStream();
-
-//
-//        }
-//        catch (MalformedURLException e){
-//            e.printStackTrace();
-//        }
-//        catch (ProtocolException e){
-//            e.printStackTrace();
-//        }
-//        catch (IOException e){
-//            e.printStackTrace();
-//        }
-//    }
 
 }

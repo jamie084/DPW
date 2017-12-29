@@ -47,4 +47,16 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <!--EditText Stylng-->
+    <style name="App_EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:ems">10</item>
+        <item name="android:backgroundTint">#ffffff</item>
+    </style>
+
+
+
+
 </resources>

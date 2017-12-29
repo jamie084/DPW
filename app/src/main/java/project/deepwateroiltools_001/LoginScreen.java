@@ -8,6 +8,7 @@ import project.deepwateroiltools.HTTP.User;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -61,6 +62,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
 
         //Edit text fields
         email = (EditText)this.findViewById(R.id.inpField_email);
+
         email.setOnFocusChangeListener(this);
         password = (EditText)this.findViewById(R.id.inpField_pw);
         password.setOnFocusChangeListener(this);
@@ -87,6 +89,10 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
         if (v == btn_login){
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
             new RunDbQuery(url).execute();
+        }
+        if (v == btn_reg){
+            Intent reg = new Intent(this, Registration.class);
+            startActivity(reg);
         }
     }
 
