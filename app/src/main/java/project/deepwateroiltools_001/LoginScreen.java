@@ -99,6 +99,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (email.hasFocus()) {
+
             email.setText("");
         }
         if (password.hasFocus()){

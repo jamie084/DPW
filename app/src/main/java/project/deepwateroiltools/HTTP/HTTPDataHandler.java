@@ -90,7 +90,6 @@ public class HTTPDataHandler {
                 os.write(out);
             }
             InputStream response = urlConnection.getInputStream();
-
               return response.toString();
         }
         catch (MalformedURLException e){

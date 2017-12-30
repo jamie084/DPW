@@ -6,17 +6,25 @@
 
     <string name="action_settings">Settings</string>
 
-    <!--Welcome screen strings-->
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!--Login screen strings-->
+
     <string name="inpField_pw">Password</string>
     <string name="inpField_email">Email address</string>
     <string name="btn_login">Login btn Welcome Screen</string>
     <string name="btn_register">Register btn Welcome Screen</string>
-
+    <!-- Delete ?? -->
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="title_activity_welcome_screen">WelcomeScreen</string>
     <string name="loadingGif">Loading animation</string>
+
+    <!--Registration First page strings-->
+    <string name="inpField_email_reg">Email address</string>
+    <string name="inpField_pw_reg">Password</string>
+    <string name="btn_next_reg">Next</string>
+    <string name="false_img">False</string>
+    <string name="lbl_info_reg">Registration</string>
+    <string name="lbl_warning_reg"></string>
+
 
 
 </resources>
