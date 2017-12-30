@@ -1,8 +1,15 @@
 package project.deepwateroiltools_001;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,12 +20,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
@@ -32,7 +42,8 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
     Button btn_next;
     ImageView img_email, img_pw, img_pw2;
     TextView lbl_warning;
-    String lastSearchEmail = "";
+    String lastSearchedEmail = "";
+    String lastCheckedPassword = "";
 
 
     @Override
@@ -82,7 +93,13 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                if (getCurrentFocus() != null) {
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+                else{
+                    Log.d("onTouchListener","would be NULL POINT");
+                }
                 email.clearFocus();
                 password.clearFocus();
                 passwordRe.clearFocus();
@@ -103,22 +120,100 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!email.hasFocus()){
+        if (!email.hasFocus()) {
+
             //To verify any user is registered with this email address
-            if (!email.getText().toString().equals(lastSearchEmail)) {
-                lastSearchEmail = email.getText().toString();
-                String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + email.getText().toString() + "\"}";
-                new RunDbQueryToVerifyEmail(url).execute();
+            if (!email.getText().toString().equals(lastSearchedEmail)) {
+                lastSearchedEmail = email.getText().toString();
+                if (isValidEmail(email.getText().toString())) {
+                    String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + email.getText().toString() + "\"}";
+                    new RunDbQueryToVerifyEmail(url).execute();
+                } else {
+                    img_email.setImageResource(R.drawable.false_img);
+                    img_email.setVisibility(View.VISIBLE);
+                    makeToast("Invalid address format");
+                }
+            }
+        }
+        if (!password.hasFocus()){
+            if (!password.getText().toString().equals(lastCheckedPassword)) {
+                lastCheckedPassword = password.getText().toString();
+                if (isValidPassword(password.getText().toString())) {
+                    img_pw.setImageResource(R.drawable.true_img);
+                    img_pw.setVisibility(View.VISIBLE);
+                } else {
+                    img_pw.setImageResource(R.drawable.false_img);
+                    img_pw.setVisibility(View.VISIBLE);
+                    makeToast("Password is not strong enough");
+                }
             }
         }
 
+        if ( (!passwordRe.hasFocus()) && (!passwordRe.getText().toString().equals("")) ) {
+            if (passwordRe.getText().toString().equals(password.getText().toString())){
+                img_pw2.setImageResource(R.drawable.true_img);
+                img_pw2.setVisibility(View.VISIBLE);
+                Log.d("PASSWORDMATCH","TRUE");
+            }
+            else{
+                img_pw2.setImageResource(R.drawable.false_img);
+                img_pw2.setVisibility(View.VISIBLE);
+                Log.d("PASSWORDMATCH","FALSE");
+            }
+        }
+
+        if (email.hasFocus()){
+            lbl_warning.setText("Please type in your email address");
+        }
+        if (password.hasFocus()){
+            lbl_warning.setText("Password must be 8 charaters including at least one uppercase letter and number");
+        }
+        if (passwordRe.hasFocus()){
+            lbl_warning.setText("Passwords must match");
+
+        }
+
+
+    }
+    public void makeToast(String msg){
+        Context context = getApplicationContext();
+      //  CharSequence text = "Email address is used by another user";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, msg, duration);
+        toast.show();
+    }
+
+    public static boolean isValidPassword(final String password) {
+        Pattern pattern;
+        Matcher matcher;
+        //one digit, one uppercase, one lowercase, between 8-16 character
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).{8,16}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+
+    }
+
+    //email address validator
+    public final static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     private class RunDbQueryToVerifyEmail extends AsyncTask<String, Void, String> {
         String urlString;
+        private ProgressDialog dialog;
 
         private RunDbQueryToVerifyEmail(String url){
             this.urlString = url;
+            dialog = new ProgressDialog(Registration.this, R.style.DialogBoxStyle);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage("Verifying email address...");
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            dialog.show();
         }
 
         @Override
@@ -138,14 +233,18 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
             Gson gson = new Gson();
             Type listType = new TypeToken<List<User>>(){}.getType();
             List<User> users = gson.fromJson(s, listType);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
             //Display icon according to search results
             if (!users.isEmpty()) {
+                makeToast("Email address used by another user");
+
                 img_email.setImageResource(R.drawable.false_img);
-                lbl_warning.setText("Email is used by another user");
                 img_email.setVisibility(View.VISIBLE);
             }
             else{
-                lbl_warning.setText("Please fill in the requested fields");
                 img_email.setImageResource(R.drawable.true_img);
                 img_email.setVisibility(View.VISIBLE);
             }
