@@ -72,7 +72,9 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                if (getCurrentFocus() != null) {
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
                 email.clearFocus();
                 password.clearFocus();
                 return true;
@@ -148,7 +150,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
                 Calendar lastLog = Calendar.getInstance();
                 SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                 lastLog.setTime(new Date(users.get(0).getLastLogin()));
-                Log.d("REDIRECT TO welcome", users.get(0).getUserId() + " " + format1.format(lastLog.getTime()));
+                Log.d("REDIRECT TO welcome", users.get(0).get_id().getOid().toString() + " " + format1.format(lastLog.getTime()));
             }
             else{
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginScreen.this, R.style.LightDialogTheme);

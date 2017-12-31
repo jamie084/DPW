@@ -25,8 +25,12 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:maxHeight="150dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
 
     <Button
         android:id="@+id/btn_login"

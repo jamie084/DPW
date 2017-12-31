@@ -8,10 +8,26 @@ import java.util.Date;
 
 public class User {
     private Id _id;
-    private int userId;
     private String user;
+    private String password;
     private Boolean isActive;
     private long lastLogin;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 
     public Id get_id() {
         return _id;
@@ -21,10 +37,6 @@ public class User {
         this._id = _id;
     }
 
-    public int getUserId(){return userId;}
-
-    public void setUserId(int uid){this.userId = uid;}
-
     public String getUser() {
         return user;
     }
@@ -32,10 +44,6 @@ public class User {
     public void setUser(String user) {
         this.user = user;
     }
-
-    public Boolean getIsActive() {return isActive;}
-
-    public void setIsActive(Boolean b) {this.isActive = b;}
 
     public long getLastLogin(){ return lastLogin;}
 

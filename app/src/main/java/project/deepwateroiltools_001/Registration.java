@@ -3,6 +3,7 @@ package project.deepwateroiltools_001;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -44,6 +45,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
     TextView lbl_warning;
     String lastSearchedEmail = "";
     String lastCheckedPassword = "";
+    boolean emailIsValid, pwIsValid, pw2IsValid;
 
 
     @Override
@@ -65,24 +67,24 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
         btn_next.setOnClickListener(this);
 
         //Edittext items and the listeners
-        email = (EditText)this.findViewById(R.id.inpField_email_reg);
+        email = (EditText)this.findViewById(R.id.inpField_sec_name_reg);
         email.setOnFocusChangeListener(this);
 
-        password = (EditText)this.findViewById(R.id.inpField_pw_reg);
+        password = (EditText)this.findViewById(R.id.inpField_company_reg2);
         password.setOnFocusChangeListener(this);
 
-        passwordRe = (EditText)this.findViewById(R.id.inpField_pw_reg2);
+        passwordRe = (EditText)this.findViewById(R.id.inpField_phone_reg2);
         passwordRe.setOnFocusChangeListener(this);
 
         //Image view
         img_email = (ImageView)this.findViewById(R.id.img_email);
-        img_email.setVisibility(View.INVISIBLE);
+        img_email.setVisibility(View.VISIBLE);
 
         img_pw = (ImageView)this.findViewById(R.id.img_pw);
-        img_pw.setVisibility(View.INVISIBLE);
+        img_pw.setVisibility(View.VISIBLE);
 
         img_pw2 = (ImageView)this.findViewById(R.id.img_pwRe);
-        img_pw2.setVisibility(View.INVISIBLE);
+        img_pw2.setVisibility(View.VISIBLE);
 
         //TextView
         lbl_warning = (TextView)this.findViewById(R.id.lbl_warning_reg) ;
@@ -106,14 +108,26 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
                 return true;
             }
         });
-
+        emailIsValid = false;
+        pwIsValid = false;
+        pw2IsValid =false;
 
     }
 
     @Override
     public void onClick(View v) {
         if (v == btn_next){
-
+            if (emailIsValid && pwIsValid && pw2IsValid) {
+                Intent reg2 = new Intent(this, Registration_page2.class);
+                User user = new User();
+                user.setUser(email.getText().toString());
+                user.setPassword(password.getText().toString());
+                reg2.putExtra("user", (new Gson()).toJson(user));
+                startActivity(reg2);
+            }
+            else{
+                makeToast("Please verify your inputs");
+            }
         }
 
     }
@@ -131,6 +145,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
                 } else {
                     img_email.setImageResource(R.drawable.false_img);
                     img_email.setVisibility(View.VISIBLE);
+                    emailIsValid = false;
                     makeToast("Invalid address format");
                 }
             }
@@ -141,24 +156,31 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
                 if (isValidPassword(password.getText().toString())) {
                     img_pw.setImageResource(R.drawable.true_img);
                     img_pw.setVisibility(View.VISIBLE);
+                    pwIsValid = true;
                 } else {
                     img_pw.setImageResource(R.drawable.false_img);
                     img_pw.setVisibility(View.VISIBLE);
+                    pwIsValid = false;
                     makeToast("Password is not strong enough");
                 }
             }
         }
-
-        if ( (!passwordRe.hasFocus()) && (!passwordRe.getText().toString().equals("")) ) {
-            if (passwordRe.getText().toString().equals(password.getText().toString())){
-                img_pw2.setImageResource(R.drawable.true_img);
-                img_pw2.setVisibility(View.VISIBLE);
-                Log.d("PASSWORDMATCH","TRUE");
-            }
-            else{
+        //TODO tidy up, make one if statement
+        if  (!passwordRe.hasFocus())  {
+            if (!passwordRe.getText().toString().equals("")) {
+                if (passwordRe.getText().toString().equals(password.getText().toString())) {
+                    img_pw2.setImageResource(R.drawable.true_img);
+                    img_pw2.setVisibility(View.VISIBLE);
+                    pw2IsValid = true;
+                } else {
+                    pw2IsValid = false;
+                    img_pw2.setImageResource(R.drawable.false_img);
+                    img_pw2.setVisibility(View.VISIBLE);
+                }
+            }else{
+                pw2IsValid = false;
                 img_pw2.setImageResource(R.drawable.false_img);
                 img_pw2.setVisibility(View.VISIBLE);
-                Log.d("PASSWORDMATCH","FALSE");
             }
         }
 
@@ -175,9 +197,9 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
 
 
     }
+
     public void makeToast(String msg){
         Context context = getApplicationContext();
-      //  CharSequence text = "Email address is used by another user";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, msg, duration);
         toast.show();
@@ -243,8 +265,10 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
 
                 img_email.setImageResource(R.drawable.false_img);
                 img_email.setVisibility(View.VISIBLE);
+                emailIsValid = false;
             }
             else{
+                emailIsValid = true;
                 img_email.setImageResource(R.drawable.true_img);
                 img_email.setVisibility(View.VISIBLE);
             }

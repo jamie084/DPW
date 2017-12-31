@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="project.deepwateroiltools_001.Registration"
+    tools:context="project.deepwateroiltools_001.Registration_page3"
     android:focusableInTouchMode="true"
     android:clickable="true"
     android:focusable="true"
@@ -20,52 +20,73 @@
         android:scaleType="fitXY"
         android:src="@drawable/background" />
 
-
     <EditText
-        android:id="@+id/inpField_sec_name_reg"
+        android:id="@+id/inpField_houseNumber_reg3"
         style="@style/App_EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/inpField_company_reg2"
+        android:layout_alignStart="@+id/logo"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/lbl_info_reg"
+        android:ems="10"
+        android:hint="House Number"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/inpField_street_reg3"
+        style="@style/App_EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/inpField_houseNumber_reg3"
+        android:layout_alignBottom="@+id/inpField_houseNumber_reg3"
+        android:layout_alignEnd="@+id/logo"
+        android:ems="10"
+        android:hint="Street"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/inpField_city_reg3"
+        style="@style/App_EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/inpField_country_reg3"
+        android:layout_below="@+id/inpField_street_reg3"
+        android:layout_marginBottom="17dp"
+        android:ems="10"
+        android:hint="City"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/inpField_country_reg3"
+        style="@style/App_EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/inpField_postCode_reg3"
+        android:layout_below="@+id/inpField_city_reg3"
+        android:ems="10"
+        android:hint="Country"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/inpField_postCode_reg3"
+        style="@style/App_EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inpField_country_reg3"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
         android:ems="10"
-        android:hint="Email address"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/inpField_company_reg2"
-        style="@style/App_EditTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/inpField_phone_reg2"
-        android:layout_alignStart="@+id/inpField_sec_name_reg"
-        android:layout_marginBottom="26dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/inpField_phone_reg2"
-        style="@style/App_EditTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="re-type password"
-        android:inputType="textPassword"
-        android:layout_above="@+id/btn_next_reg"
-        android:layout_alignStart="@+id/inpField_company_reg2"
-        android:layout_marginBottom="39dp" />
+        android:hint="PostCode"
+        android:inputType="phone" />
 
     <Button
-        android:id="@+id/btn_next_reg"
+        android:id="@+id/btn_submit_reg3"
         style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/inpField_postCode_reg3"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="37dp"
-        android:text="@string/btn_next_reg" />
+        android:text="Submit"
+        tools:text="Submit" />
 
     <TextView
         android:id="@+id/lbl_info_reg"
@@ -88,46 +109,6 @@
         android:gravity="center"
         android:text="aaaaa"
         android:textColor="#FFFFFF" />
-
-    <ImageView
-        android:id="@+id/img_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignTop="@+id/inpField_sec_name_reg"
-        android:layout_marginStart="25dp"
-        android:layout_toEndOf="@+id/inpField_sec_name_reg"
-        android:adjustViewBounds="true"
-        android:maxHeight="30dp"
-        android:maxWidth="30dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/false_img" />
-
-    <ImageView
-        android:id="@+id/img_pw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignStart="@+id/img_email"
-        android:layout_below="@+id/inpField_sec_name_reg"
-        android:adjustViewBounds="true"
-        android:maxHeight="30dp"
-        android:maxWidth="30dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/false_img" />
-
-    <ImageView
-        android:id="@+id/img_pwRe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignStart="@+id/img_pw"
-        android:layout_below="@+id/inpField_company_reg2"
-        android:adjustViewBounds="true"
-        android:maxHeight="30dp"
-        android:maxWidth="30dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/false_img" />
 
     <ImageView
         android:id="@+id/logo"
