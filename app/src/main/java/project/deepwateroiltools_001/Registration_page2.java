@@ -100,8 +100,8 @@ public class Registration_page2 extends Activity implements View.OnClickListener
             userInfo.setFirstName(firstName.getText().toString());
             userInfo.setSecondName(secondName.getText().toString());
             userInfo.setCompany(companyName.getText().toString());
-            userInfo.setPhoneNumber(Integer.parseInt(phoneNumber.getText().toString()));
-            userInfo.set_id(user.getUser());
+            userInfo.setPhoneNumber(phoneNumber.getText().toString());
+        //    userInfo.set_id(user.get_id());
 
             Log.d("userInfo To String", userInfo.toString());
 

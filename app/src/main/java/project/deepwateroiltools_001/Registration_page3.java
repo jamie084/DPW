@@ -107,7 +107,7 @@ public class Registration_page3 extends Activity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == btn_submit_reg3){
-            userInfo.setHouseNumber(Integer.parseInt(houseNumber.getText().toString()));
+            userInfo.setHouseNumber(houseNumber.getText().toString());
             userInfo.setStreet(street.getText().toString());
             userInfo.setCity(city.getText().toString());
             userInfo.setCountry(country.getText().toString());
@@ -140,12 +140,20 @@ public class Registration_page3 extends Activity implements View.OnClickListener
             dialog.show();
         }
 
+        //TODO try catch, error handling
         @Override
         protected String doInBackground(String... params) {
             HTTPDataHandler http = new HTTPDataHandler();
             String par = new Gson().toJson(user);
             String urlString = Common.getBaseURL() + Common.getApiKey();
             http.PostHTTPData(urlString,par);
+            String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + user.getUser() + "\"}";
+            String userString = http.GetHTTPData(url) ;
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<User>>(){}.getType();
+            List<User> users = gson.fromJson(userString, listType);
+            User user = users.get(0);
+            userInfo.set_id(user.get_id());
             http.PostHTTPData(Common.getUrlUserInfo(), new Gson().toJson(userInfo));
             return http.GetHTTPData(Common.getUrlUserInfo());
         }

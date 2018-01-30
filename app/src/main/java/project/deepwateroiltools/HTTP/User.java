@@ -11,7 +11,16 @@ public class User {
     private String user;
     private String password;
     private Boolean isActive;
+    private Boolean isAdmin;
     private long lastLogin;
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
 
     public String getPassword() {
         return password;

@@ -5,22 +5,22 @@ package project.deepwateroiltools.HTTP;
  */
 
 public class UserInfo {
-    private String _id;
+    private Id _id;
     private String firstName;
     private String secondName;
     private String company;
-    private int phoneNumber;
-    private int houseNumber;
+    private String phoneNumber;
+    private String houseNumber;
     private String street;
     private String city;
     private String country;
     private String postCode;
 
-    public String get_id() {
+    public Id get_id() {
         return _id;
     }
 
-    public void set_id(String _id) {
+    public void set_id(Id _id) {
         this._id = _id;
     }
 
@@ -48,19 +48,19 @@ public class UserInfo {
         this.company = company;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 

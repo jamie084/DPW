@@ -145,12 +145,13 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
                 dialog.dismiss();
             }
             if (!users.isEmpty()) {
-                Id id_ = new Id();
-                id_ = users.get(0).get_id();
-                Calendar lastLog = Calendar.getInstance();
-                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                lastLog.setTime(new Date(users.get(0).getLastLogin()));
-                Log.d("REDIRECT TO welcome", users.get(0).get_id().getOid().toString() + " " + format1.format(lastLog.getTime()));
+                User user = users.get(0);
+              //  Id id_ = new Id();
+           //     id_ = users.get(0).get_id();
+            //    Calendar lastLog = Calendar.getInstance();
+         //       SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+                //lastLog.setTime(new Date(users.get(0).getLastLogin()));
+                Log.d("REDIRECT TO welcome","****************SUCCESS for: " + user.getAdmin());//, users.get(0).get_id().getOid().toString() );//+ " " + format1.format(lastLog.getTime()));
             }
             else{
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginScreen.this, R.style.LightDialogTheme);
