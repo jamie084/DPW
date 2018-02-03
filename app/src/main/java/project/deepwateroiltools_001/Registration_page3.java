@@ -40,8 +40,6 @@ public class Registration_page3 extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         //FULL SCREEN
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -94,8 +92,9 @@ public class Registration_page3 extends Activity implements View.OnClickListener
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = new Gson().fromJson(extras.getString("user"), User.class);
+            //TODO as long as admin page is not implemented keep it
             user.setActive(true);
-            userInfo = new Gson().fromJson(extras.getString("userInfo"), UserInfo.class);
+            userInfo = user.getUserInfo();
         }
         else{
             //TODO error handling
@@ -148,14 +147,16 @@ public class Registration_page3 extends Activity implements View.OnClickListener
             String urlString = Common.getBaseURL() + Common.getApiKey();
             http.PostHTTPData(urlString,par);
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + user.getUser() + "\"}";
-            String userString = http.GetHTTPData(url) ;
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<User>>(){}.getType();
-            List<User> users = gson.fromJson(userString, listType);
-            User user = users.get(0);
-            userInfo.set_id(user.get_id());
-            http.PostHTTPData(Common.getUrlUserInfo(), new Gson().toJson(userInfo));
-            return http.GetHTTPData(Common.getUrlUserInfo());
+            //String userString = http.GetHTTPData(url) ;
+            //Gson gson = new Gson();
+            //Type listType = new TypeToken<List<User>>(){}.getType();
+            //List<User> users = gson.fromJson(userString, listType);
+            //User user = users.get(0);
+            //userInfo.set_id(user.get_id());
+           // http.PostHTTPData(Common.getUrlUserInfo(), new Gson().toJson(userInfo));
+            String test = http.GetHTTPData(url);
+            Log.d("RESPONSE", test);
+            return http.GetHTTPData(url);
         }
 
         @Override

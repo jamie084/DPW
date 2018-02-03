@@ -25,5 +25,8 @@
     <string name="lbl_info_reg">Registration</string>
     <string name="lbl_warning_reg"></string>
 
+    <!-- Drawer menu-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 </resources>

@@ -91,6 +91,8 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
         if (v == btn_login){
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
             new RunDbQuery(url).execute();
+            Intent reg = new Intent(this, WelcomeScreen.class);
+            startActivity(reg);
         }
         if (v == btn_reg){
             Intent reg = new Intent(this, Registration.class);
@@ -151,6 +153,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
             //    Calendar lastLog = Calendar.getInstance();
          //       SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                 //lastLog.setTime(new Date(users.get(0).getLastLogin()));
+
                 Log.d("REDIRECT TO welcome","****************SUCCESS for: " + user.getAdmin());//, users.get(0).get_id().getOid().toString() );//+ " " + format1.format(lastLog.getTime()));
             }
             else{

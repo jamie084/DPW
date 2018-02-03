@@ -50,12 +50,12 @@
         style="@style/App_EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/inpField_sec_name_reg"
         android:layout_alignStart="@+id/inpField_phone_reg2"
+        android:layout_below="@+id/inpField_sec_name_reg"
         android:layout_marginBottom="17dp"
         android:ems="10"
         android:hint="Company Name"
-        android:inputType="none" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/inpField_phone_reg2"

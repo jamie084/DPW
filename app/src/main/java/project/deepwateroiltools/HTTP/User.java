@@ -13,6 +13,15 @@ public class User {
     private Boolean isActive;
     private Boolean isAdmin;
     private long lastLogin;
+    private UserInfo userInfo;
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 
     public Boolean getAdmin() {
         return isAdmin;

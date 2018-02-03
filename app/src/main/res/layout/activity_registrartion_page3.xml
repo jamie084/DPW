@@ -30,7 +30,7 @@
         android:layout_toStartOf="@+id/lbl_info_reg"
         android:ems="10"
         android:hint="House Number"
-        android:inputType="number" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/inpField_street_reg3"
@@ -76,7 +76,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="PostCode"
-        android:inputType="phone" />
+        android:inputType="text" />
 
     <Button
         android:id="@+id/btn_submit_reg3"

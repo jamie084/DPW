@@ -78,13 +78,13 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
 
         //Image view
         img_email = (ImageView)this.findViewById(R.id.img_email);
-        img_email.setVisibility(View.VISIBLE);
+        img_email.setVisibility(View.INVISIBLE);
 
         img_pw = (ImageView)this.findViewById(R.id.img_pw);
-        img_pw.setVisibility(View.VISIBLE);
+        img_pw.setVisibility(View.INVISIBLE);
 
         img_pw2 = (ImageView)this.findViewById(R.id.img_pwRe);
-        img_pw2.setVisibility(View.VISIBLE);
+        img_pw2.setVisibility(View.INVISIBLE);
 
         //TextView
         lbl_warning = (TextView)this.findViewById(R.id.lbl_warning_reg) ;
@@ -166,8 +166,8 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
             }
         }
         //TODO tidy up, make one if statement
-        if  (!passwordRe.hasFocus())  {
-            if (!passwordRe.getText().toString().equals("")) {
+        if  (!passwordRe.hasFocus() & pwIsValid)  {
+
                 if (passwordRe.getText().toString().equals(password.getText().toString())) {
                     img_pw2.setImageResource(R.drawable.true_img);
                     img_pw2.setVisibility(View.VISIBLE);
@@ -177,11 +177,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
                     img_pw2.setImageResource(R.drawable.false_img);
                     img_pw2.setVisibility(View.VISIBLE);
                 }
-            }else{
-                pw2IsValid = false;
-                img_pw2.setImageResource(R.drawable.false_img);
-                img_pw2.setVisibility(View.VISIBLE);
-            }
+
         }
 
         if (email.hasFocus()){

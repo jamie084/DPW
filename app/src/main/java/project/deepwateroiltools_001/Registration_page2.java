@@ -101,13 +101,14 @@ public class Registration_page2 extends Activity implements View.OnClickListener
             userInfo.setSecondName(secondName.getText().toString());
             userInfo.setCompany(companyName.getText().toString());
             userInfo.setPhoneNumber(phoneNumber.getText().toString());
+            user.setUserInfo(userInfo);
         //    userInfo.set_id(user.get_id());
 
             Log.d("userInfo To String", userInfo.toString());
 
             Intent reg3 = new Intent(this, Registration_page3.class);
             reg3.putExtra("user", (new Gson()).toJson(user));
-            reg3.putExtra("userInfo", (new Gson()).toJson(userInfo));
+            //reg3.putExtra("userInfo", (new Gson()).toJson(userInfo));
             startActivity(reg3);
         }
     }
