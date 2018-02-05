@@ -96,6 +96,10 @@ public class UserInfo {
         this.postCode = postCode;
     }
 
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getSecondName();
+    }
+
     @Override
     public String toString(){
         String result = "";

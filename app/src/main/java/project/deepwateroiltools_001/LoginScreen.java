@@ -7,6 +7,7 @@ import project.deepwateroiltools.HTTP.User;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -90,9 +91,9 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
     public void onClick(View v){
         if (v == btn_login){
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
-            new RunDbQuery(url).execute();
-            Intent reg = new Intent(this, WelcomeScreen.class);
-            startActivity(reg);
+            new RunDbQuery(url, this).execute();
+//            Intent reg = new Intent(this, WelcomeScreen.class);
+//            startActivity(reg);
         }
         if (v == btn_reg){
             Intent reg = new Intent(this, Registration.class);
@@ -115,8 +116,10 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
     private class RunDbQuery extends AsyncTask<String, Void, String> {
         String urlString = "";
         private ProgressDialog dialog;
+        Context context;
 
-        private RunDbQuery(String urlString){
+        private RunDbQuery(String urlString, Context context){
+            this.context = context.getApplicationContext();
             this.urlString = urlString;
             dialog = new ProgressDialog(LoginScreen.this, R.style.DialogBoxStyle);
         }
@@ -148,11 +151,9 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
             }
             if (!users.isEmpty()) {
                 User user = users.get(0);
-              //  Id id_ = new Id();
-           //     id_ = users.get(0).get_id();
-            //    Calendar lastLog = Calendar.getInstance();
-         //       SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-                //lastLog.setTime(new Date(users.get(0).getLastLogin()));
+                Intent intentWelcome = new Intent(context, WelcomeScreen.class);
+                intentWelcome.putExtra("user", (new Gson()).toJson(user));
+                startActivity(intentWelcome);
 
                 Log.d("REDIRECT TO welcome","****************SUCCESS for: " + user.getAdmin());//, users.get(0).get_id().getOid().toString() );//+ " " + format1.format(lastLog.getTime()));
             }

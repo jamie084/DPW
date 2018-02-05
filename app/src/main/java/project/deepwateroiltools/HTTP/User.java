@@ -63,7 +63,14 @@ public class User {
         this.user = user;
     }
 
-    public long getLastLogin(){ return lastLogin;}
+    public long getLastLogin() {
+        return lastLogin;
+    }
 
-    public void setLastLogin(long l){this.lastLogin =l;}
+    public void setLastLogin(long l) {
+        this.lastLogin = l;
+    }
+
+
+
 }
