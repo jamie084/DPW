@@ -29,25 +29,24 @@
         android:scaleType="fitCenter"
         android:src="@drawable/logo" />
 
-    <FrameLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/crossfade_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <Button
             android:id="@+id/btn_startSeaSecure"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/logo"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:text="Start SeaSecure Service"
             android:textColor="#FFFFFF"
             tools:text="Start SeaSecure Service" />
 
         <TextView
-            android:id="@+id/crossfade_content"
+            android:id="@+id/crossfade_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -55,6 +54,8 @@
             android:textSize="16sp" />
 
 
-    </FrameLayout>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
