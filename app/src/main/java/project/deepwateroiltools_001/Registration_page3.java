@@ -94,6 +94,7 @@ public class Registration_page3 extends Activity implements View.OnClickListener
             user = new Gson().fromJson(extras.getString("user"), User.class);
             //TODO as long as admin page is not implemented keep it
             user.setActive(true);
+            user.setAdmin(true);
             userInfo = user.getUserInfo();
         }
         else{

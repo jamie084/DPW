@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="project.deepwateroiltools_001.WelcomeScreen">
+
+
+
+        <Button
+            android:id="@+id/btn_adminTest"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="Admin Test Button"
+            android:textColor="#FFFFFF"
+            tools:text="Admin Test Button" />
+
+        <TextView
+            android:id="@+id/crossfade_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="16sp" />
+
+
+
+</RelativeLayout>

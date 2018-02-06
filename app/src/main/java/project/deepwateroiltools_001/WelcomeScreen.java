@@ -1,7 +1,9 @@
 package project.deepwateroiltools_001;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,9 +23,17 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import project.Drawer.MainMenuDrawer;
 import project.deepwateroiltools.HTTP.User;
+import project.deepwateroiltools_001.Fragments.FragmentAdminArea;
+import project.deepwateroiltools_001.Fragments.FragmentContact;
+import project.deepwateroiltools_001.Fragments.FragmentExport;
+import project.deepwateroiltools_001.Fragments.FragmentHistory;
+import project.deepwateroiltools_001.Fragments.FragmentHomeScreen;
+import project.deepwateroiltools_001.Fragments.FragmentSettings;
 
 
 public class WelcomeScreen extends Activity implements View.OnClickListener {
@@ -34,8 +43,7 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
     private Crossfader crossFader = null;
     private User user;
     private Button btn_startProcedure;
-    private Button btn_test;
-    private static Context mContext;
+
 
 
     @Override
@@ -46,11 +54,8 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_welcome_screen);
+        setContentView(R.layout.activity_home_screen);
 
-        //BUTTONS
-        btn_startProcedure = (Button)this.findViewById(R.id.btn_startSeaSecure);
-        btn_startProcedure.setOnClickListener(this);
 
         //Touch event handling, closes the miniDrawer in case of touch event
         findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
@@ -62,6 +67,11 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
                 return true;
             }
         });
+
+
+//        //BUTTONS
+//        btn_startProcedure = (Button)this.findViewById(R.id.btn_startSeaSecure);
+//        btn_startProcedure.setOnClickListener(this);
 
 
         //get the user obj from previous activity
@@ -78,21 +88,52 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
         MainMenuDrawer mainMenuDrawer = new MainMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
 
-    //mainMenuDrawer.createMainMenu();
-
         headerDrawer = mainMenuDrawer.getHeader();
 
         DrawerBuilder builder = mainMenuDrawer.getDrawerBuilder();
 
+        builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                if (drawerItem instanceof Nameable) {
+                    if (drawerItem.getIdentifier() == 1){
+                            loadFragment(new FragmentHomeScreen());
+                    }
+                    else if (drawerItem.getIdentifier() == 2){
+                            loadFragment(new FragmentExport());
+                    }
+                    else if (drawerItem.getIdentifier() == 3) {
+                            loadFragment(new FragmentSettings());
+                    }
+                    else if (drawerItem.getIdentifier() == 4){
+                            loadFragment(new FragmentHistory());
+                    }
+                    else if (drawerItem.getIdentifier() == 5){
+                        loadFragment(new FragmentContact());
+                    }
+                    else if (drawerItem.getIdentifier() == 6){
+                            loadFragment(new FragmentAdminArea());
+                    }
+
+                    Log.d("DRAWERITEM", String.valueOf(drawerItem.getIdentifier()));
+                    //   Toast.makeText(activity, ((Nameable) drawerItem).getName().getText(activity), Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+
+                }
+                //TODO will need this
+                miniDrawer.onItemClick(drawerItem);
+
+                return true;
+            }
+        });
 
         drawer = builder.buildView();
         miniDrawer = new MiniDrawer().withDrawer(drawer);
 
        //create and build our crossfader (see the MiniDrawer is also builded in here, as the build method returns the view to be used in the crossfader)
         crossFader = mainMenuDrawer.getCrossFader(drawer, miniDrawer);
-
-
-
 
        //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
         miniDrawer.withCrossFader(new CrossfadeWrapper(crossFader));
@@ -101,7 +142,7 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
 
 
-
+        loadFragment(new FragmentHomeScreen());
 
     }
 
@@ -155,19 +196,26 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == btn_startProcedure){
-            if (crossFader.isCrossFaded()){
-                Toast.makeText(WelcomeScreen.this,String.valueOf(crossFader.isCrossFaded()), Toast.LENGTH_SHORT).show();
-                crossFader.crossFade();
-            }
-            else{
-                Toast.makeText(WelcomeScreen.this, "ButtonClick", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (v == btn_test){
-            Toast.makeText(WelcomeScreen.this, "ButtonTest", Toast.LENGTH_SHORT).show();
-        }
+//        if (v == btn_startProcedure){
+//            if (crossFader.isCrossFaded()){
+//                Toast.makeText(WelcomeScreen.this,String.valueOf(crossFader.isCrossFaded()), Toast.LENGTH_SHORT).show();
+//                crossFader.crossFade();
+//            }
+//            else{
+//                Toast.makeText(WelcomeScreen.this, "ButtonClick", Toast.LENGTH_SHORT).show();
+//            }
+//            loadFragment(new FirstFragment());
+//        }
+    }
 
+    private void loadFragment(Fragment fragment) {
+// create a FragmentManager
+        FragmentManager fm = getFragmentManager();
+// create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+// replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(R.id.crossfade_content, fragment);
+        fragmentTransaction.commit(); // save the changes
     }
 
 }

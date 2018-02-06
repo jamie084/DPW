@@ -2,32 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    >
-
-    <ImageView
-        android:id="@+id/background_welcomeScreen_new"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/drawer5" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="150dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo" />
+    tools:context="project.deepwateroiltools_001.WelcomeScreen">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/crossfade_content"
@@ -35,15 +10,15 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/btn_startSeaSecure"
+            android:id="@+id/btn_export"
             style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:text="Start SeaSecure Service"
+            android:text="Export button test"
             android:textColor="#FFFFFF"
-            tools:text="Start SeaSecure Service" />
+            tools:text="Export button test" />
 
         <TextView
             android:id="@+id/crossfade_text"
@@ -55,7 +30,4 @@
 
 
     </RelativeLayout>
-
-
-
 </RelativeLayout>

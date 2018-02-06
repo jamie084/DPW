@@ -1,20 +1,14 @@
 package project.Drawer;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.mikepenz.crossfader.Crossfader;
-import com.mikepenz.crossfader.app.util.CrossfadeWrapper;
 import com.mikepenz.crossfader.util.UIUtils;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -25,14 +19,11 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialize.MaterializeBuilder;
 
 import project.deepwateroiltools.HTTP.User;
 import project.deepwateroiltools_001.R;
-import project.deepwateroiltools_001.WelcomeScreen;
 
 /**
  * Created by janos on 05/02/2018.
@@ -120,22 +111,7 @@ public class MainMenuDrawer extends Activity {
                                 .withIdentifier(5)
 
                 ) // add the items we want to use with our Drawer
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem instanceof Nameable) {
-                         //   Toast.makeText(activity, ((Nameable) drawerItem).getName().getText(activity), Toast.LENGTH_SHORT).show();
 
-                        }
-                        else{
-
-                        }
-                        //TODO will need this
-                        miniResult.onItemClick(drawerItem);
-
-                        return true;
-                    }
-                })
                 .withSavedInstance(savedInstanceState);
 
         if (!user.getAdmin()){
@@ -180,27 +156,14 @@ public class MainMenuDrawer extends Activity {
     }
 
 
-public void createMainMenu(){
-    new MaterializeBuilder(activity).build();
-    headerResult = this.getHeader();
-    DrawerBuilder builder = this.getDrawerBuilder();
-    result = builder.buildView();
 
-    miniResult = new MiniDrawer().withDrawer(result);
-
-
-    //create and build our crossfader (see the MiniDrawer is also builded in here, as the build method returns the view to be used in the crossfader)
-    crossFader = this.getCrossFader(result, miniResult);
-
-
-    //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
-    miniResult.withCrossFader(new CrossfadeWrapper(crossFader));
-
-    //define a shadow (this is only for normal LTR layouts if you have a RTL app you need to define the other one
-    crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
-//    R.drawable.material_drawer_shadow_left
-//    context.getResources().getDrawable(R.drawable.logo))
-
-}
-
+    private void loadFragment(Fragment fragment) {
+// create a FragmentManager
+        FragmentManager fm = getFragmentManager();
+// create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+// replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(R.id.crossfade_content, fragment);
+        fragmentTransaction.commit(); // save the changes
+    }
 }
