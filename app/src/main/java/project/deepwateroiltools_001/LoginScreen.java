@@ -2,7 +2,6 @@ package project.deepwateroiltools_001;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
-import project.deepwateroiltools.HTTP.Id;
 import project.deepwateroiltools.HTTP.User;
 
 import android.app.Activity;
@@ -30,9 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
@@ -92,7 +88,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
         if (v == btn_login){
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
             new RunDbQuery(url, this).execute();
-//            Intent reg = new Intent(this, WelcomeScreen.class);
+//            Intent reg = new Intent(this, HomeScreen.class);
 //            startActivity(reg);
         }
         if (v == btn_reg){
@@ -151,7 +147,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
             }
             if (!users.isEmpty()) {
                 User user = users.get(0);
-                Intent intentWelcome = new Intent(context, WelcomeScreen.class);
+                Intent intentWelcome = new Intent(context, HomeScreen.class);
                 intentWelcome.putExtra("user", (new Gson()).toJson(user));
                 startActivity(intentWelcome);
 

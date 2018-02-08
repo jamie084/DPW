@@ -23,20 +23,13 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 import project.Drawer.MainMenuDrawer;
 import project.deepwateroiltools.HTTP.User;
-import project.deepwateroiltools_001.Fragments.FragmentAdminArea;
-import project.deepwateroiltools_001.Fragments.FragmentContact;
-import project.deepwateroiltools_001.Fragments.FragmentExport;
-import project.deepwateroiltools_001.Fragments.FragmentHistory;
-import project.deepwateroiltools_001.Fragments.FragmentHomeScreen;
-import project.deepwateroiltools_001.Fragments.FragmentSettings;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 
 
-public class WelcomeScreen extends Activity implements View.OnClickListener {
+public class HomeScreen extends Activity implements View.OnClickListener {
     private Drawer drawer = null;
     private MiniDrawer miniDrawer = null;
     private AccountHeader headerDrawer = null;
@@ -47,7 +40,7 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //FULL SCREEN
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -92,42 +85,7 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
         DrawerBuilder builder = mainMenuDrawer.getDrawerBuilder();
 
-        builder.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                if (drawerItem instanceof Nameable) {
-                    if (drawerItem.getIdentifier() == 1){
-                            loadFragment(new FragmentHomeScreen());
-                    }
-                    else if (drawerItem.getIdentifier() == 2){
-                            loadFragment(new FragmentExport());
-                    }
-                    else if (drawerItem.getIdentifier() == 3) {
-                            loadFragment(new FragmentSettings());
-                    }
-                    else if (drawerItem.getIdentifier() == 4){
-                            loadFragment(new FragmentHistory());
-                    }
-                    else if (drawerItem.getIdentifier() == 5){
-                        loadFragment(new FragmentContact());
-                    }
-                    else if (drawerItem.getIdentifier() == 6){
-                            loadFragment(new FragmentAdminArea());
-                    }
 
-                    Log.d("DRAWERITEM", String.valueOf(drawerItem.getIdentifier()));
-                    //   Toast.makeText(activity, ((Nameable) drawerItem).getName().getText(activity), Toast.LENGTH_SHORT).show();
-
-                }
-                else{
-
-                }
-                //TODO will need this
-                miniDrawer.onItemClick(drawerItem);
-
-                return true;
-            }
-        });
 
         drawer = builder.buildView();
         miniDrawer = new MiniDrawer().withDrawer(drawer);
@@ -146,7 +104,9 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
     }
 
-
+    public User getUser(){
+        return user;
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -179,9 +139,10 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(WelcomeScreen.this, "ITEM " +  item.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(HomeScreen.this, "ITEM " +  item.toString(), Toast.LENGTH_SHORT).show();
         //handle the click on the back arrow click
         switch (item.getItemId()) {
+
 //            case R.id.menu_1:
 //                crossFader.crossFade();
 //                return true;
@@ -198,11 +159,11 @@ public class WelcomeScreen extends Activity implements View.OnClickListener {
     public void onClick(View v) {
 //        if (v == btn_startProcedure){
 //            if (crossFader.isCrossFaded()){
-//                Toast.makeText(WelcomeScreen.this,String.valueOf(crossFader.isCrossFaded()), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomeScreen.this,String.valueOf(crossFader.isCrossFaded()), Toast.LENGTH_SHORT).show();
 //                crossFader.crossFade();
 //            }
 //            else{
-//                Toast.makeText(WelcomeScreen.this, "ButtonClick", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(HomeScreen.this, "ButtonClick", Toast.LENGTH_SHORT).show();
 //            }
 //            loadFragment(new FirstFragment());
 //        }

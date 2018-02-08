@@ -7,6 +7,8 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.crossfader.util.UIUtils;
@@ -19,10 +21,18 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialize.MaterializeBuilder;
 
 import project.deepwateroiltools.HTTP.User;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentAdminArea;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentContact;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentExport;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHistory;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentSettings;
 import project.deepwateroiltools_001.R;
 
 /**
@@ -111,7 +121,43 @@ public class MainMenuDrawer extends Activity {
                                 .withIdentifier(5)
 
                 ) // add the items we want to use with our Drawer
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof Nameable) {
+                            if (drawerItem.getIdentifier() == 1){
 
+                                loadFragment(new FragmentHomeScreen());
+                            }
+                            else if (drawerItem.getIdentifier() == 2){
+                                loadFragment(new FragmentExport());
+                            }
+                            else if (drawerItem.getIdentifier() == 3) {
+                                loadFragment(new FragmentSettings());
+                            }
+                            else if (drawerItem.getIdentifier() == 4){
+                                loadFragment(new FragmentHistory());
+                            }
+                            else if (drawerItem.getIdentifier() == 5){
+                                loadFragment(new FragmentContact());
+                            }
+                            else if (drawerItem.getIdentifier() == 6){
+                                loadFragment(new FragmentAdminArea());
+                            }
+
+                            Log.d("DRAWERITEM", String.valueOf(drawerItem.getIdentifier()));
+                            //   Toast.makeText(activity, ((Nameable) drawerItem).getName().getText(activity), Toast.LENGTH_SHORT).show();
+
+                        }
+                        else{
+
+                        }
+                        //TODO will need this
+                        miniResult.onItemClick(drawerItem);
+
+                        return true;
+                    }
+                })
                 .withSavedInstance(savedInstanceState);
 
         if (!user.getAdmin()){
@@ -158,11 +204,11 @@ public class MainMenuDrawer extends Activity {
 
 
     private void loadFragment(Fragment fragment) {
-// create a FragmentManager
-        FragmentManager fm = getFragmentManager();
-// create a FragmentTransaction to begin the transaction and replace the Fragment
+        // create a FragmentManager
+        FragmentManager fm = activity.getFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
+        // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
     }

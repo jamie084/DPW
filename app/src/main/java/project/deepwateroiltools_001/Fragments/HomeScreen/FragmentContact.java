@@ -1,4 +1,4 @@
-package project.deepwateroiltools_001.Fragments;
+package project.deepwateroiltools_001.Fragments.HomeScreen;
 
 import android.app.Fragment;
 import android.os.Bundle;

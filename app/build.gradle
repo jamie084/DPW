@@ -27,6 +27,7 @@ allprojects {
     }
 }
 
+
 dependencies {
     implementation "com.mikepenz:crossfader:1.5.2@aar"
     implementation "com.mikepenz:iconics-views:3.0.2@aar"
@@ -71,5 +72,6 @@ dependencies {
 
 
 }
+
 
 

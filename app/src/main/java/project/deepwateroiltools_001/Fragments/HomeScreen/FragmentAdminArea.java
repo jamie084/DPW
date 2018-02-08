@@ -1,4 +1,5 @@
-package project.deepwateroiltools_001.Fragments;
+//package project.deepwateroiltools_001.Fragments;
+package project.deepwateroiltools_001.Fragments.HomeScreen;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -15,18 +16,20 @@ import project.deepwateroiltools_001.R;
  * Created by janos on 06/02/2018.
  */
 
-public class FragmentExport extends Fragment implements View.OnClickListener {
+public class FragmentAdminArea extends Fragment implements View.OnClickListener {
     View view;
-    Button btn_export;
+    Button btn_adminTest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_export, container, false);
-        Log.d("WelcomScreenFragemtn","LOADED");
-        btn_export = (Button) view.findViewById(R.id.btn_export);
-        btn_export.setOnClickListener(this);
+        view = inflater.inflate(R.layout.fragment_admin_area, container, false);
+
+        Log.d("AdminScreenFragemtn","LOADED");
+
+        btn_adminTest = (Button) view.findViewById(R.id.btn_adminTest);
+        btn_adminTest.setOnClickListener(this);
 
         return view;
 
@@ -35,8 +38,8 @@ public class FragmentExport extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if (v == btn_export){
-            Toast.makeText(getActivity(), "Export btn Click", Toast.LENGTH_LONG).show();
+        if (v == btn_adminTest){
+            Toast.makeText(getActivity(), "Admin btn Click", Toast.LENGTH_LONG).show();
         }
     }
 }

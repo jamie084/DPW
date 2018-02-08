@@ -1,7 +1,5 @@
 package project.deepwateroiltools.HTTP;
 
-import java.util.Date;
-
 /**
  * Created by janos on 21/12/2017.
  */
