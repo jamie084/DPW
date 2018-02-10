@@ -14,8 +14,15 @@ public class ProcedureSlide {
     private int procId;
     private String type;
     private String title;
+    private int childId;
 
+    public int getChildId() {
+        return childId;
+    }
 
+    public void setChildId(int childId) {
+        this.childId = childId;
+    }
 
     public Id get_id() {
         return _id;

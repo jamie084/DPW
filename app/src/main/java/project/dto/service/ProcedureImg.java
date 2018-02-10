@@ -8,9 +8,9 @@ public class ProcedureImg extends ProcedureSlide{
     private String imgURL;
     private String imgLocalName;
 
-    public ProcedureImg() {
-        super();
-    }
+  //  public ProcedureImg() {
+ //       super();
+   // }
     public String getImgURL() {
         return imgURL;
     }
@@ -26,8 +26,5 @@ public class ProcedureImg extends ProcedureSlide{
     public void setImgLocalName(String imgLocalName) {
         this.imgLocalName = imgLocalName;
     }
-
-
-
 
 }
