@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import project.deepwateroiltools.HTTP.User;
+import project.dto.user.User;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
 import project.deepwateroiltools_001.SeaCure;

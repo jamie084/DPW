@@ -1,4 +1,6 @@
-package project.deepwateroiltools.HTTP;
+package project.dto.user;
+
+import project.dto.Id;
 
 /**
  * Created by janos on 21/12/2017.

@@ -26,7 +26,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialize.MaterializeBuilder;
 
-import project.deepwateroiltools.HTTP.User;
+import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentAdminArea;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentContact;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentExport;

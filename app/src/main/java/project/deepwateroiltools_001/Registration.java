@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
-import project.deepwateroiltools.HTTP.User;
+import project.dto.user.User;
 
 
 //TODO Input validation

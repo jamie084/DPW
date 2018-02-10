@@ -25,7 +25,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 
 import project.Drawer.MainMenuDrawer;
-import project.deepwateroiltools.HTTP.User;
+import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 
 

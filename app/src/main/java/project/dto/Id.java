@@ -1,4 +1,4 @@
-package project.deepwateroiltools.HTTP;
+package project.dto;
 
 import com.google.gson.annotations.SerializedName;
 

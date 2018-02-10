@@ -20,8 +20,8 @@ import com.google.gson.Gson;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
-import project.deepwateroiltools.HTTP.User;
-import project.deepwateroiltools.HTTP.UserInfo;
+import project.dto.user.User;
+import project.dto.user.UserInfo;
 
 public class Registration_page3 extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
     User user;

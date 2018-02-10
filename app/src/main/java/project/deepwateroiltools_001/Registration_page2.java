@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import project.deepwateroiltools.HTTP.User;
-import project.deepwateroiltools.HTTP.UserInfo;
+import project.dto.user.User;
+import project.dto.user.UserInfo;
 
 
 //TODO input validation for phone number

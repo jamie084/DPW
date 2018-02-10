@@ -2,7 +2,7 @@ package project.deepwateroiltools_001;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
-import project.deepwateroiltools.HTTP.User;
+import project.dto.user.User;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
