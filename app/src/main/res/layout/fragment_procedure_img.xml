@@ -10,18 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/crossfade_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
-
         <ImageView
             android:id="@+id/imgView_procedure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/lbl_procImg"
             android:src="@drawable/drawer1" />
 
         <Button
@@ -34,6 +27,17 @@
             android:text="left button test"
             android:textColor="#FFFFFF"
             tools:text="left button test" />
+
+        <TextView
+            android:id="@+id/lbl_procImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="29dp"
+            android:gravity="center"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

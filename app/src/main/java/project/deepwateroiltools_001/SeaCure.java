@@ -24,6 +24,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.gsonfire.GsonFireBuilder;
@@ -49,6 +50,7 @@ public class SeaCure extends Activity {
     private User user;
     private ProcedureSlide currentProcedureSlide;
     List<ProcedureSlide> procedureSlideList;
+    List<ProcedureSlide> visitedProcuderSlides;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,40 +91,55 @@ public class SeaCure extends Activity {
 
     public void startSeaCureProcedure(List<ProcedureSlide> procedureSlideList){
         this.procedureSlideList = procedureSlideList;
-        Log.d("StartSeaCure", "procedure");
-        if (procedureSlideList.get(0) instanceof ProcedureImg) {
-            this.currentProcedureSlide = procedureSlideList.get(0);
-          //  currentId = procedureSlideList.get(0).getProcId();
-            Fragment_procedure_img fragmentProcedureImg = new Fragment_procedure_img();
-            fragmentProcedureImg.setProcedureImg((ProcedureImg)procedureSlideList.get(0));
-            //fragmentProcedureImg.setProcedureSlideList(procedureSlideList);
-            childId = procedureSlideList.get(0).getChildId();
-            loadFragment(fragmentProcedureImg);
+        for (int i=0; i< procedureSlideList.size(); i++){
+            if (procedureSlideList.get(i).getProcId() == 1){
+                Fragment_procedure_img fragmentProcedureImg = new Fragment_procedure_img();
+                fragmentProcedureImg.setProcedureImg((ProcedureImg)procedureSlideList.get(i));
+                //fragmentProcedureImg.setProcedureSlideList(procedureSlideList);
+                childId = procedureSlideList.get(i).getChildId();
+                visitedProcuderSlides = new ArrayList<ProcedureSlide>() ;
+                visitedProcuderSlides.add(procedureSlideList.get(i));
+                loadFragment(fragmentProcedureImg);
+                break;
+            }
         }
     }
 
     public void stepNextProcedureSlide(){
-        drawer.setSelection(-1);
-        Log.d("next step called", String.valueOf(this.currentProcedureSlide.getProcId()));
+
+       // Log.d("next step called", String.valueOf(this.currentProcedureSlide.getProcId()));
 
         for (int i=0; i < procedureSlideList.size(); i++){
             if (childId == procedureSlideList.get(i).getProcId()){
                 Log.d("nextStep success", procedureSlideList.get(i).getTitle());
-                Fragment_procedure_img fragmentProcedureImg = new Fragment_procedure_img();
-                fragmentProcedureImg.setProcedureImg((ProcedureImg)procedureSlideList.get(i));
-             //   fragmentProcedureImg.setProcedureSlideList(procedureSlideList);
-             //   this.currentProcedureSlide = procedureSlideList.get(i);
-                loadFragment(fragmentProcedureImg);
-                childId = procedureSlideList.get(i).getChildId();
-                break;
-                //loadFragment(procedureSlideList);
+                if (procedureSlideList.get(i).getClass().equals(ProcedureImg.class)) {
+                    Fragment_procedure_img fragment = new Fragment_procedure_img();
+                    fragment.setProcedureImg((ProcedureImg) procedureSlideList.get(i));
+                    visitedProcuderSlides.add(procedureSlideList.get(i));
+                    loadFragment(fragment);
+                    childId = procedureSlideList.get(i).getChildId();
+                    break;
+                }
+                else if (procedureSlideList.get(i).getClass().equals(ProcedureInput.class)){
+                    Log.d("Procedure input class", "INPUT class");
+                }
             }
         }
+    }
+
+    public void stepPreviousProcedureSlide(){
+        Fragment_procedure_img fragment = new Fragment_procedure_img();
+        fragment.setProcedureImg((ProcedureImg) visitedProcuderSlides.get(visitedProcuderSlides.size()-2));
+        childId = visitedProcuderSlides.get(visitedProcuderSlides.size()-2).getChildId();
+        visitedProcuderSlides.remove(visitedProcuderSlides.size()-1);
+       // visitedProcuderSlides.add(procedureSlideList.get(i));
+        loadFragment(fragment);
     }
 
 
 
     private void loadFragment(Fragment fragment) {
+        drawer.setSelection(-1);
         // create a FragmentManager
         FragmentManager fm = getFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment

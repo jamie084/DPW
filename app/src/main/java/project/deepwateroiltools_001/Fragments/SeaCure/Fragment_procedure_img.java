@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
     ProcedureImg procedureImg;
     ImageView imageView;
     List<ProcedureSlide> procedureSlideList;
+    TextView lbl_procImg;
 
     public ProcedureImg getProcedureImg() {
         return procedureImg;
@@ -53,16 +55,12 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
         btn_left  = (Button) view.findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
 
+        lbl_procImg = (TextView) view.findViewById(R.id.lbl_procImg);
+        lbl_procImg.setText(procedureImg.getTitle());
+
         imageView = (ImageView) view.findViewById(R.id.imgView_procedure);
 
 
-      //  List<ProcedureSlide> procedureSlideList = ((SeaCure) getActivity()).getProcedureList();
-//        try {
-//            procedureImg = (ProcedureImg)procedureSlideList.get(0);
-//        }
-//        catch (Exception e){
-//            Log.d("exception", e.toString());
-//        }
         Log.d("fragmant created", procedureImg.getImgLocalName());
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(procedureImg.getImgLocalName(), "drawable", context.getPackageName());
