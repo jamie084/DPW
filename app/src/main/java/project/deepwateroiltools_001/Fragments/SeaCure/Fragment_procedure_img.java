@@ -58,6 +58,7 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
         lbl_procImg = (TextView) view.findViewById(R.id.lbl_procImg);
         lbl_procImg.setText(procedureImg.getTitle());
 
+
         imageView = (ImageView) view.findViewById(R.id.imgView_procedure);
 
 

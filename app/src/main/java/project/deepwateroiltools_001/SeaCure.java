@@ -34,6 +34,7 @@ import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
 import project.dto.service.ProcedureImg;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
@@ -121,7 +122,14 @@ public class SeaCure extends Activity {
                     break;
                 }
                 else if (procedureSlideList.get(i).getClass().equals(ProcedureInput.class)){
+                    Fragment_procedure_inp fragment = new Fragment_procedure_inp();
+                    fragment.setProcedureSlide((ProcedureInput)procedureSlideList.get(i));
                     Log.d("Procedure input class", "INPUT class");
+                    visitedProcuderSlides.add(procedureSlideList.get(i));
+                    childId = procedureSlideList.get(i).getChildId();
+                    loadFragment(fragment);
+
+                    break;
                 }
             }
         }

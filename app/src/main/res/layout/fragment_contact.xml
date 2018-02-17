@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +15,12 @@
             style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:text="contact button test"
+            android:layout_marginBottom="30dp"
+            android:text="Submit Request"
             android:textColor="#FFFFFF"
-            tools:text="contact button test" />
+            tools:text="Submit Request" />
 
         <TextView
             android:id="@+id/crossfade_text"
@@ -27,6 +29,46 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/inp_contact"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/backwithborder"
+            android:textColor="@color/md_white_1000"
+            android:textAlignment="center"
+            android:gravity="top"
+            android:layout_margin="15dp"
+            android:ems="13"
+            android:alpha="0.7"
+            android:inputType="textMultiLine"
+            android:lines="10" />
+
+        <TextView
+            android:id="@+id/lbl_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/inp_contact"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="17dp"
+            android:text="Please type in your request:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_call"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inp_contact"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@android:drawable/sym_action_call"
+            android:gravity="left|center_vertical" />
+
 
 
     </RelativeLayout>

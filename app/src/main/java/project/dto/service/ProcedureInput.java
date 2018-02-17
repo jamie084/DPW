@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProcedureInput extends ProcedureSlide {
     List<String> labelList;
-    List<Integer> inputType;
+    List<String> inputType;
 
     public List<String> getLabelList() {
         return labelList;
@@ -18,11 +18,11 @@ public class ProcedureInput extends ProcedureSlide {
         this.labelList = labelList;
     }
 
-    public List<Integer> getInputType() {
+    public List<String> getInputType() {
         return inputType;
     }
 
-    public void setInputType(List<Integer> inputType) {
+    public void setInputType(List<String> inputType) {
         this.inputType = inputType;
     }
 }

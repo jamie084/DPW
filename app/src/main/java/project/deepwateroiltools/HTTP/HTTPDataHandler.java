@@ -1,5 +1,6 @@
 package project.deepwateroiltools.HTTP;
 
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -103,5 +104,43 @@ public class HTTPDataHandler {
         }
         return null;
     }
+
+//    public String PostHTTPDataToMailServer(String urlString, String json) {
+//        try{
+//            URL url = new URL(urlString);
+//            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+//            urlConnection.setConnectTimeout(10 *1000);
+//            urlConnection.setReadTimeout(100 * 1000);
+//
+//            urlConnection.setRequestMethod("POST");
+//            urlConnection.setDoOutput(true);
+//            byte[] out = json.getBytes(StandardCharsets.UTF_8);
+//            int length = out.length;
+//            String encoding = Base64.encodeToString(Common.getMailJetKeys().getBytes(), Base64.DEFAULT);
+////            Encoder.encode ("test1:test1");
+//            urlConnection.setFixedLengthStreamingMode(length);
+//            urlConnection.setRequestProperty("Authorization", "Basic MmE0ZGJiNzQ0ZDNkM2Y2OWYwNjcxOTg0NTJlNjI1MDc6MzllMGRhODk2OGFjNjE5OTIxNmQ5MmRkOWQwOTY5NmI=");
+//            urlConnection.setRequestProperty("Content-Type","application/json");
+//
+//            urlConnection.connect();
+//            try(OutputStream os = urlConnection.getOutputStream())
+//            {
+//                os.write(out);
+//            }
+//            InputStream response = urlConnection.getInputStream();
+//            Log.d("SERVER RESPONSE", response.toString());
+//            return response.toString();
+//        }
+//        catch (MalformedURLException e){
+//            e.printStackTrace();
+//        }
+//        catch (ProtocolException e){
+//            e.printStackTrace();
+//        }
+//        catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 }

@@ -88,8 +88,6 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
         if (v == btn_login){
             String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
             new RunDbQuery(url, this).execute();
-//            Intent reg = new Intent(this, HomeScreen.class);
-//            startActivity(reg);
         }
         if (v == btn_reg){
             Intent reg = new Intent(this, Registration.class);

@@ -5,7 +5,7 @@ android {
     //   buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "project.deepwateroiltools_001"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -29,10 +29,9 @@ allprojects {
 
 
 dependencies {
-    implementation "com.mikepenz:crossfader:1.5.2@aar"
-    implementation "com.mikepenz:iconics-views:3.0.2@aar"
-    implementation "com.android.support:appcompat-v7:25.3.1"
-
+    implementation 'com.mikepenz:crossfader:1.5.2@aar'
+    implementation 'com.mikepenz:iconics-views:3.0.2@aar'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
     implementation 'com.mikepenz:material-design-iconic-typeface:2.2.0.4@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.7.0.2@aar'
@@ -46,20 +45,20 @@ dependencies {
     implementation 'com.mikepenz:foundation-icons-typeface:3.0.0.4@aar'
     implementation 'com.mikepenz:ionicons-typeface:2.0.1.4@aar'
     implementation 'com.mikepenz:pixeden-7-stroke-typeface:1.2.0.2@aar'
-
-    implementation("com.mikepenz:materialdrawer:6.0.4@aar") {
+    implementation('com.mikepenz:materialdrawer:6.0.4@aar') {
         transitive = true
     }
-
+    //    //mailjet
+    compile 'com.mailjet:mailjet-client:4.0.5'
+    //polymorphishm of json array
     compile 'io.gsonfire:gson-fire:1.8.2'
-
-
-//required support lib modules
-    implementation "com.android.support:appcompat-v7:25.3.1"
-    implementation "com.android.support:recyclerview-v7:25.3.1"
-    implementation "com.android.support:support-annotations:25.3.1"
-    implementation "com.android.support:design:25.3.1"
-
+    //json simple
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    //required support lib modules
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    implementation 'com.android.support:support-annotations:25.3.1'
+    implementation 'com.android.support:design:25.3.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -72,8 +71,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     testCompile 'junit:junit:4.12'
-
-
 }
 
 
