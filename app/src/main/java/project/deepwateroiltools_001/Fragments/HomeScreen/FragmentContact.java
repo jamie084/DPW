@@ -6,14 +6,17 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,10 +27,13 @@ import java.util.List;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 
 import project.deepwateroiltools.HTTP.Common;
+import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
 import project.dto.user.User;
 import project.email.EmailClient;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by janos on 06/02/2018.
@@ -59,14 +65,8 @@ public class FragmentContact extends Fragment implements View.OnClickListener {
 
         lbl_info = (TextView) view.findViewById(R.id.lbl_info);
 
-        HomeScreen homeScreenActivity = (HomeScreen)getActivity();
+        final HomeScreen homeScreenActivity = (HomeScreen)getActivity();
         user = homeScreenActivity.getUser();
-
-        //shouldShowRequestPermissionRationale(homeScreenActivity, "CALL_PHONE");
-
-
-
-
 
         return view;
 
@@ -106,14 +106,19 @@ public class FragmentContact extends Fragment implements View.OnClickListener {
             ArrayList<String> toList = new ArrayList<String>();
             //TODO add this line at live version
             //toList.add(user.getUser());
-            EmailClient email = new EmailClient(getActivity(), "Support request", toList, "textparty");
+            EmailClient email = new EmailClient(getActivity(), "Support request", toList, inp_contact.getText().toString());
+            email.setProcessListener(new ProcessListener() {
+                @Override
+                public void ProcessingIsDone(String result) {
+                        lbl_info.setText(result);
+                }
+            });
             try {
                 email.execute();
             }
             catch (Exception e){
                 Log.d("Email exception", e.toString());
             }
-            Toast.makeText(getActivity(), "contact btn Click", Toast.LENGTH_LONG).show();
         }
         else if (v == btn_call){
             //verify app permissions to make the call
