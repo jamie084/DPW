@@ -1,21 +1,37 @@
 package project.deepwateroiltools_001.Fragments.SeaCure;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
+
 import java.util.List;
 
+import project.Drawer.SeaCureMenuDrawer;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentAdminArea;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentContact;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHistory;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentSettings;
 import project.deepwateroiltools_001.R;
+import project.deepwateroiltools_001.SeaCure;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by janos on 06/02/2018.
@@ -29,14 +45,13 @@ public class Fragment_procedure_inp extends Fragment implements View.OnClickList
     EditText inpField_1, inpField_2, inpField_3, inpField_4;
     List<String> labelList;
     List<String> inputType;
-    List<ProcedureSlide> procedureSlideList;
     TextView lbl_procInp;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //validated = false;
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_input, container, false);
 
@@ -92,9 +107,40 @@ public class Fragment_procedure_inp extends Fragment implements View.OnClickList
             lbl_procInput4.setGravity(Gravity.CENTER);
         }
 
-
-
         return view;
+    }
+
+    public boolean isValid(){
+        //close the keypad if active
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        this.labelList = procedureInput.getLabelList();
+
+        if (this.labelList.size() >= 1){
+            if (inpField_1.getText().toString().trim().length() == 0){
+                return false;
+            }
+        }
+        if (this.labelList.size() >=2 ){
+            if (inpField_2.getText().toString().trim().length() == 0){
+                return false;
+            }
+        }
+        if (this.labelList.size() >=3){
+            if (inpField_3.getText().toString().trim().length() == 0){
+                return false;
+            }
+        }
+        if (this.labelList.size() >=4){
+            if (inpField_4.getText().toString().trim().length() == 0){
+                return false;
+        }
+        }
+        return true;
     }
 
     public List<String> getLabelList() {
@@ -123,13 +169,6 @@ public class Fragment_procedure_inp extends Fragment implements View.OnClickList
         this.procedureInput = procedureInput;
     }
 
-    public List<ProcedureSlide> getProcedureSlideList() {
-        return procedureSlideList;
-    }
-
-    public void setProcedureSlideList(List<ProcedureSlide> procedureSlideList) {
-        this.procedureSlideList = procedureSlideList;
-    }
 
     @Override
     public void onClick(View v) {

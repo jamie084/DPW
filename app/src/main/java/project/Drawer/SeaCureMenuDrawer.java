@@ -49,15 +49,21 @@ public class SeaCureMenuDrawer extends Activity {
     private AccountHeader headerResult = null;
     private Crossfader crossFader = null;
     private Bundle savedInstanceState;
+    private boolean validated;
 
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
+    }
 
     public SeaCureMenuDrawer(SeaCure activity, Context context, User user, Bundle savedInstanceState){
         this.activity =activity;
         this.user = user;
         this.context = context;
         this.savedInstanceState = savedInstanceState;
-
-
     }
 
     public void myMenu(){
@@ -129,8 +135,8 @@ public class SeaCureMenuDrawer extends Activity {
                         Log.d("DRAWERITEM", String.valueOf(position));
                         if (drawerItem instanceof Nameable) {
                             if (drawerItem.getIdentifier() == 1){
-
                                 activity.stepNextProcedureSlide();
+
                             }
                             else if (drawerItem.getIdentifier() == 2){
                                 activity.stepPreviousProcedureSlide();

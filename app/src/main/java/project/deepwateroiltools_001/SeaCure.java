@@ -35,6 +35,7 @@ import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
+import project.dto.SeaCure_job;
 import project.dto.service.ProcedureImg;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
@@ -42,14 +43,25 @@ import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_img;
 import project.dto.user.User;
 
 public class SeaCure extends Activity {
-    private int currentId;
     private int childId;
     private Drawer drawer = null;
     private MiniDrawer miniDrawer = null;
     private AccountHeader headerDrawer = null;
     private Crossfader crossFader = null;
+    private SeaCureMenuDrawer seaCureMenuDrawer;
     private User user;
+    private SeaCure_job seaCure_job;
     private ProcedureSlide currentProcedureSlide;
+    private Fragment currentFragment;
+
+    public SeaCure_job getSeaCure_job() {
+        return seaCure_job;
+    }
+
+    public void setSeaCure_job(SeaCure_job seaCure_job) {
+        this.seaCure_job = seaCure_job;
+    }
+
     List<ProcedureSlide> procedureSlideList;
     List<ProcedureSlide> visitedProcuderSlides;
 
@@ -63,6 +75,9 @@ public class SeaCure extends Activity {
 
         setContentView(R.layout.activity_sea_cure);
 
+
+        SeaCure_job seaCure_job = new SeaCure_job();
+
         //get the user obj from previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -73,7 +88,8 @@ public class SeaCure extends Activity {
             Log.d("EEEh", "Not happening");
         }
 
-        SeaCureMenuDrawer seaCureMenuDrawer = new SeaCureMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
+
+        seaCureMenuDrawer = new SeaCureMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
         headerDrawer = seaCureMenuDrawer.getHeader();
         DrawerBuilder builder = seaCureMenuDrawer.getDrawerBuilder();
         drawer = builder.buildView();
@@ -92,11 +108,15 @@ public class SeaCure extends Activity {
 
     public void startSeaCureProcedure(List<ProcedureSlide> procedureSlideList){
         this.procedureSlideList = procedureSlideList;
+        seaCure_job.setStartDate(System.currentTimeMillis());
+        seaCure_job.set_user_id(user.get_id());
+
         for (int i=0; i< procedureSlideList.size(); i++){
             if (procedureSlideList.get(i).getProcId() == 1){
                 Fragment_procedure_img fragmentProcedureImg = new Fragment_procedure_img();
                 fragmentProcedureImg.setProcedureImg((ProcedureImg)procedureSlideList.get(i));
                 //fragmentProcedureImg.setProcedureSlideList(procedureSlideList);
+                this.currentProcedureSlide = procedureSlideList.get(i);
                 childId = procedureSlideList.get(i).getChildId();
                 visitedProcuderSlides = new ArrayList<ProcedureSlide>() ;
                 visitedProcuderSlides.add(procedureSlideList.get(i));
@@ -107,47 +127,78 @@ public class SeaCure extends Activity {
     }
 
     public void stepNextProcedureSlide(){
-
-       // Log.d("next step called", String.valueOf(this.currentProcedureSlide.getProcId()));
-
-        for (int i=0; i < procedureSlideList.size(); i++){
-            if (childId == procedureSlideList.get(i).getProcId()){
-                Log.d("nextStep success", procedureSlideList.get(i).getTitle());
-                if (procedureSlideList.get(i).getClass().equals(ProcedureImg.class)) {
-                    Fragment_procedure_img fragment = new Fragment_procedure_img();
-                    fragment.setProcedureImg((ProcedureImg) procedureSlideList.get(i));
-                    visitedProcuderSlides.add(procedureSlideList.get(i));
-                    loadFragment(fragment);
-                    childId = procedureSlideList.get(i).getChildId();
-                    break;
-                }
-                else if (procedureSlideList.get(i).getClass().equals(ProcedureInput.class)){
-                    Fragment_procedure_inp fragment = new Fragment_procedure_inp();
-                    fragment.setProcedureSlide((ProcedureInput)procedureSlideList.get(i));
-                    Log.d("Procedure input class", "INPUT class");
-                    visitedProcuderSlides.add(procedureSlideList.get(i));
-                    childId = procedureSlideList.get(i).getChildId();
-                    loadFragment(fragment);
-
+        drawer.setSelection(-1);
+        boolean isValid = true;
+        if (currentProcedureSlide.getClass().equals(ProcedureInput.class)){
+            Fragment_procedure_inp fragment = (Fragment_procedure_inp)currentFragment;
+            isValid = fragment.isValid();
+        }
+        if  (isValid) {
+            for (int i = 0; i < procedureSlideList.size(); i++) {
+                if (childId == procedureSlideList.get(i).getProcId()) {
+                    Log.d("nextStep success", procedureSlideList.get(i).getTitle());
+                    stepTo(procedureSlideList.get(i));
                     break;
                 }
             }
         }
+        else {
+            //TODO otuput to user about invalid input
+        }
     }
 
     public void stepPreviousProcedureSlide(){
-        Fragment_procedure_img fragment = new Fragment_procedure_img();
-        fragment.setProcedureImg((ProcedureImg) visitedProcuderSlides.get(visitedProcuderSlides.size()-2));
-        childId = visitedProcuderSlides.get(visitedProcuderSlides.size()-2).getChildId();
-        visitedProcuderSlides.remove(visitedProcuderSlides.size()-1);
-       // visitedProcuderSlides.add(procedureSlideList.get(i));
-        loadFragment(fragment);
+        drawer.setSelection(-1);
+        Log.d("listSize", String.valueOf(visitedProcuderSlides.size()));
+       // Log.d("isValid value", String.valueOf(isValid));
+        if (visitedProcuderSlides.size()>1) {
+            visitedProcuderSlides.remove(visitedProcuderSlides.size() - 1);
+            //stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1));
+            currentProcedureSlide = visitedProcuderSlides.get(visitedProcuderSlides.size() - 1);
+
+            if (currentProcedureSlide.getClass().equals(ProcedureImg.class)) {
+                Fragment_procedure_img fragment = new Fragment_procedure_img();
+                currentFragment = fragment;
+                fragment.setProcedureImg((ProcedureImg) currentProcedureSlide);
+               // visitedProcuderSlides.add(procedureSlide);
+                childId = currentProcedureSlide.getChildId();
+                loadFragment(fragment);
+            }
+            else if (currentProcedureSlide.getClass().equals(ProcedureInput.class)){
+                Fragment_procedure_inp fragment = new Fragment_procedure_inp();
+                currentFragment = fragment;
+                fragment.setProcedureSlide((ProcedureInput)currentProcedureSlide);
+              //  visitedProcuderSlides.add(procedureSlide);
+                childId = currentProcedureSlide.getChildId();
+                loadFragment(fragment);
+            }
+        }
+
+    }
+
+    public void stepTo(ProcedureSlide procedureSlide){
+        currentProcedureSlide = procedureSlide;
+
+        if (procedureSlide.getClass().equals(ProcedureImg.class)) {
+            Fragment_procedure_img fragment = new Fragment_procedure_img();
+            currentFragment = fragment;
+            fragment.setProcedureImg((ProcedureImg) procedureSlide);
+            visitedProcuderSlides.add(procedureSlide);
+            childId = procedureSlide.getChildId();
+            loadFragment(fragment);
+        }
+        else if (procedureSlide.getClass().equals(ProcedureInput.class)){
+            Fragment_procedure_inp fragment = new Fragment_procedure_inp();
+            currentFragment = fragment;
+            fragment.setProcedureSlide((ProcedureInput)procedureSlide);
+            visitedProcuderSlides.add(procedureSlide);
+            childId = procedureSlide.getChildId();
+            loadFragment(fragment);
+        }
     }
 
 
-
     private void loadFragment(Fragment fragment) {
-        drawer.setSelection(-1);
         // create a FragmentManager
         FragmentManager fm = getFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
@@ -166,7 +217,6 @@ public class SeaCure extends Activity {
         private RunDbQuery(SeaCure a, String urlString){
             this.urlString = urlString;
             this.activity = a;
-            //this.procedureSlides = procedureSlides;
             dialog = new ProgressDialog(SeaCure.this, R.style.DialogBoxStyle);
         }
 
@@ -189,6 +239,7 @@ public class SeaCure extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+            //To create the extended class elements from the JSON response
             GsonFireBuilder builder = new GsonFireBuilder()
                     .registerTypeSelector(ProcedureSlide.class, new TypeSelector<ProcedureSlide>() {
                         @Override
@@ -208,15 +259,6 @@ public class SeaCure extends Activity {
             Type listType = new TypeToken<List<ProcedureSlide>>(){}.getType();
             procedureSlides =  gson.fromJson(s, listType);
 
-            for (int i=0; i<procedureSlides.size(); i++){
-                String type = procedureSlides.get(i).getClass().toString();
-                Log.d("CLASS TYPE IN LIST", type);
-            }
-       //     ProcedureInput procedureInput = (ProcedureInput)procedureSlides.get(2);
-     //       Log.d("LABELS", procedureInput.getLabelList().get(0).toString());
-          //  Log.d(" First class is: " + procedureSlides.get(0).getClass().toString(), "SEcond class type is:" + procedureSlides.get(1).getClass().toString());
-
-
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
@@ -225,8 +267,7 @@ public class SeaCure extends Activity {
 
             }
             else{
-
-                Log.d("procedureSlides","no entries");
+                //TODO error handling
             }
         }
     }
