@@ -39,8 +39,8 @@ public class Fragment_procedure_general  extends Fragment implements  View.OnCli
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_general, container, false);
 
-        btn_left  = (Button) view.findViewById(R.id.btn_left);
-        btn_left.setOnClickListener(this);
+//        btn_left  = (Button) view.findViewById(R.id.btn_left);
+//        btn_left.setOnClickListener(this);
 
         lbl_procGeneral = (TextView) view.findViewById(R.id.lbl_procGeneral);
         lbl_procGeneral.setText(procedureSlide.getTitle());
