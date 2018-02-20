@@ -5,123 +5,103 @@
     android:layout_height="match_parent"
     tools:context="project.deepwateroiltools_001.SeaCure">
 
+
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/crossfade_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+>
 
 
-        <TextView
-            android:id="@+id/lbl_procInputTitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="29dp"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/lbl_procInput1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_procInputTitle"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/lbl_procInputTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="29dp"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-        <TextView
-            android:id="@+id/lbl_procInput2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/lbl_procInput1"
-            android:layout_below="@+id/lbl_procInput1"
-            android:layout_gravity="center"
-            android:layout_marginTop="51dp"
-            android:gravity="center"
-            android:textSize="16sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.7"
+            android:background="@drawable/backwithborder">
+
+            <TextView
+                android:id="@+id/lbl_operator"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/inp_operator"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Service Operator"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="Service Operator" />
+
+            <TextView
+                android:id="@+id/lbl_PO_number"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/inp_PO_number"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Job reference \nPO number"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="Job reference \nPO number" />
 
 
-        <TextView
-            android:id="@+id/lbl_procInput3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_alignStart="@+id/lbl_procInput2"
-            android:layout_below="@+id/inpField_2"
+            <TextView
+                android:id="@+id/lbl_torque_SCR_TRB"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
 
-            android:gravity="center"
-            android:textSize="16sp" />
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/inp_PO_number"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Torque break out \nSCR-TRB"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                tools:text="Torque break out \nSCR-TRB" />
 
-        <TextView
-            android:id="@+id/lbl_procInput4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/lbl_procInput3"
-            android:layout_below="@+id/inpField_3"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
+            <EditText
+                android:id="@+id/inp_operator"
+                style="@style/App_EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/lbl_PO_number"
+                android:layout_alignStart="@+id/inp_PO_number"
+                android:ems="10" />
 
-        <EditText
-            android:id="@+id/inpField_1"
-            style="@style/App_EditTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_procInput1"
-            android:layout_centerHorizontal="true"
-            android:ems="10"
-            android:hint="1" />
+            <EditText
+                android:id="@+id/inp_PO_number"
+                style="@style/App_EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:ems="10" />
 
-        <EditText
-            android:id="@+id/inpField_2"
-            style="@style/App_EditTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/inpField_1"
-            android:layout_below="@+id/lbl_procInput2"
-            android:ems="10"
-            android:hint="2" />
-
-        <EditText
-            android:id="@+id/inpField_3"
-            style="@style/App_EditTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/inpField_2"
-            android:layout_below="@+id/lbl_procInput3"
-            android:ems="10"
-            android:hint="3" />
-
-        <EditText
-            android:id="@+id/inpField_4"
-            style="@style/App_EditTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_procInput4"
-            android:layout_centerHorizontal="true"
-            android:ems="10"
-            android:hint="4" />
-
-        <Button
-            android:id="@+id/btn_left"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp"
-            android:text="left button test"
-            android:textColor="#FFFFFF"
-            tools:text="left button test" />
-
+            <EditText
+                android:id="@+id/inp_torque_SCR_TRB"
+                style="@style/App_EditTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/inp_PO_number"
+                android:layout_below="@+id/lbl_torque_SCR_TRB"
+                android:ems="10" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
 
