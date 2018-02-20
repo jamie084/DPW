@@ -17,6 +17,13 @@
 >
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:alpha="0.7"
+            android:background="@drawable/backwithborder"
+            android:layout_above="@id/inp_layout">
 
             <TextView
                 android:id="@+id/lbl_procInputTitle"
@@ -28,10 +35,12 @@
                 android:layout_marginTop="29dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
+        </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/inp_layout"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="350dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:alpha="0.7"

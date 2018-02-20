@@ -10,35 +10,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:alpha="0.7"
+            android:background="@drawable/backwithborder">
+
+            <TextView
+                android:id="@+id/lbl_procImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
+        </RelativeLayout>
+
         <ImageView
             android:id="@+id/imgView_procedure"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_procImg"
-            android:src="@drawable/drawer1" />
-
-        <Button
-            android:id="@+id/btn_left"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/relativeLayout"
             android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:text="left button test"
-            android:textColor="#FFFFFF"
-            tools:text="left button test" />
-
-        <TextView
-            android:id="@+id/lbl_procImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="29dp"
-            android:gravity="center"
-            android:textSize="16sp" />
+            android:scaleType="fitXY"
+            android:src="@drawable/false_img" />
 
 
     </RelativeLayout>
+
 </RelativeLayout>

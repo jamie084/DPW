@@ -24,7 +24,7 @@ import project.dto.service.ProcedureSlide;
 
 public class Fragment_procedure_img extends Fragment implements View.OnClickListener {
     View view;
-    Button btn_left;
+//    Button btn_left;
     ProcedureImg procedureImg;
     ImageView imageView;
     List<ProcedureSlide> procedureSlideList;
@@ -52,8 +52,8 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_img, container, false);
 
-        btn_left  = (Button) view.findViewById(R.id.btn_left);
-        btn_left.setOnClickListener(this);
+//        btn_left  = (Button) view.findViewById(R.id.btn_left);
+//        btn_left.setOnClickListener(this);
 
         lbl_procImg = (TextView) view.findViewById(R.id.lbl_procImg);
         lbl_procImg.setText(procedureImg.getTitle());
@@ -74,13 +74,13 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
-        if (v == btn_left){
-            Context context = imageView.getContext();
-            int id = context.getResources().getIdentifier(procedureImg.getImgLocalName(), "drawable", context.getPackageName());
-            imageView.setImageResource(id);
-            Toast.makeText(getActivity(), procedureImg.getImgURL(), Toast.LENGTH_LONG).show();
-            procedureImg.setImgLocalName("false_img");
-        }
+//
+//        if (v == btn_left){
+//            Context context = imageView.getContext();
+//            int id = context.getResources().getIdentifier(procedureImg.getImgLocalName(), "drawable", context.getPackageName());
+//            imageView.setImageResource(id);
+//            Toast.makeText(getActivity(), procedureImg.getImgURL(), Toast.LENGTH_LONG).show();
+//            procedureImg.setImgLocalName("false_img");
+//        }
     }
 }

@@ -27,16 +27,14 @@ public class Fragment_procedure_inp extends Fragment  {
     ProcedureInput procedureInput;
     TextView lbl_operator, lbl_PO_number, lbl_torque_SCR_TRB;
     EditText inp_operator, inp_PO_number, inp_torque_SCR_TRB;
-    List<String> labelList;
-    List<String> inputType;
+        String toolType;
     TextView lbl_procInp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //validated = false;
-        // Inflate the layout for this fragment
+        //TODO change dto and db, implement sub-types
         view = inflater.inflate(R.layout.fragment_procedure_input, container, false);
 
 
