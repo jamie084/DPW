@@ -7,22 +7,13 @@ import java.util.List;
  */
 
 public class ProcedureInput extends ProcedureSlide {
-    List<String> labelList;
-    List<String> inputType;
+    String toolType;
 
-    public List<String> getLabelList() {
-        return labelList;
+    public String getToolType() {
+        return toolType;
     }
 
-    public void setLabelList(List<String> labelList) {
-        this.labelList = labelList;
-    }
-
-    public List<String> getInputType() {
-        return inputType;
-    }
-
-    public void setInputType(List<String> inputType) {
-        this.inputType = inputType;
+    public void setToolType(String toolType) {
+        this.toolType = toolType;
     }
 }

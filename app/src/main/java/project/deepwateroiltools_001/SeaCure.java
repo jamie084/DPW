@@ -34,6 +34,7 @@ import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
 import project.dto.SeaCure_job;
 import project.dto.service.ProcedureImg;
@@ -108,6 +109,8 @@ public class SeaCure extends Activity {
 
     public void startSeaCureProcedure(List<ProcedureSlide> procedureSlideList){
         this.procedureSlideList = procedureSlideList;
+
+        seaCure_job = new SeaCure_job();
         seaCure_job.setStartDate(System.currentTimeMillis());
         seaCure_job.set_user_id(user.get_id());
 
@@ -133,6 +136,8 @@ public class SeaCure extends Activity {
             Fragment_procedure_inp fragment = (Fragment_procedure_inp)currentFragment;
             isValid = fragment.isValid();
         }
+        //TODO comment out the line below for live version
+        isValid = true;
         if  (isValid) {
             for (int i = 0; i < procedureSlideList.size(); i++) {
                 if (childId == procedureSlideList.get(i).getProcId()) {
@@ -192,6 +197,15 @@ public class SeaCure extends Activity {
             currentFragment = fragment;
             fragment.setProcedureSlide((ProcedureInput)procedureSlide);
             visitedProcuderSlides.add(procedureSlide);
+            childId = procedureSlide.getChildId();
+            loadFragment(fragment);
+        }
+        else if (procedureSlide.getClass().equals(ProcedureSlide.class)){
+            Log.d("general class", procedureSlide.getClass().toString());
+            Log.d("title", procedureSlide.getTitle());
+            Fragment_procedure_general fragment = new Fragment_procedure_general();
+            currentFragment = fragment;
+            fragment.setProcedureSlide(procedureSlide);
             childId = procedureSlide.getChildId();
             loadFragment(fragment);
         }
@@ -255,10 +269,15 @@ public class SeaCure extends Activity {
                         }
                     });
 
+
+
             Gson gson = builder.createGson();
             Type listType = new TypeToken<List<ProcedureSlide>>(){}.getType();
             procedureSlides =  gson.fromJson(s, listType);
 
+            for (int i=0; i<procedureSlides.size(); i++){
+                Log.d("CLASS TYPE", procedureSlides.get(i).getClass().toString());
+            }
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
