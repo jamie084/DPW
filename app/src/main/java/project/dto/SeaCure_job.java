@@ -305,4 +305,15 @@ public class SeaCure_job {
     public void setTorque_SCR_TRB_end(int torque_SCR_TRB_end) {
         this.torque_SCR_TRB_end = torque_SCR_TRB_end;
     }
+
+    @Override
+    public String toString(){
+        String result="";
+        result += this.clientOperator;
+        result += this.po_reference;
+        result += this.torque_SCR_TRB;
+        result += this.startDate;
+        result += this.get_user_id().toString();
+        return result;
+    }
 }

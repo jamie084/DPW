@@ -34,9 +34,11 @@ import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
 import project.dto.SeaCure_job;
+import project.dto.service.ProcedureChecklist;
 import project.dto.service.ProcedureImg;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
@@ -135,14 +137,14 @@ public class SeaCure extends Activity {
         if (currentProcedureSlide.getClass().equals(ProcedureInput.class)){
             Fragment_procedure_inp fragment = (Fragment_procedure_inp)currentFragment;
             isValid = fragment.isValid();
+            fragment.saveValues();
         }
         //TODO comment out the line below for live version
         isValid = true;
         if  (isValid) {
             for (int i = 0; i < procedureSlideList.size(); i++) {
                 if (childId == procedureSlideList.get(i).getProcId()) {
-                    Log.d("nextStep success", procedureSlideList.get(i).getTitle());
-                    stepTo(procedureSlideList.get(i));
+                    stepTo(procedureSlideList.get(i), true);
                     break;
                 }
             }
@@ -154,61 +156,44 @@ public class SeaCure extends Activity {
 
     public void stepPreviousProcedureSlide(){
         drawer.setSelection(-1);
-        Log.d("listSize", String.valueOf(visitedProcuderSlides.size()));
-       // Log.d("isValid value", String.valueOf(isValid));
         if (visitedProcuderSlides.size()>1) {
             visitedProcuderSlides.remove(visitedProcuderSlides.size() - 1);
             //stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1));
-            currentProcedureSlide = visitedProcuderSlides.get(visitedProcuderSlides.size() - 1);
-
-            if (currentProcedureSlide.getClass().equals(ProcedureImg.class)) {
-                Fragment_procedure_img fragment = new Fragment_procedure_img();
-                currentFragment = fragment;
-                fragment.setProcedureImg((ProcedureImg) currentProcedureSlide);
-               // visitedProcuderSlides.add(procedureSlide);
-                childId = currentProcedureSlide.getChildId();
-                loadFragment(fragment);
-            }
-            else if (currentProcedureSlide.getClass().equals(ProcedureInput.class)){
-                Fragment_procedure_inp fragment = new Fragment_procedure_inp();
-                currentFragment = fragment;
-                fragment.setProcedureSlide((ProcedureInput)currentProcedureSlide);
-              //  visitedProcuderSlides.add(procedureSlide);
-                childId = currentProcedureSlide.getChildId();
-                loadFragment(fragment);
-            }
+          //  currentProcedureSlide = visitedProcuderSlides.get(visitedProcuderSlides.size() - 1);
+            stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1), false);
         }
 
     }
 
-    public void stepTo(ProcedureSlide procedureSlide){
+    public void stepTo(ProcedureSlide procedureSlide, Boolean addToVisited){
         currentProcedureSlide = procedureSlide;
 
         if (procedureSlide.getClass().equals(ProcedureImg.class)) {
             Fragment_procedure_img fragment = new Fragment_procedure_img();
             currentFragment = fragment;
             fragment.setProcedureImg((ProcedureImg) procedureSlide);
-            visitedProcuderSlides.add(procedureSlide);
-            childId = procedureSlide.getChildId();
-            loadFragment(fragment);
         }
         else if (procedureSlide.getClass().equals(ProcedureInput.class)){
             Fragment_procedure_inp fragment = new Fragment_procedure_inp();
             currentFragment = fragment;
             fragment.setProcedureSlide((ProcedureInput)procedureSlide);
-            visitedProcuderSlides.add(procedureSlide);
-            childId = procedureSlide.getChildId();
-            loadFragment(fragment);
+        }
+        else if (procedureSlide.getClass().equals(ProcedureChecklist.class)){
+            Fragment_procedure_checklist fragment = new Fragment_procedure_checklist();
+            currentFragment = fragment;
+            fragment.setProcedureSlide((ProcedureChecklist)procedureSlide);
         }
         else if (procedureSlide.getClass().equals(ProcedureSlide.class)){
-            Log.d("general class", procedureSlide.getClass().toString());
-            Log.d("title", procedureSlide.getTitle());
             Fragment_procedure_general fragment = new Fragment_procedure_general();
             currentFragment = fragment;
             fragment.setProcedureSlide(procedureSlide);
-            childId = procedureSlide.getChildId();
-            loadFragment(fragment);
         }
+          //just add the list the list in forward steps
+        if (addToVisited) {
+            visitedProcuderSlides.add(procedureSlide);
+        }
+        childId = procedureSlide.getChildId();
+        loadFragment(currentFragment);
     }
 
 
@@ -263,7 +248,10 @@ public class SeaCure extends Activity {
                                 return ProcedureImg.class;
                             } else if(type.equals("ProcedureInput")) {
                                 return ProcedureInput.class;
-                            } else {
+                            } else if (type.equals("ProcedureChecklist")){
+                                return ProcedureChecklist.class;
+                            }
+                            else {
                                 return null; //returning null will trigger Gson's default behavior
                             }
                         }
