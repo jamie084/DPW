@@ -27,7 +27,6 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
 //    Button btn_left;
     ProcedureImg procedureImg;
     ImageView imageView;
-    List<ProcedureSlide> procedureSlideList;
     TextView lbl_procImg;
 
     public ProcedureImg getProcedureImg() {
@@ -36,14 +35,6 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
 
     public void setProcedureImg(ProcedureImg procedureImg) {
         this.procedureImg = procedureImg;
-    }
-
-    public List<ProcedureSlide> getProcedureSlideList() {
-        return procedureSlideList;
-    }
-
-    public void setProcedureSlideList(List<ProcedureSlide> procedureSlideList) {
-        this.procedureSlideList = procedureSlideList;
     }
 
     @Override
