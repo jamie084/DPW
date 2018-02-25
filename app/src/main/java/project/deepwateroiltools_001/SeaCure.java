@@ -35,10 +35,12 @@ import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_ddl;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
 import project.dto.SeaCure_job;
 import project.dto.service.ProcedureChecklist;
+import project.dto.service.ProcedureDdl;
 import project.dto.service.ProcedureImg;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
@@ -139,6 +141,12 @@ public class SeaCure extends Activity {
             isValid = fragment.isValid();
             fragment.saveValues();
         }
+
+        if (currentProcedureSlide.getClass().equals(ProcedureDdl.class)){
+            Fragment_procedure_ddl fragment = (Fragment_procedure_ddl)currentFragment;
+            isValid = fragment.isAllSelected();
+            fragment.saveValues();
+        }
         //TODO comment out the line below for live version
         isValid = true;
         if  (isValid) {
@@ -158,8 +166,6 @@ public class SeaCure extends Activity {
         drawer.setSelection(-1);
         if (visitedProcuderSlides.size()>1) {
             visitedProcuderSlides.remove(visitedProcuderSlides.size() - 1);
-            //stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1));
-          //  currentProcedureSlide = visitedProcuderSlides.get(visitedProcuderSlides.size() - 1);
             stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1), false);
         }
 
@@ -182,6 +188,12 @@ public class SeaCure extends Activity {
             Fragment_procedure_checklist fragment = new Fragment_procedure_checklist();
             currentFragment = fragment;
             fragment.setProcedureSlide((ProcedureChecklist)procedureSlide);
+        }
+        else if (procedureSlide.getClass().equals(ProcedureDdl.class)){
+            Fragment_procedure_ddl fragment = new Fragment_procedure_ddl();
+            currentFragment = fragment;
+            fragment.setProcedureSlide((ProcedureDdl)procedureSlide);
+
         }
         else if (procedureSlide.getClass().equals(ProcedureSlide.class)){
             Fragment_procedure_general fragment = new Fragment_procedure_general();
@@ -250,6 +262,8 @@ public class SeaCure extends Activity {
                                 return ProcedureInput.class;
                             } else if (type.equals("ProcedureChecklist")){
                                 return ProcedureChecklist.class;
+                            } else if (type.equals("ProcedureDdl")){
+                                return ProcedureDdl.class;
                             }
                             else {
                                 return null; //returning null will trigger Gson's default behavior
