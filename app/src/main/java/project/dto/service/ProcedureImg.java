@@ -8,9 +8,6 @@ public class ProcedureImg extends ProcedureSlide{
     private String imgURL;
     private String imgLocalName;
 
-  //  public ProcedureImg() {
- //       super();
-   // }
     public String getImgURL() {
         return imgURL;
     }
