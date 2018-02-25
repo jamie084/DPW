@@ -18,6 +18,7 @@
 
 
         <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_alignParentStart="true"
@@ -39,81 +40,27 @@
                 android:textAppearance="@style/TextAppearance.AppCompat" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/inp_layout"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="350dp"
+            android:layout_alignEnd="@+id/relativeLayout3"
+            android:layout_alignStart="@+id/relativeLayout3"
             android:layout_below="@+id/relativeLayout3"
-            android:layout_centerHorizontal="true"
-            android:alpha="0.7"
-            android:layout_margin="15dp"
-            android:background="@drawable/backwithborder">
+            android:scaleType="fitXY">
 
-            <TextView
-                android:id="@+id/lbl_operator"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/inp_operator"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
                 android:layout_alignParentStart="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Service Operator"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:text="Service Operator" />
-
-            <TextView
-                android:id="@+id/lbl_PO_number"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/inp_PO_number"
-                android:layout_alignParentStart="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Job reference \nPO number"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:text="Job reference \nPO number" />
-
-
-            <TextView
-                android:id="@+id/lbl_torque_SCR_TRB"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/inp_PO_number"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Torque break out \nSCR-TRB"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:text="Torque break out \nSCR-TRB" />
-
-            <EditText
-                android:id="@+id/inp_operator"
-                style="@style/App_EditTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/lbl_PO_number"
-                android:layout_alignStart="@+id/inp_PO_number"
-                android:ems="10" />
-
-            <EditText
-                android:id="@+id/inp_PO_number"
-                style="@style/App_EditTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:ems="10" />
+                android:alpha="0.7"
+                android:background="@drawable/backwithborder"
+                android:orientation="vertical"
+                android:scaleType="fitXY">
 
-            <EditText
-                android:id="@+id/inp_torque_SCR_TRB"
-                style="@style/App_EditTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/inp_PO_number"
-                android:layout_below="@+id/lbl_torque_SCR_TRB"
-                android:ems="10" />
-        </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
 </RelativeLayout>
 

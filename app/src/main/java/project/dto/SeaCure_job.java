@@ -309,11 +309,11 @@ public class SeaCure_job {
     @Override
     public String toString(){
         String result="";
-        result += this.clientOperator;
-        result += this.po_reference;
-        result += this.torque_SCR_TRB;
-        result += this.startDate;
-        result += this.get_user_id().toString();
+        result += "Client Operator"  + this.clientOperator + "\n";
+        result += "PO reference number" + this.po_reference + "\n";
+        result += "Torque SCR_TRB" + this.torque_SCR_TRB + "\n";
+        result += "StartDate" + this.startDate + "\n";
+        result += "UserID" + this.get_user_id().toString();
         return result;
     }
 }
