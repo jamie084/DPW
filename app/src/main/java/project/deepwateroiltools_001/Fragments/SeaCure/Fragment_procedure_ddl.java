@@ -77,7 +77,6 @@ Button button;
             TextView tv = new TextView(getContext());
             tv.setText(labels.get(i));
             tv.setGravity(Gravity.CENTER);
-            //TODO added multiple times to the list when stepping between the slides
             elements.get(i).add("Please select");
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     getActivity(), android.R.layout.simple_spinner_item, elements.get(i) ){
@@ -125,6 +124,15 @@ Button button;
 
         linearLayout.setMinimumHeight(pixels);
 
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        for (int i=0;i<elements.size();i++){
+            elements.get(i).remove(elements.get(i).size()-1);
+        }
     }
 
     public boolean isAllSelected(){
