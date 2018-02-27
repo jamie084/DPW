@@ -142,7 +142,7 @@ public class SeaCureMenuDrawer extends Activity {
                                 activity.stepPreviousProcedureSlide();
                             }
                             else if (drawerItem.getIdentifier() == 3) {
-                                loadFragment(new FragmentSettings());
+                                activity.upLoadSeaCureJob();
                             }
                             else if (drawerItem.getIdentifier() == 4){
                                 loadFragment(new FragmentHistory());
