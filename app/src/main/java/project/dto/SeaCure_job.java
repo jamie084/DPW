@@ -313,12 +313,12 @@ public class SeaCure_job {
         result += "PO reference number: " + this.po_reference + "\n";
         result += "Torque SCR_TRB: " + this.torque_SCR_TRB + "\n";
         result += "StartDate: " + this.startDate + "\n";
-        result += "Secure Serial: " + String.valueOf(this.tool_serial) + "\n";
+        result += "Seacure Serial: " + String.valueOf(this.tool_serial) + "\n";
         result += "DOT-SCR-TRB Serial in: " + this.sn_in_DOT_SCR_TRB + "\n";
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";
         result += "DOT-SCR-IBH Serial in: " + this.sn_in_DOT_SCR_IBH + "\n";
-        result += "UserID" + this.get_user_id().toString();
+        result += "UserID: " + this.get_user_id().getOid();
         return result;
     }
 }
