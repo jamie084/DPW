@@ -33,6 +33,7 @@ import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
+import project.deepwateroiltools.HTTP.PostNewJob;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_ddl;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
@@ -59,6 +60,7 @@ public class SeaCure extends Activity {
     private SeaCure_job seaCure_job;
     private ProcedureSlide currentProcedureSlide;
     private Fragment currentFragment;
+    private PostNewJob postNewJob;
 
 
 
@@ -114,6 +116,7 @@ public class SeaCure extends Activity {
 
         seaCure_job = new SeaCure_job();
         seaCure_job.setStartDate(System.currentTimeMillis());
+        seaCure_job.setToolType("SeaCure");
         seaCure_job.set_user_id(user.get_id());
 
         for (int i=0; i< procedureSlideList.size(); i++){
@@ -219,6 +222,11 @@ public class SeaCure extends Activity {
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
+    }
+
+    public void upLoadSeaCureJob(){
+        postNewJob = new PostNewJob(this, this.seaCure_job );
+        postNewJob.execute();
     }
 
     public SeaCure_job getSeaCure_job() {
