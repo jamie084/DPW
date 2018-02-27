@@ -29,7 +29,6 @@ import java.util.List;
 
 import io.gsonfire.GsonFireBuilder;
 import io.gsonfire.TypeSelector;
-import project.Drawer.MainMenuDrawer;
 import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
@@ -37,10 +36,12 @@ import project.deepwateroiltools.HTTP.HTTPDataHandler;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_ddl;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_goto;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
 import project.dto.SeaCure_job;
 import project.dto.service.ProcedureChecklist;
 import project.dto.service.ProcedureDdl;
+import project.dto.service.ProcedureGoto;
 import project.dto.service.ProcedureImg;
 import project.dto.service.ProcedureInput;
 import project.dto.service.ProcedureSlide;
@@ -59,16 +60,13 @@ public class SeaCure extends Activity {
     private ProcedureSlide currentProcedureSlide;
     private Fragment currentFragment;
 
-    public SeaCure_job getSeaCure_job() {
-        return seaCure_job;
-    }
 
-    public void setSeaCure_job(SeaCure_job seaCure_job) {
-        this.seaCure_job = seaCure_job;
-    }
 
     List<ProcedureSlide> procedureSlideList;
     List<ProcedureSlide> visitedProcuderSlides;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +191,11 @@ public class SeaCure extends Activity {
             Fragment_procedure_ddl fragment = new Fragment_procedure_ddl();
             currentFragment = fragment;
             fragment.setProcedureSlide((ProcedureDdl)procedureSlide);
-
+        }
+        else if (procedureSlide.getClass().equals(ProcedureGoto.class)){
+            Fragment_procedure_goto fragment = new Fragment_procedure_goto();
+            currentFragment = fragment;
+            fragment.setProcedureSlide((ProcedureGoto)procedureSlide);
         }
         else if (procedureSlide.getClass().equals(ProcedureSlide.class)){
             Fragment_procedure_general fragment = new Fragment_procedure_general();
@@ -217,6 +219,18 @@ public class SeaCure extends Activity {
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
+    }
+
+    public SeaCure_job getSeaCure_job() {
+        return seaCure_job;
+    }
+
+    public void setSeaCure_job(SeaCure_job seaCure_job) {
+        this.seaCure_job = seaCure_job;
+    }
+
+    public void setChildId(int childId) {
+        this.childId = childId;
     }
 
     private class RunDbQuery extends AsyncTask<String, Void, String> {
@@ -264,6 +278,8 @@ public class SeaCure extends Activity {
                                 return ProcedureChecklist.class;
                             } else if (type.equals("ProcedureDdl")){
                                 return ProcedureDdl.class;
+                            } else if (type.equals("ProcedureGoto")){
+                                return ProcedureGoto.class;
                             }
                             else {
                                 return null; //returning null will trigger Gson's default behavior
