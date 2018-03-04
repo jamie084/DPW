@@ -35,7 +35,7 @@ public class HomeScreen extends Activity implements View.OnClickListener {
     private MiniDrawer miniDrawer = null;
     private AccountHeader headerDrawer = null;
     private Crossfader crossFader = null;
-    private User user;
+    public User user;
     private Button btn_startProcedure;
 
 

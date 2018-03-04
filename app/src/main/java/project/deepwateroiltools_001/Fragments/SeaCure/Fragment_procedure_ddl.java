@@ -41,7 +41,7 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
     List<List<String>> elements;
     String ddlType;
     LinearLayout linearLayout;
-Button button;
+    Button button;
 
 
     @Override
