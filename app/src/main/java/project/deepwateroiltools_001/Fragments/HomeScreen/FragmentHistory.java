@@ -55,6 +55,7 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
     private ArrayAdapter<String> listAdapter ;
     private  ArrayList<String> jobList;
     User user;
+    RunDBQueryWithDialog runDBQueryWithDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,9 +79,9 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-            RunDBQueryWithDialog runDbQueryToGetJobsByUser = new RunDBQueryWithDialog(getContext(), Common.getUrlSeaCureJobs() + Common.getApiKey(), "Searching...");
+            runDBQueryWithDialog = new RunDBQueryWithDialog(getContext(), Common.getUrlSeaCureJobs() + Common.getApiKey(), "Searching...");
 
-            runDbQueryToGetJobsByUser.setProcessListener(new ProcessListener() {
+        runDBQueryWithDialog.setProcessListener(new ProcessListener() {
                 @Override
                 public void ProcessingIsDone(final String result) {
                     Gson gson = new Gson();
@@ -89,12 +90,13 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                     jobs = gson.fromJson(result, listType);
 
                     if (!jobs.isEmpty()) {
-                        Log.d("JOBS not empty", jobs.get(0).toString());
+
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        Log.d("userId", user.get_id().getOid());
+
                         for (int i = 0; i < jobs.size(); i++) {
+                            Log.d("Positions: ", i + " " + jobs.get(i).getClientOperator());
                             if (jobs.get(i).get_user_id().getOid().equals(user.get_id().getOid())) {
-                                jobList.add(formatter.format(new Date(jobs.get(i).getStartDate())) + " " + jobs.get(i).getClientOperator());
+                                jobList.add(formatter.format(new Date(jobs.get(i).getStartDate())) + " " + jobs.get(i).getClientOperator() + " " +  user.getUserInfo().getCompany());
                             }
                         }
                     } else {
@@ -109,7 +111,7 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                             Object listItem = listAdapter.getItem(position);
-                            Log.d("onlcick", listItem.toString());
+                            Log.d("onlcick", listItem.toString() + " position " + position);
                             FragmentJobDetails fragmentJobDetails = new FragmentJobDetails();
                             fragmentJobDetails.setSeaCure_job(jobs.get(position));
                             loadFragment(fragmentJobDetails);
@@ -117,7 +119,7 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                     });
                 }
             });
-            runDbQueryToGetJobsByUser.execute();
+        runDBQueryWithDialog.execute();
 
     }
 
