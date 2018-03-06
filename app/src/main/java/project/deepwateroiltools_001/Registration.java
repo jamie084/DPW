@@ -1,12 +1,8 @@
 package project.deepwateroiltools_001;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +28,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import project.deepwateroiltools.HTTP.Common;
-import project.deepwateroiltools.HTTP.HTTPDataHandler;
+import project.deepwateroiltools.HTTP.ProcessListener;
+import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
 import project.dto.user.User;
 
 
@@ -46,6 +43,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
     String lastSearchedEmail = "";
     String lastCheckedPassword = "";
     boolean emailIsValid, pwIsValid, pw2IsValid;
+    RunDBQueryWithDialog runDBQueryWithDialog;
 
 
     @Override
@@ -140,8 +138,32 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
             if (!email.getText().toString().equals(lastSearchedEmail)) {
                 lastSearchedEmail = email.getText().toString();
                 if (isValidEmail(email.getText().toString())) {
-                    String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + email.getText().toString() + "\"}";
-                    new RunDbQueryToVerifyEmail(url).execute();
+                    String url = Common.getUrlUser() + Common.getApiKey() + "&q={\"user\":\"" + email.getText().toString() + "\"}";
+                    runDBQueryWithDialog = new RunDBQueryWithDialog(this, url, "Verifying email address...");
+                    runDBQueryWithDialog.setProcessListener(new ProcessListener() {
+                        @Override
+                        public void ProcessingIsDone(String result) {
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<List<User>>(){}.getType();
+                            List<User> users = gson.fromJson(result, listType);
+
+                            //Display icon according to search results
+                            if (!users.isEmpty()) {
+                                makeToast("Email address used by another user");
+
+                                img_email.setImageResource(R.drawable.false_img);
+                                img_email.setVisibility(View.VISIBLE);
+                                emailIsValid = false;
+                            }
+                            else{
+                                emailIsValid = true;
+                                img_email.setImageResource(R.drawable.true_img);
+                                img_email.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                    runDBQueryWithDialog.execute();
+
                 } else {
                     img_email.setImageResource(R.drawable.false_img);
                     img_email.setVisibility(View.VISIBLE);
@@ -190,8 +212,6 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
             lbl_warning.setText("Passwords must match");
 
         }
-
-
     }
 
     public void makeToast(String msg){
@@ -217,57 +237,4 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    private class RunDbQueryToVerifyEmail extends AsyncTask<String, Void, String> {
-        String urlString;
-        private ProgressDialog dialog;
-
-        private RunDbQueryToVerifyEmail(String url){
-            this.urlString = url;
-            dialog = new ProgressDialog(Registration.this, R.style.DialogBoxStyle);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Verifying email address...");
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-            dialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HTTPDataHandler http = new HTTPDataHandler();
-
-//            String par = "{\"name\":\"myname\",\"age\":\"20\"}";
-//
-//            String urlString = Common.getBaseURL() + Common.getApiKey();
-//            http.PostHTTPData(urlString,par);
-            return http.GetHTTPData(urlString);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<User>>(){}.getType();
-            List<User> users = gson.fromJson(s, listType);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-
-            //Display icon according to search results
-            if (!users.isEmpty()) {
-                makeToast("Email address used by another user");
-
-                img_email.setImageResource(R.drawable.false_img);
-                img_email.setVisibility(View.VISIBLE);
-                emailIsValid = false;
-            }
-            else{
-                emailIsValid = true;
-                img_email.setImageResource(R.drawable.true_img);
-                img_email.setVisibility(View.VISIBLE);
-            }
-        }
-    }
 }
