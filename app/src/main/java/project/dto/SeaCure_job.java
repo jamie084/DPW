@@ -1,6 +1,8 @@
 package project.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -308,12 +310,16 @@ public class SeaCure_job {
 
     @Override
     public String toString(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         String result="";
+        result += "Start Date: " + formatter.format(new Date(this.getStartDate()))+ "\n";
+        result += "Finish Date: " + formatter.format(new Date(this.getFinishDate()))+ "\n";
+        result += "Tool Type: " + this.getToolType() + "\n";
         result += "Client Operator: "  + this.clientOperator + "\n";
         result += "PO reference number: " + this.po_reference + "\n";
         result += "Torque SCR_TRB: " + this.torque_SCR_TRB + "\n";
-        result += "StartDate: " + this.startDate + "\n";
-        result += "Seacure Serial: " + String.valueOf(this.tool_serial) + "\n";
+
+        result += "Seacure Serial: " + this.tool_serial + "\n";
         result += "DOT-SCR-TRB Serial in: " + this.sn_in_DOT_SCR_TRB + "\n";
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";

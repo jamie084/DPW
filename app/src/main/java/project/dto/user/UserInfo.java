@@ -102,15 +102,24 @@ public class UserInfo {
         return this.getFirstName() + " " + this.getSecondName();
     }
 
+    public String getAddress(){
+        String result = "";
+        result += "\nHouse number: " +  this.getHouseNumber();
+        result += "\nStreet: " + this.getStreet();
+        result += "\nCity: " + this.getCity();
+        result += "\nPost Code:" + this.getPostCode();
+        result += "\nCountry: " + this.getCountry();
+        return  result;
+    }
+
     @Override
     public String toString(){
         String result = "";
-        result += "ID: " + this.get_id();
-        result += "\nFirstname: " + this.getFirstName();
-        result += "\nSecondName: " + this.getSecondName();
-        result += "\nComapny: " + this.getCompany();
+        result += "User details:\n";
+        result += "\nName: " + this.getFullName();
+        result += "\nCompany: " + this.getCompany();
         result += "\nPhone: " + this.getPhoneNumber();
-        //result += "\nHouse: " + this.getHouseNumber();
+        result += "\nAddress: " + "\n"  + this.getAddress();
         return result;
     }
 }
