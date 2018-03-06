@@ -13,8 +13,8 @@ import project.deepwateroiltools_001.R;
  */
 
 public class RunDBQueryWithDialog extends AsyncTask<String, Void, String> {
-    String urlString;
-    String dialogMessage;
+    String urlString, dialogMessage;
+    String postParameter = null;
     ProcessListener processListener;
     Context context;
     private ProgressDialog dialog;
@@ -25,6 +25,14 @@ public class RunDBQueryWithDialog extends AsyncTask<String, Void, String> {
         this.context = context;
         this.urlString = url;
         this.dialogMessage = dialogMessage;
+        dialog = new ProgressDialog(context, R.style.DialogBoxStyle);
+    }
+
+    public RunDBQueryWithDialog(Context context, String url, String dialogMessage, String postParameter){
+        this.context = context;
+        this.urlString = url;
+        this.dialogMessage = dialogMessage;
+        this.postParameter = postParameter;
         dialog = new ProgressDialog(context, R.style.DialogBoxStyle);
     }
 
@@ -42,6 +50,9 @@ public class RunDBQueryWithDialog extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         HTTPDataHandler http = new HTTPDataHandler();
+        if (postParameter != null) {
+            http.PostHTTPData(urlString,postParameter);
+        }
         return http.GetHTTPData(urlString);
     }
 
