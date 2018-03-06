@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 
 import project.deepwateroiltools.HTTP.Common;
+import project.deepwateroiltools.HTTP.PermissionManager;
 import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
@@ -44,6 +45,7 @@ public class FragmentContact extends Fragment implements View.OnClickListener {
     User user;
     EditText inp_contact;
     TextView lbl_info;
+    PermissionManager permissionManager;
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
     @Override
@@ -66,8 +68,47 @@ public class FragmentContact extends Fragment implements View.OnClickListener {
         final HomeScreen homeScreenActivity = (HomeScreen)getActivity();
         user = homeScreenActivity.getUser();
 
+        permissionManager = new PermissionManager(getActivity());
+
         return view;
 
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+
+        if (v == btn_contact){
+
+            ArrayList<String> toList = new ArrayList<String>();
+            //TODO add this line at live version
+            //toList.add(user.getUser());
+            EmailClient email = new EmailClient(getActivity(), "Support request", toList, inp_contact.getText().toString(), true);
+            email.setProcessListener(new ProcessListener() {
+                @Override
+                public void ProcessingIsDone(String result) {
+                        lbl_info.setText(result);
+                }
+            });
+            try {
+                email.execute();
+            }
+            catch (Exception e){
+                Log.d("Email exception", e.toString());
+            }
+        }
+        else if (v == btn_call){
+            if (permissionManager.CallPhone()){
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse(Common.SUPPORT_PHONE_NUMBER));
+                startActivity(callIntent);
+            }
+            else{
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            }
+        }
     }
 
     @Override
@@ -93,43 +134,6 @@ public class FragmentContact extends Fragment implements View.OnClickListener {
 
             // other 'case' lines to check for other
             // permissions this app might request.
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        if (v == btn_contact){
-
-            ArrayList<String> toList = new ArrayList<String>();
-            //TODO add this line at live version
-            //toList.add(user.getUser());
-            EmailClient email = new EmailClient(getActivity(), "Support request", toList, inp_contact.getText().toString());
-            email.setProcessListener(new ProcessListener() {
-                @Override
-                public void ProcessingIsDone(String result) {
-                        lbl_info.setText(result);
-                }
-            });
-            try {
-                email.execute();
-            }
-            catch (Exception e){
-                Log.d("Email exception", e.toString());
-            }
-        }
-        else if (v == btn_call){
-            //verify app permissions to make the call
-            if (getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
-                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
-
-            } else {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse(Common.SUPPORT_PHONE_NUMBER));
-                startActivity(callIntent);
-            }
         }
     }
 }
