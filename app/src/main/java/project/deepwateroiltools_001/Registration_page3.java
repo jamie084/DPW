@@ -1,27 +1,36 @@
 package project.deepwateroiltools_001;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import project.Messages;
 import project.deepwateroiltools.HTTP.Common;
-import project.deepwateroiltools.HTTP.HTTPDataHandler;
+import project.deepwateroiltools.HTTP.ProcessListener;
+import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
 import project.dto.user.User;
 import project.dto.user.UserInfo;
+import project.email.EmailClient;
 
 public class Registration_page3 extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
     User user;
@@ -29,6 +38,8 @@ public class Registration_page3 extends Activity implements View.OnClickListener
     Button btn_submit_reg3;
     EditText houseNumber, street, city, country, postCode;
     TextView lbl_warning;
+    Context context;
+    public static Activity activity = null;
 
 
     @Override
@@ -62,6 +73,8 @@ public class Registration_page3 extends Activity implements View.OnClickListener
         postCode = (EditText)findViewById(R.id.inpField_postCode_reg3);
         postCode.setOnFocusChangeListener(this);
 
+        context = this;
+
 
         //Touch event handling, closes keypad, removes focus from fields
         findViewById(R.id.background_welcomeScreen).setOnTouchListener(new View.OnTouchListener() {
@@ -75,10 +88,6 @@ public class Registration_page3 extends Activity implements View.OnClickListener
                 else{
                     Log.d("onTouchListener","would be NULL POINT");
                 }
-//                firstName.clearFocus();
-//                secondName.clearFocus();
-//                companyName.clearFocus();
-//                phoneNumber.clearFocus();
                 return true;
             }
         });
@@ -108,9 +117,45 @@ public class Registration_page3 extends Activity implements View.OnClickListener
             userInfo.setCountry(country.getText().toString());
             userInfo.setPostCode(postCode.getText().toString());
 
-            RunDbQueryToPostNewUser db = new RunDbQueryToPostNewUser();
-            db.execute();
+            sendEmail();
+            //String url = Common.getUrlUser() + Common.getApiKey() + "&q={\"user\":\"" + user.getUser() + "\"}";
+            String postUrl = Common.getUrlUser() + Common.getApiKey();
+            String jsonParam = new Gson().toJson(user);
+            RunDBQueryWithDialog runDBQueryWithDialog = new RunDBQueryWithDialog(this, postUrl, "Submit request...", jsonParam);
+            runDBQueryWithDialog.setProcessListener(new ProcessListener() {
+                @Override
+                public void ProcessingIsDone(String result) {
+                    makeToast(Messages.Success_async_registration);
+                    Intent login = new Intent((Registration_page3.this), LoginScreen.class);
+                    startActivity(login);
+                }
+            });
+
+            runDBQueryWithDialog.execute();
+
+
         }
+    }
+
+    public void makeToast(String msg){
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, msg, duration);
+        toast.show();
+    }
+
+    public void sendEmail(){
+        ArrayList<String> recipients = new ArrayList<>();
+        recipients.add(user.getUser());
+        String emailBody = Messages.Success_async_registration + "\n" + userInfo.toString();
+        EmailClient  emailClient = new EmailClient(getApplicationContext(), "New Registration Request", recipients, emailBody, false);
+        emailClient.setProcessListener(new ProcessListener() {
+            @Override
+            public void ProcessingIsDone(String result) {
+
+            }
+        });
+        emailClient.execute();
     }
 
     @Override
@@ -118,52 +163,5 @@ public class Registration_page3 extends Activity implements View.OnClickListener
 
     }
 
-    private class RunDbQueryToPostNewUser extends AsyncTask<String, Void, String> {
-        String urlString;
-        private ProgressDialog dialog;
 
-        private RunDbQueryToPostNewUser() {
-
-            dialog = new ProgressDialog(Registration_page3.this, R.style.DialogBoxStyle);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Submit request...");
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-            dialog.show();
-        }
-
-        //TODO try catch, error handling
-        @Override
-        protected String doInBackground(String... params) {
-            HTTPDataHandler http = new HTTPDataHandler();
-            String par = new Gson().toJson(user);
-            String urlString = Common.getBaseURL() + Common.getApiKey();
-            http.PostHTTPData(urlString,par);
-            String url = Common.getBaseURL() + Common.getApiKey() + "&q={\"user\":\"" + user.getUser() + "\"}";
-            //String userString = http.GetHTTPData(url) ;
-            //Gson gson = new Gson();
-            //Type listType = new TypeToken<List<User>>(){}.getType();
-            //List<User> users = gson.fromJson(userString, listType);
-            //User user = users.get(0);
-            //userInfo.set_id(user.get_id());
-           // http.PostHTTPData(Common.getUrlUserInfo(), new Gson().toJson(userInfo));
-            String test = http.GetHTTPData(url);
-            Log.d("RESPONSE", test);
-            return http.GetHTTPData(url);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            Log.d("response? ", s);
-
-        }
-    }
 }
