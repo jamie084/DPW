@@ -111,18 +111,23 @@ public class Fragment_procedure_inp extends Fragment  {
             switch(inputTo) {
 
                 case "seaCure_ORing":
+                    seaCure_job.setORingReplaced(true);
                     seaCure_job.setWo_oRing(Integer.valueOf(editTextString));
                     break;
                 case "seaCure_UpperRing":
+                    seaCure_job.setUpperBearingRingReplaced(true);
                     seaCure_job.setWo_upperBearingRing(Integer.valueOf(editTextString));
                     break;
                 case "seaCure_MiddleRing":
+                    seaCure_job.setMiddelBearingRingReplaced(true);
                     seaCure_job.setWo_middleBearingRing(Integer.valueOf(editTextString));
                     break;
                 case "seaCure_StubORing":
+                    seaCure_job.setStubAcmeRingReplaced(true);
                     seaCure_job.setWo_STUB_acme_O_ring(Integer.valueOf(editTextString));
                     break;
                 case "seaCure_LowerRing":
+                    seaCure_job.setLowerBearingRingReplaced(true);
                     seaCure_job.setWo_lowerBearingRing(Integer.valueOf(editTextString));
                     break;
                 case "seaCure_torque_break_out":
