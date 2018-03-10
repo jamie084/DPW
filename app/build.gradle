@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled  true
     }
     buildTypes {
         release {
@@ -18,6 +19,9 @@ android {
         }
     }
     productFlavors {
+    }
+    dexOptions {
+//        jumboMode = true
     }
 }
 
@@ -28,7 +32,10 @@ allprojects {
 }
 
 
+
 dependencies {
+
+    //dependencies of the Material Drawer
     implementation 'com.mikepenz:crossfader:1.5.2@aar'
     implementation 'com.mikepenz:iconics-views:3.0.2@aar'
     implementation 'com.android.support:appcompat-v7:25.3.1'
@@ -48,12 +55,21 @@ dependencies {
     implementation('com.mikepenz:materialdrawer:6.0.4@aar') {
         transitive = true
     }
-    //    //mailjet
+    //mailjet client dependency
     compile 'com.mailjet:mailjet-client:4.0.5'
-    //polymorphishm of json array
+
+    //Gson-fire polymorphishm of json array dependency
     compile 'io.gsonfire:gson-fire:1.8.2'
-    //json simple
+
+    //json simple dependency
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    //IText pdf generator dependency
+    compile 'com.itextpdf:itextg:5.5.10'
+//    compile 'com.itextpdf:itext-pdfa:5.5.10'
+//    compile 'com.itextpdf:itextg:5.5.10'
+//    compile group: 'com.itextpdf.tool', name: 'xmlworker', version: '5.5.10'
+
     //required support lib modules
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support:recyclerview-v7:25.3.1'
