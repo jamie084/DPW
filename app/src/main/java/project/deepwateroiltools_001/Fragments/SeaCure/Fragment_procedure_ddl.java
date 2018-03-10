@@ -151,14 +151,14 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
             if (ddlType.equals("seaCure_in_serials")) {
                 Spinner s0 = (Spinner) getView().findViewById(0);
                 seaCure_job.setTool_serial(Integer.valueOf(s0.getSelectedItem().toString()));
-                Spinner s1 = (Spinner) getView().findViewById(1);
-                seaCure_job.setSn_in_DOT_SCR_TRB(Integer.valueOf(s1.getSelectedItem().toString()));
-                Spinner s2 = (Spinner) getView().findViewById(2);
-                seaCure_job.setSn_in_DOT_SCR_PBR(Integer.valueOf(s2.getSelectedItem().toString()));
-                Spinner s3 = (Spinner) getView().findViewById(3);
-                seaCure_job.setSn_in_DOT_SCR_INB(Integer.valueOf(s3.getSelectedItem().toString()));
-                Spinner s4 = (Spinner) getView().findViewById(4);
-                seaCure_job.setSn_in_DOT_SCR_IBH(Integer.valueOf(s4.getSelectedItem().toString()));
+//                Spinner s1 = (Spinner) getView().findViewById(1);
+//                seaCure_job.setSn_in_DOT_SCR_TRB(Integer.valueOf(s1.getSelectedItem().toString()));
+//                Spinner s2 = (Spinner) getView().findViewById(2);
+//                seaCure_job.setSn_in_DOT_SCR_PBR(Integer.valueOf(s2.getSelectedItem().toString()));
+//                Spinner s3 = (Spinner) getView().findViewById(3);
+//                seaCure_job.setSn_in_DOT_SCR_INB(Integer.valueOf(s3.getSelectedItem().toString()));
+//                Spinner s4 = (Spinner) getView().findViewById(4);
+//                seaCure_job.setSn_in_DOT_SCR_IBH(Integer.valueOf(s4.getSelectedItem().toString()));
             }
         }
         catch (Exception e){
