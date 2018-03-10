@@ -44,7 +44,8 @@ public class RunDBQueryWithDialog extends AsyncTask<String, Void, String> {
         dialog.setMessage(dialogMessage);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        dialog.show();
+        if (!dialogMessage.equals(""))
+            dialog.show();
     }
 
     @Override
