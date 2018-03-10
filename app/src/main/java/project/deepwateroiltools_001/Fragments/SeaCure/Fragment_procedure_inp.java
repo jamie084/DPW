@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -107,19 +106,37 @@ public class Fragment_procedure_inp extends Fragment  {
     public void saveValues(){
         SeaCure_job seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
         try {
-            if (inputTo.equals("seaCure_main")){
-                EditText c =(EditText)getView().findViewById(0);
-                seaCure_job.setClientOperator(c.getText().toString());
+            EditText editText =(EditText)getView().findViewById(0);
+            String editTextString = editText.getText().toString();
+            switch(inputTo) {
 
-                EditText po =(EditText)getView().findViewById(1);
-                seaCure_job.setPo_reference(Integer.valueOf(po.getText().toString()));
+                case "seaCure_ORing":
+                    seaCure_job.setWo_oRing(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_UpperRing":
+                    seaCure_job.setWo_upperBearingRing(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_MiddleRing":
+                    seaCure_job.setWo_middleBearingRing(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_StubORing":
+                    seaCure_job.setWo_STUB_acme_O_ring(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_LowerRing":
+                    seaCure_job.setWo_lowerBearingRing(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_torque_break_out":
+                    seaCure_job.setTorque_SCR_TRB(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_main":
+                    seaCure_job.setClientOperator(editTextString);
 
-                EditText reg =(EditText)getView().findViewById(2);
-                seaCure_job.setRegion(reg.getText().toString());
-            }
-            else if (inputTo.equals("seaCure_torque_break_out")){
-                EditText c =(EditText)getView().findViewById(0);
-                seaCure_job.setTorque_SCR_TRB(Integer.valueOf(c.getText().toString()));
+                    EditText po =(EditText)getView().findViewById(1);
+                    seaCure_job.setPo_reference(Integer.valueOf(po.getText().toString()));
+
+                    EditText reg =(EditText)getView().findViewById(2);
+                    seaCure_job.setRegion(reg.getText().toString());
+                    break;
             }
 
             Log.d("seaCureJOB: ", seaCure_job.toString()) ;
