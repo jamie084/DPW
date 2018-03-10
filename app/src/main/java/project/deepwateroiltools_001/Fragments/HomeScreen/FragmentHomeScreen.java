@@ -11,7 +11,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import project.deepwateroiltools.HTTP.Common;
+import project.deepwateroiltools.HTTP.ProcessListener;
+import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
+import project.dto.DotSerail;
 import project.dto.user.User;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
@@ -25,6 +33,8 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
     View view;
     Button btn_startSeaCure;
     User user;
+    List<DotSerail> dotSerails;
+    RunDBQueryWithDialog runDBQueryWithDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,25 +45,53 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
         btn_startSeaCure = (Button) view.findViewById(R.id.btn_startSeaSecure);
         btn_startSeaCure.setOnClickListener(this);
 
-       HomeScreen ss = (HomeScreen)getActivity();
-       user = ss.getUser();
+       HomeScreen homeScreen = (HomeScreen)getActivity();
+       user = homeScreen.getUser();
 
-        return view;
+        runDBQueryWithDialog = new RunDBQueryWithDialog(getContext(), Common.getUrlDotSerial() + Common.getApiKey(), "");
+
+        runDBQueryWithDialog.setProcessListener(new ProcessListener() {
+            @Override
+            public void ProcessingIsDone(final String result) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<DotSerail>>() {
+                }.getType();
+                dotSerails = gson.fromJson(result, listType);
+
+                if (!dotSerails.isEmpty()) {
+                    Log.d("serial" , dotSerails.get(0).getTool_type());
+
+                } else {
+                    Log.d("jobs empty", "rrrr");
+                }
+
+
+            }
+        });
+        runDBQueryWithDialog.execute();
+       //dotSerails = homeScreen.getDotSerails();
+//        Log.d("dotserials", dotSerails.get(0).getTool_type());
+
+       return view;
 
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), SeaCure.class);
+        intent.putExtra("user", (new Gson()).toJson(user));
 
         if (v == btn_startSeaCure){
-            Toast.makeText(getActivity(), user.getUser(), Toast.LENGTH_LONG).show();
+            Log.d("intent in", String.valueOf(dotSerails.size()));
+            for (int i=0; i< dotSerails.size(); i++){
+                Log.d("intent in", dotSerails.get(i).getTool_type());
+                if (dotSerails.get(i).getTool_type().equals("SeaCure")){
+                        intent.putExtra("dotserial", (new Gson().toJson(dotSerails.get(i))));
 
-            Intent intent = new Intent(getActivity(), SeaCure.class);
+                }
+            }
 
-//            user.setUser(email.getText().toString());
-//            user.setPassword(password.getText().toString());
-            intent.putExtra("user", (new Gson()).toJson(user));
-            startActivity(intent);
+        startActivity(intent);
         }
     }
 }
