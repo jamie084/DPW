@@ -14,10 +14,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mikepenz.crossfader.Crossfader;
 import com.mikepenz.crossfader.app.util.CrossfadeWrapper;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -25,7 +28,18 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import project.Drawer.MainMenuDrawer;
+import project.deepwateroiltools.HTTP.Common;
+import project.deepwateroiltools.HTTP.ProcessListener;
+import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
+import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentJobDetails;
+import project.dto.DotSerail;
+import project.dto.SeaCure_job;
 import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 
@@ -37,7 +51,8 @@ public class HomeScreen extends Activity implements View.OnClickListener {
     private Crossfader crossFader = null;
     public User user;
     private Button btn_startProcedure;
-
+    private RunDBQueryWithDialog runDBQueryWithDialog;
+    private List<DotSerail> dotSerails;
 
 
     @Override
@@ -63,10 +78,6 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         });
 
 
-//        //BUTTONS
-//        btn_startProcedure = (Button)this.findViewById(R.id.btn_startSeaSecure);
-//        btn_startProcedure.setOnClickListener(this);
-
 
         //get the user obj from previous activity
         Bundle extras = getIntent().getExtras();
@@ -78,7 +89,7 @@ public class HomeScreen extends Activity implements View.OnClickListener {
             Log.d("EEEh", "Not happening");
         }
 
-      //  new MaterializeBuilder(this).build();
+
 
         MainMenuDrawer mainMenuDrawer = new MainMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
 
@@ -119,6 +130,10 @@ public class HomeScreen extends Activity implements View.OnClickListener {
 
         loadFragment(new FragmentHomeScreen());
 
+    }
+
+    public List<DotSerail> getDotSerails() {
+        return dotSerails;
     }
 
     public User getUser(){
@@ -187,11 +202,11 @@ public class HomeScreen extends Activity implements View.OnClickListener {
     }
 
     private void loadFragment(Fragment fragment) {
-// create a FragmentManager
+        // create a FragmentManager
         FragmentManager fm = getFragmentManager();
-// create a FragmentTransaction to begin the transaction and replace the Fragment
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
+        // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
     }
