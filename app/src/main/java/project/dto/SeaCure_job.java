@@ -30,6 +30,10 @@ public class SeaCure_job {
     private int sn_out_DOT_SCR_INB;
     private int sn_out_DOT_SCR_IBH;
     private ArrayList<HashMap> photos_local_name;
+    private boolean isORingReplaced;
+    private boolean isUpperBearingRingReplaced;
+    private boolean isMiddelBearingRingReplaced;
+    private boolean idStubAcmeRingReplaced;
     private int wo_oRing;
     private int wo_upperBearingRing;
     private int wo_middleBearingRing;
@@ -308,6 +312,38 @@ public class SeaCure_job {
         this.torque_SCR_TRB_end = torque_SCR_TRB_end;
     }
 
+    public boolean isORingReplaced() {
+        return isORingReplaced;
+    }
+
+    public void setORingReplaced(boolean ORingReplaced) {
+        isORingReplaced = ORingReplaced;
+    }
+
+    public boolean isUpperBearingRingReplaced() {
+        return isUpperBearingRingReplaced;
+    }
+
+    public void setUpperBearingRingReplaced(boolean upperBearingRingReplaced) {
+        isUpperBearingRingReplaced = upperBearingRingReplaced;
+    }
+
+    public boolean isMiddelBearingRingReplaced() {
+        return isMiddelBearingRingReplaced;
+    }
+
+    public void setMiddelBearingRingReplaced(boolean middelBearingRingReplaced) {
+        isMiddelBearingRingReplaced = middelBearingRingReplaced;
+    }
+
+    public boolean isIdStubAcmeRingReplaced() {
+        return idStubAcmeRingReplaced;
+    }
+
+    public void setIdStubAcmeRingReplaced(boolean idStubAcmeRingReplaced) {
+        this.idStubAcmeRingReplaced = idStubAcmeRingReplaced;
+    }
+
     @Override
     public String toString(){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -324,6 +360,12 @@ public class SeaCure_job {
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";
         result += "DOT-SCR-IBH Serial in: " + this.sn_in_DOT_SCR_IBH + "\n";
+
+        result += "O-Ring replacement work order: "                 + this.wo_oRing + "\n";
+        result += "Upper Bearing Ring replacement work order: "     + this.wo_upperBearingRing + "\n";
+        result += "Middle Bearing Ring replacement work order: "    + this.wo_middleBearingRing + "\n";
+        result += "Lower Bearing Ring replacement work order: "     + this.wo_lowerBearingRing + "\n";
+        result += "STUB Acme O-Ring replacement work order: "       + this.wo_STUB_acme_O_ring + "\n";
         result += "UserID: " + this.get_user_id();
         return result;
     }
