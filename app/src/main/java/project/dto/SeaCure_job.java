@@ -33,7 +33,8 @@ public class SeaCure_job {
     private boolean isORingReplaced;
     private boolean isUpperBearingRingReplaced;
     private boolean isMiddelBearingRingReplaced;
-    private boolean idStubAcmeRingReplaced;
+    private boolean isStubAcmeRingReplaced;
+    private boolean isLowerBearingRingReplaced;
     private int wo_oRing;
     private int wo_upperBearingRing;
     private int wo_middleBearingRing;
@@ -336,12 +337,20 @@ public class SeaCure_job {
         isMiddelBearingRingReplaced = middelBearingRingReplaced;
     }
 
-    public boolean isIdStubAcmeRingReplaced() {
-        return idStubAcmeRingReplaced;
+    public boolean isStubAcmeRingReplaced() {
+        return isStubAcmeRingReplaced;
     }
 
-    public void setIdStubAcmeRingReplaced(boolean idStubAcmeRingReplaced) {
-        this.idStubAcmeRingReplaced = idStubAcmeRingReplaced;
+    public void setStubAcmeRingReplaced(boolean stubAcmeRingReplaced) {
+        this.isStubAcmeRingReplaced = stubAcmeRingReplaced;
+    }
+
+    public boolean isLowerBearingRingReplaced() {
+        return isLowerBearingRingReplaced;
+    }
+
+    public void setLowerBearingRingReplaced(boolean lowerBearingRingReplaced) {
+        isLowerBearingRingReplaced = lowerBearingRingReplaced;
     }
 
     @Override
@@ -355,7 +364,7 @@ public class SeaCure_job {
         result += "PO reference number: " + this.po_reference + "\n";
         result += "Torque SCR_TRB: " + this.torque_SCR_TRB + "\n";
 
-        result += "Seacure Serial: " + this.tool_serial + "\n";
+        result += "Seacure Serial: "        + this.tool_serial + "\n";
         result += "DOT-SCR-TRB Serial in: " + this.sn_in_DOT_SCR_TRB + "\n";
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";
