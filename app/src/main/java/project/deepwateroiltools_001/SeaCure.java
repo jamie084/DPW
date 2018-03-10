@@ -39,6 +39,7 @@ import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_ddl;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_goto;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_inp;
+import project.dto.DotSerail;
 import project.dto.SeaCure_job;
 import project.dto.service.ProcedureChecklist;
 import project.dto.service.ProcedureDdl;
@@ -61,6 +62,7 @@ public class SeaCure extends Activity {
     private ProcedureSlide currentProcedureSlide;
     private Fragment currentFragment;
     private PostNewJob postNewJob;
+    private DotSerail dotSerail;
 
 
 
@@ -87,6 +89,7 @@ public class SeaCure extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = new Gson().fromJson(extras.getString("user"), User.class);
+            dotSerail = new Gson().fromJson(extras.getString("dotserial"), DotSerail.class);
         }
         else{
             //TODO error handling
@@ -117,7 +120,11 @@ public class SeaCure extends Activity {
         seaCure_job = new SeaCure_job();
         seaCure_job.setStartDate(System.currentTimeMillis());
         seaCure_job.setToolType("SeaCure");
-        seaCure_job.set_user_id(user.get_id());
+        seaCure_job.set_user_id(user.get_id().getOid());
+        seaCure_job.setSn_in_DOT_SCR_IBH(dotSerail.getDOT_SCR_IBH());
+        seaCure_job.setSn_in_DOT_SCR_INB(dotSerail.getDOT_SCR_INB());
+        seaCure_job.setSn_in_DOT_SCR_PBR(dotSerail.getDOT_SCR_PBR());
+        seaCure_job.setSn_in_DOT_SCR_TRB(dotSerail.getDOT_SCR_TRB());
 
         for (int i=0; i< procedureSlideList.size(); i++){
             if (procedureSlideList.get(i).getProcId() == 1){
