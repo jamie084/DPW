@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class SeaCure_job {
     private Id _id;
-    private Id _user_id;
+    private String _user_id;
     private int _jobID;
     private String toolType;
     private int tool_serial;
@@ -52,11 +52,11 @@ public class SeaCure_job {
         this._id = _id;
     }
 
-    public Id get_user_id() {
+    public String get_user_id() {
         return _user_id;
     }
 
-    public void set_user_id(Id _user_id) {
+    public void set_user_id(String _user_id) {
         this._user_id = _user_id;
     }
 
@@ -324,7 +324,7 @@ public class SeaCure_job {
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";
         result += "DOT-SCR-IBH Serial in: " + this.sn_in_DOT_SCR_IBH + "\n";
-        result += "UserID: " + this.get_user_id().getOid();
+        result += "UserID: " + this.get_user_id();
         return result;
     }
 }
