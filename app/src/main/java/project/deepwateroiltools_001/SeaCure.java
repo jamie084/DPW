@@ -108,7 +108,7 @@ public class SeaCure extends Activity {
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
 
         String url = Common.getUrlSeaCureProcedure() + Common.getApiKey();
-       // new SeaCure.RunDbQuery(this, url).execute();
+
         runDBQuery = new RunDBQueryWithDialog(this, url, "Connecting to the server...");
         runDBQuery.setProcessListener(new ProcessListener() {
             @Override
@@ -118,13 +118,13 @@ public class SeaCure extends Activity {
 //                for (int i=0; i<procedureSlideList.size(); i++){
 //                    Log.d("CLASS TYPE", procedureSlideList.get(i).getClass().toString());
 //                }
-                if (!procedureSlideList.isEmpty()) {
-                    setSeaCureJobValues();
-                    stepTo(getProcedureSlideById(seaCure_job.getSavedId()), false);
 
+                setSeaCureJobValues();
+                if (!procedureSlideList.isEmpty()) {
+                    stepTo(getProcedureSlideById(seaCure_job.getSavedId()), loadedSeaCureJob == null ? true : false);
                 }
                 else{
-                    //TODO error handling
+                    Toast.makeText(getApplicationContext(), "An error occured, please try again later", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -179,7 +179,6 @@ public class SeaCure extends Activity {
         }
         else{
             seaCure_job = loadedSeaCureJob;
-            //seaCure_job.setSavedId(1);
         }
     }
 
@@ -229,7 +228,7 @@ public class SeaCure extends Activity {
 
     public void stepTo(ProcedureSlide procedureSlide, Boolean addToVisited){
         currentProcedureSlide = procedureSlide;
-        Log.d("visited", seaCure_job.getVisited().toString());
+
         if (procedureSlide.getClass().equals(ProcedureImg.class)) {
             Fragment_procedure_img fragment = new Fragment_procedure_img();
             currentFragment = fragment;
