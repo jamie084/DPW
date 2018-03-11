@@ -69,8 +69,6 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
             }
         });
         runDBQueryWithDialog.execute();
-       //dotSerails = homeScreen.getDotSerails();
-//        Log.d("dotserials", dotSerails.get(0).getTool_type());
 
        return view;
 
