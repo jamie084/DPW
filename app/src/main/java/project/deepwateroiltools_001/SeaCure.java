@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -34,6 +35,8 @@ import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
 import project.deepwateroiltools.HTTP.PostNewJob;
+import project.deepwateroiltools.HTTP.ProcessListener;
+import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_ddl;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_general;
@@ -58,18 +61,14 @@ public class SeaCure extends Activity {
     private Crossfader crossFader = null;
     private SeaCureMenuDrawer seaCureMenuDrawer;
     private User user;
-    private SeaCure_job seaCure_job;
+    private SeaCure_job seaCure_job, loadedSeaCureJob;
     private ProcedureSlide currentProcedureSlide;
     private Fragment currentFragment;
-    private PostNewJob postNewJob;
+    private RunDBQueryWithDialog runDBQuery;
     private DotSerail dotSerail;
 
 
-
     List<ProcedureSlide> procedureSlideList;
-    List<ProcedureSlide> visitedProcuderSlides;
-
-
 
 
     @Override
@@ -83,13 +82,12 @@ public class SeaCure extends Activity {
         setContentView(R.layout.activity_sea_cure);
 
 
-        SeaCure_job seaCure_job = new SeaCure_job();
-
         //get the user obj from previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = new Gson().fromJson(extras.getString("user"), User.class);
             dotSerail = new Gson().fromJson(extras.getString("dotserial"), DotSerail.class);
+            loadedSeaCureJob = new Gson().fromJson(extras.getString("loadedSeaCureJob"), SeaCure_job.class);
         }
         else{
             //TODO error handling
@@ -110,36 +108,81 @@ public class SeaCure extends Activity {
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
 
         String url = Common.getUrlSeaCureProcedure() + Common.getApiKey();
-        new SeaCure.RunDbQuery(this, url).execute();
+       // new SeaCure.RunDbQuery(this, url).execute();
+        runDBQuery = new RunDBQueryWithDialog(this, url, "Connecting to the server...");
+        runDBQuery.setProcessListener(new ProcessListener() {
+            @Override
+            public void ProcessingIsDone(String result) {
+                procedureSlideList = generateProcedureList(result);
+
+//                for (int i=0; i<procedureSlideList.size(); i++){
+//                    Log.d("CLASS TYPE", procedureSlideList.get(i).getClass().toString());
+//                }
+                if (!procedureSlideList.isEmpty()) {
+                    setSeaCureJobValues();
+                    stepTo(getProcedureSlideById(seaCure_job.getSavedId()), false);
+
+                }
+                else{
+                    //TODO error handling
+                }
+            }
+        });
+
+        runDBQuery.execute();
 
     }
 
-    public void startSeaCureProcedure(List<ProcedureSlide> procedureSlideList){
-        this.procedureSlideList = procedureSlideList;
+    public List<ProcedureSlide> generateProcedureList(String result){
+        //To create the extended class elements from the JSON response
+        GsonFireBuilder builder = new GsonFireBuilder()
+                .registerTypeSelector(ProcedureSlide.class, new TypeSelector<ProcedureSlide>() {
+                    @Override
+                    public Class<? extends ProcedureSlide> getClassForElement(JsonElement readElement) {
+                        String type = readElement.getAsJsonObject().get("type").getAsString();
+                        if(type.equals("ProcedureImg")){
+                            return ProcedureImg.class;
+                        } else if(type.equals("ProcedureInput")) {
+                            return ProcedureInput.class;
+                        } else if (type.equals("ProcedureChecklist")){
+                            return ProcedureChecklist.class;
+                        } else if (type.equals("ProcedureDdl")){
+                            return ProcedureDdl.class;
+                        } else if (type.equals("ProcedureGoto")){
+                            return ProcedureGoto.class;
+                        }
+                        else {
+                            return null; //returning null will trigger Gson's default behavior
+                        }
+                    }
+                });
+        Gson gson = builder.createGson();
+        Type listType = new TypeToken<List<ProcedureSlide>>(){}.getType();
+        return  gson.fromJson(result, listType);
+    }
 
+    public void setSeaCureJobValues(){
         seaCure_job = new SeaCure_job();
-        seaCure_job.setStartDate(System.currentTimeMillis());
-        seaCure_job.setToolType("SeaCure");
-        seaCure_job.set_user_id(user.get_id().getOid());
-        seaCure_job.setSn_in_DOT_SCR_IBH(dotSerail.getDOT_SCR_IBH());
-        seaCure_job.setSn_in_DOT_SCR_INB(dotSerail.getDOT_SCR_INB());
-        seaCure_job.setSn_in_DOT_SCR_PBR(dotSerail.getDOT_SCR_PBR());
-        seaCure_job.setSn_in_DOT_SCR_TRB(dotSerail.getDOT_SCR_TRB());
+        if (loadedSeaCureJob == null) {
 
-        for (int i=0; i< procedureSlideList.size(); i++){
-            if (procedureSlideList.get(i).getProcId() == 1){
-                Fragment_procedure_img fragmentProcedureImg = new Fragment_procedure_img();
-                fragmentProcedureImg.setProcedureImg((ProcedureImg)procedureSlideList.get(i));
-                //fragmentProcedureImg.setProcedureSlideList(procedureSlideList);
-                this.currentProcedureSlide = procedureSlideList.get(i);
-                childId = procedureSlideList.get(i).getChildId();
-                visitedProcuderSlides = new ArrayList<ProcedureSlide>() ;
-                visitedProcuderSlides.add(procedureSlideList.get(i));
-                loadFragment(fragmentProcedureImg);
-                break;
-            }
+            seaCure_job.setStartDate(System.currentTimeMillis());
+            seaCure_job.setToolType("SeaCure");
+            seaCure_job.set_user_id(user.get_id().getOid());
+            seaCure_job.setSavedId(1);
+            seaCure_job.setVisited(new ArrayList<Integer>());
+
+            //set the in dot serial numbers from the dotSerial object
+            seaCure_job.setSn_in_DOT_SCR_IBH(dotSerail.getDOT_SCR_IBH());
+            seaCure_job.setSn_in_DOT_SCR_INB(dotSerail.getDOT_SCR_INB());
+            seaCure_job.setSn_in_DOT_SCR_PBR(dotSerail.getDOT_SCR_PBR());
+            seaCure_job.setSn_in_DOT_SCR_TRB(dotSerail.getDOT_SCR_TRB());
+        }
+        else{
+            seaCure_job = loadedSeaCureJob;
+            //seaCure_job.setSavedId(1);
         }
     }
+
 
     public void stepNextProcedureSlide(){
         drawer.setSelection(-1);
@@ -158,12 +201,8 @@ public class SeaCure extends Activity {
         //TODO comment out the line below for live version
         isValid = true;
         if  (isValid) {
-            for (int i = 0; i < procedureSlideList.size(); i++) {
-                if (childId == procedureSlideList.get(i).getProcId()) {
-                    stepTo(procedureSlideList.get(i), true);
-                    break;
-                }
-            }
+
+            stepTo(getProcedureSlideById(childId), true);
         }
         else {
             //TODO otuput to user about invalid input
@@ -172,16 +211,25 @@ public class SeaCure extends Activity {
 
     public void stepPreviousProcedureSlide(){
         drawer.setSelection(-1);
-        if (visitedProcuderSlides.size()>1) {
-            visitedProcuderSlides.remove(visitedProcuderSlides.size() - 1);
-            stepTo(visitedProcuderSlides.get(visitedProcuderSlides.size() - 1), false);
+        if (seaCure_job.getVisited().size()>1){
+            seaCure_job.getVisited().remove(seaCure_job.getVisited().size()-1);
+            stepTo(getProcedureSlideById(seaCure_job.getVisited().get(seaCure_job.getVisited().size()-1)), false);
         }
+    }
 
+    //Finds and returns the required procedure slide
+    public ProcedureSlide getProcedureSlideById(int id){
+        for (int i=0; i<procedureSlideList.size();i++){
+            if (procedureSlideList.get(i).getProcId() == id){
+                return procedureSlideList.get(i);
+            }
+        }
+        return null;
     }
 
     public void stepTo(ProcedureSlide procedureSlide, Boolean addToVisited){
         currentProcedureSlide = procedureSlide;
-
+        Log.d("visited", seaCure_job.getVisited().toString());
         if (procedureSlide.getClass().equals(ProcedureImg.class)) {
             Fragment_procedure_img fragment = new Fragment_procedure_img();
             currentFragment = fragment;
@@ -212,9 +260,9 @@ public class SeaCure extends Activity {
             currentFragment = fragment;
             fragment.setProcedureSlide(procedureSlide);
         }
-          //just add the list the list in forward steps
+          //just add to the list the list in forward steps
         if (addToVisited) {
-            visitedProcuderSlides.add(procedureSlide);
+            seaCure_job.getVisited().add(procedureSlide.getProcId());
         }
         childId = procedureSlide.getChildId();
         loadFragment(currentFragment);
@@ -232,8 +280,16 @@ public class SeaCure extends Activity {
     }
 
     public void upLoadSeaCureJob(){
-        postNewJob = new PostNewJob(this, this.seaCure_job );
-        postNewJob.execute();
+        String url = Common.getUrlSeaCureJobs() + Common.getApiKey() ;
+        seaCure_job.setSavedId(currentProcedureSlide.getProcId());
+        runDBQuery = new RunDBQueryWithDialog(this, url, "Saving details...", new Gson().toJson(seaCure_job));
+        runDBQuery.setProcessListener(new ProcessListener() {
+            @Override
+            public void ProcessingIsDone(String result) {
+                Toast.makeText(getApplicationContext(), "Successfully saved", Toast.LENGTH_SHORT);
+            }
+        });
+        runDBQuery.execute();
     }
 
     public SeaCure_job getSeaCure_job() {
@@ -248,79 +304,4 @@ public class SeaCure extends Activity {
         this.childId = childId;
     }
 
-    private class RunDbQuery extends AsyncTask<String, Void, String> {
-        String urlString= null;
-        private ProgressDialog dialog;
-        private List<ProcedureSlide> procedureSlides;
-        public SeaCure activity;
-
-        private RunDbQuery(SeaCure a, String urlString){
-            this.urlString = urlString;
-            this.activity = a;
-            dialog = new ProgressDialog(SeaCure.this, R.style.DialogBoxStyle);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Connecting to the server...");
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-            dialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            HTTPDataHandler httpDataHandler = new HTTPDataHandler();
-            String stream = httpDataHandler.GetHTTPData(urlString);
-            return stream;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            //To create the extended class elements from the JSON response
-            GsonFireBuilder builder = new GsonFireBuilder()
-                    .registerTypeSelector(ProcedureSlide.class, new TypeSelector<ProcedureSlide>() {
-                        @Override
-                        public Class<? extends ProcedureSlide> getClassForElement(JsonElement readElement) {
-                            String type = readElement.getAsJsonObject().get("type").getAsString();
-                            if(type.equals("ProcedureImg")){
-                                return ProcedureImg.class;
-                            } else if(type.equals("ProcedureInput")) {
-                                return ProcedureInput.class;
-                            } else if (type.equals("ProcedureChecklist")){
-                                return ProcedureChecklist.class;
-                            } else if (type.equals("ProcedureDdl")){
-                                return ProcedureDdl.class;
-                            } else if (type.equals("ProcedureGoto")){
-                                return ProcedureGoto.class;
-                            }
-                            else {
-                                return null; //returning null will trigger Gson's default behavior
-                            }
-                        }
-                    });
-
-
-
-            Gson gson = builder.createGson();
-            Type listType = new TypeToken<List<ProcedureSlide>>(){}.getType();
-            procedureSlides =  gson.fromJson(s, listType);
-
-            for (int i=0; i<procedureSlides.size(); i++){
-                Log.d("CLASS TYPE", procedureSlides.get(i).getClass().toString());
-            }
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            if (!procedureSlides.isEmpty()) {
-                activity.startSeaCureProcedure(procedureSlides);
-
-            }
-            else{
-                //TODO error handling
-            }
-        }
-    }
 }
