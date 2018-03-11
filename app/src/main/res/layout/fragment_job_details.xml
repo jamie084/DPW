@@ -51,5 +51,15 @@
                 android:textSize="16sp" />
         </ScrollView>
 
+        <Button
+            android:id="@+id/btn_load"
+            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scrollView2"
+            android:layout_toStartOf="@+id/btn_exportPDF"
+            android:text="Load"
+            tools:text="Load" />
+
     </RelativeLayout>
 </RelativeLayout>
