@@ -25,14 +25,12 @@ import java.util.ArrayList;
 
 
 import project.deepwateroiltools.HTTP.Common;
-import project.deepwateroiltools.HTTP.PermissionManager;
+import project.helpers.PermissionManager;
 import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
 import project.dto.user.User;
 import project.email.EmailClient;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by janos on 06/02/2018.
