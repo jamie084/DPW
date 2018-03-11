@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by janos on 19/02/2018.
@@ -13,6 +14,7 @@ public class SeaCure_job {
     private Id _id;
     private String _user_id;
     private int _jobID;
+    private int savedId;
     private String toolType;
     private int tool_serial;
     private String region; //locator????
@@ -48,6 +50,7 @@ public class SeaCure_job {
     private String loctite_lot_number; //could be int???
     private String defect_desc;
     private int torque_SCR_TRB_end;
+    private List<Integer> visited;
 
     public Id get_id() {
         return _id;
@@ -353,6 +356,22 @@ public class SeaCure_job {
         isLowerBearingRingReplaced = lowerBearingRingReplaced;
     }
 
+    public int getSavedId() {
+        return savedId;
+    }
+
+    public void setSavedId(int savedId) {
+        this.savedId = savedId;
+    }
+
+    public List<Integer> getVisited() {
+        return visited;
+    }
+
+    public void setVisited(ArrayList<Integer> visited) {
+        this.visited = visited;
+    }
+
     @Override
     public String toString(){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -375,6 +394,7 @@ public class SeaCure_job {
         result += "Middle Bearing Ring replacement work order: "    + this.wo_middleBearingRing + "\n";
         result += "Lower Bearing Ring replacement work order: "     + this.wo_lowerBearingRing + "\n";
         result += "STUB Acme O-Ring replacement work order: "       + this.wo_STUB_acme_O_ring + "\n";
+        result += "Saved state: "                                   + this.savedId + "\n";
         result += "UserID: " + this.get_user_id();
         return result;
     }
