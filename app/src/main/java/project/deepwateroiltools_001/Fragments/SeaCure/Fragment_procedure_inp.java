@@ -34,6 +34,7 @@ public class Fragment_procedure_inp extends Fragment  {
     List<String> inputList;
     List<String> inputTypes;
     LinearLayout linearLayout;
+    SeaCure_job seaCure_job;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +49,8 @@ public class Fragment_procedure_inp extends Fragment  {
         inputList = procedureInput.getInputList();
         inputTo = procedureInput.getInputTo();
         inputTypes = procedureInput.getInputTypes();
+
+        seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
 
         return view;
     }
@@ -80,7 +83,47 @@ public class Fragment_procedure_inp extends Fragment  {
         }
 
         linearLayout.setMinimumHeight(pixels);
+        loadValues();
 
+    }
+
+    public void loadValues(){
+        try {
+            EditText et0 =(EditText)getView().findViewById(0);
+            String editTextString = et0.getText().toString();
+            switch(inputTo) {
+
+                case "seaCure_ORing":
+                    et0.setText(String.valueOf(seaCure_job.getWo_oRing()));
+                    break;
+                case "seaCure_UpperRing":
+                    et0.setText(String.valueOf(seaCure_job.getWo_upperBearingRing()));
+                    break;
+                case "seaCure_MiddleRing":
+                    et0.setText(String.valueOf(seaCure_job.getWo_middleBearingRing()));
+                    break;
+                case "seaCure_StubORing":
+                    et0.setText(String.valueOf(seaCure_job.getWo_STUB_acme_O_ring()));
+                    break;
+                case "seaCure_LowerRing":
+                    et0.setText(String.valueOf(seaCure_job.getWo_lowerBearingRing()));
+                    break;
+                case "seaCure_torque_break_out":
+                    et0.setText(String.valueOf(seaCure_job.getTorque_SCR_TRB()));
+                    break;
+                case "seaCure_main":
+                    et0.setText(seaCure_job.getClientOperator());
+                    EditText et1 =(EditText)getView().findViewById(1);
+                    et1.setText(String.valueOf(seaCure_job.getPo_reference()));
+                    EditText et2 =(EditText)getView().findViewById(2);
+                    et2.setText(seaCure_job.getRegion());
+                    break;
+            }
+        }
+        catch (Exception e){
+            //TODO errorlogger build
+            Log.d("LoadValues", e.toString());
+        }
     }
 
 
@@ -104,7 +147,6 @@ public class Fragment_procedure_inp extends Fragment  {
     }
 
     public void saveValues(){
-        SeaCure_job seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
         try {
             EditText editText =(EditText)getView().findViewById(0);
             String editTextString = editText.getText().toString();
