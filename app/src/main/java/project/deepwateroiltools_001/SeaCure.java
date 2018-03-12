@@ -1,17 +1,26 @@
 package project.deepwateroiltools_001;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -93,6 +102,17 @@ public class SeaCure extends Activity {
             //TODO error handling
             Log.d("EEEh", "Not happening");
         }
+
+        //Touch event handling, closes the miniDrawer in case of touch event
+        findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (crossFader.isCrossFaded()){
+                    crossFader.crossFade();
+                }
+                return true;
+            }
+        });
 
 
         seaCureMenuDrawer = new SeaCureMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
@@ -213,6 +233,7 @@ public class SeaCure extends Activity {
         if (seaCure_job.getVisited().size()>1){
             seaCure_job.getVisited().remove(seaCure_job.getVisited().size()-1);
             stepTo(getProcedureSlideById(seaCure_job.getVisited().get(seaCure_job.getVisited().size()-1)), false);
+
         }
     }
 
@@ -266,19 +287,32 @@ public class SeaCure extends Activity {
         childId = procedureSlide.getChildId();
         loadFragment(currentFragment);
     }
+    public void openCamera(){
+        drawer.setSelection(-1);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1888);
+        }
+        else{
+            Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, 1888);
+        }
 
+    }
 
     private void loadFragment(Fragment fragment) {
         // create a FragmentManager
         FragmentManager fm = getFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
     }
 
     public void upLoadSeaCureJob(){
+        drawer.setSelection(-1);
         String url = Common.getUrlSeaCureJobs() + Common.getApiKey() ;
         seaCure_job.setSavedId(currentProcedureSlide.getProcId());
         runDBQuery = new RunDBQueryWithDialog(this, url, "Saving details...", new Gson().toJson(seaCure_job));
@@ -289,6 +323,34 @@ public class SeaCure extends Activity {
             }
         });
         runDBQuery.execute();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1888: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, 1888);
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+       // super.onBackPressed();  // optional depending on your needs
+        this.stepPreviousProcedureSlide();
     }
 
     public SeaCure_job getSeaCure_job() {
