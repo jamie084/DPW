@@ -5,8 +5,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.View;
 
@@ -26,6 +29,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 import com.mikepenz.materialize.MaterializeBuilder;
 
+import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_note;
 import project.deepwateroiltools_001.SeaCure;
 import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentAdminArea;
@@ -35,7 +39,9 @@ import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHistory;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentSettings;
 import project.deepwateroiltools_001.R;
+import project.helpers.PermissionManager;
 
+import static java.lang.Math.toIntExact;
 /**
  * Created by janos on 05/02/2018.
  */
@@ -104,28 +110,33 @@ public class SeaCureMenuDrawer extends Activity {
                         new PrimaryDrawerItem().withName("Next").withIcon(new IconicsDrawable(activity)
                                 .icon(FontAwesome.Icon.faw_arrow_circle_o_right)
                                 .color(Color.WHITE))
-                                .withIconTintingEnabled(true)
+                                .withIconTintingEnabled(false)
                                 .withIdentifier(1),
                         new PrimaryDrawerItem().withName("Previous").withIcon(new IconicsDrawable(activity)
                                 .icon(FontAwesome.Icon.faw_arrow_circle_left)
                                 .color(Color.WHITE))
-                                .withIconTintingEnabled(true)
+                                .withIconTintingEnabled(false)
                                 .withIdentifier(2),
                         new PrimaryDrawerItem().withName("Save").withIcon(new IconicsDrawable(activity)
                                 .icon(FontAwesome.Icon.faw_database)
                                 .color(Color.WHITE))
-                                .withIconTintingEnabled(true)
+                                .withIconTintingEnabled(false)
                                 .withIdentifier(3),
-                        new PrimaryDrawerItem().withName("Camera").withIcon(new IconicsDrawable(activity)
+                        new PrimaryDrawerItem().withName("Open Camera").withIcon(new IconicsDrawable(activity)
                                 .icon(FontAwesome.Icon.faw_camera)
                                 .color(Color.WHITE))
-                                .withIconTintingEnabled(true)
+                                .withIconTintingEnabled(false)
                                 .withIdentifier(4),
+                        new PrimaryDrawerItem().withName("Make a note").withIcon(new IconicsDrawable(activity)
+                                .icon(FontAwesome.Icon.faw_sticky_note)
+                                .color(Color.WHITE))
+                                .withIconTintingEnabled(false)
+                                .withIdentifier(5),
                         new PrimaryDrawerItem().withName("Exit").withIcon(new IconicsDrawable(activity)
                                 .icon(FontAwesome.Icon.faw_stop_circle_o)
                                 .color(Color.WHITE))
-                                .withIconTintingEnabled(true)
-                                .withIdentifier(5)
+                                .withIconTintingEnabled(false)
+                                .withIdentifier(6)
 
                 ) // add the items we want to use with our Drawer
 
@@ -134,28 +145,27 @@ public class SeaCureMenuDrawer extends Activity {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         Log.d("DRAWERITEM", String.valueOf(position));
                         if (drawerItem instanceof Nameable) {
-                            if (drawerItem.getIdentifier() == 1){
-                                activity.stepNextProcedureSlide();
+                            switch (position){
+                                case(1):
+                                    activity.stepNextProcedureSlide();
+                                    break;
+                                case(2):
+                                    activity.stepPreviousProcedureSlide();
+                                    break;
+                                case(3):
+                                    activity.upLoadSeaCureJob();
 
+                                    break;
+                                case(4):
+                                    activity.openCamera();
+                                    break;
+                                case(5):
+                                    loadFragment(new Fragment_note(), true);
+                                    break;
+                                case(6):
+                                    activity.finishProcedure();
+                                    break;
                             }
-                            else if (drawerItem.getIdentifier() == 2){
-                                activity.stepPreviousProcedureSlide();
-                            }
-                            else if (drawerItem.getIdentifier() == 3) {
-                                activity.upLoadSeaCureJob();
-                            }
-                            else if (drawerItem.getIdentifier() == 4){
-                                loadFragment(new FragmentHistory());
-                            }
-                            else if (drawerItem.getIdentifier() == 5){
-                                loadFragment(new FragmentContact());
-                            }
-                            else if (drawerItem.getIdentifier() == 6){
-                                loadFragment(new FragmentAdminArea());
-                            }
-
-                            Log.d("DRAWERITEM", String.valueOf(drawerItem.getIdentifier()));
-                            //   Toast.makeText(activity, ((Nameable) drawerItem).getName().getText(activity), Toast.LENGTH_SHORT).show();
 
                         }
                         else{
@@ -171,15 +181,15 @@ public class SeaCureMenuDrawer extends Activity {
                 .withSelectedItem(-1)
                 .withSavedInstance(savedInstanceState);
 
-        if (!user.getAdmin()){
-            builder.addDrawerItems(
-                    new PrimaryDrawerItem().withName("Admin Area").withIcon(new IconicsDrawable(activity)
-                            .icon(FontAwesome.Icon.faw_user_secret)
-                            .color(Color.WHITE))
-                            .withIconTintingEnabled(true)
-                            .withIdentifier(6)
-            );
-        }
+//        if (!user.getAdmin()){
+//            builder.addDrawerItems(
+//                    new PrimaryDrawerItem().withName("Admin Area").withIcon(new IconicsDrawable(activity)
+//                            .icon(FontAwesome.Icon.faw_user_secret)
+//                            .color(Color.WHITE))
+//                            .withIconTintingEnabled(true)
+//                            .withIdentifier(6)
+//            );
+//        }
         return builder;
     }
 
@@ -214,13 +224,16 @@ public class SeaCureMenuDrawer extends Activity {
 
 
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, Boolean addToBackStack) {
         // create a FragmentManager
         FragmentManager fm = activity.getFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
+        if (addToBackStack){
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.commit(); // save the changes
     }
 }
