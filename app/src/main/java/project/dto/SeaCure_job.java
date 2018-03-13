@@ -51,6 +51,7 @@ public class SeaCure_job {
     private String defect_desc;
     private int torque_SCR_TRB_end;
     private List<Integer> visited;
+    private List<String> notes = new ArrayList<String>();
 
     public Id get_id() {
         return _id;
@@ -372,6 +373,27 @@ public class SeaCure_job {
         this.visited = visited;
     }
 
+    public List<String> getNotes() {
+        return notes;
+    }
+
+    public void addNote(String note){
+        getNotes().add(note);
+    }
+
+    public void setNotes(List<String> notes) {
+        this.notes = notes;
+    }
+
+    public String getFormattedNotes(){
+        String result = "";
+        for (int i=0; i<getNotes().size();i++){
+            result += getNotes().get(i).toString() + "\n";
+        }
+        return  result;
+    }
+
+
     @Override
     public String toString(){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -395,6 +417,7 @@ public class SeaCure_job {
         result += "Lower Bearing Ring replacement work order: "     + this.wo_lowerBearingRing + "\n";
         result += "STUB Acme O-Ring replacement work order: "       + this.wo_STUB_acme_O_ring + "\n";
         result += "Saved state: "                                   + this.savedId + "\n";
+        result += "Notes: "                                         + this.getFormattedNotes() + "\n";
         result += "UserID: " + this.get_user_id();
         return result;
     }
