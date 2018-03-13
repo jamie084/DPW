@@ -305,12 +305,15 @@ public class SeaCure extends Activity {
         FragmentManager fm = getFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.crossfade_content, fragment);
         fragmentTransaction.commit(); // save the changes
     }
 
+    public void finishProcedure(){
+        super.onBackPressed();
+    }
     public void upLoadSeaCureJob(){
         drawer.setSelection(-1);
         String url = Common.getUrlSeaCureJobs() + Common.getApiKey() ;
@@ -319,7 +322,7 @@ public class SeaCure extends Activity {
         runDBQuery.setProcessListener(new ProcessListener() {
             @Override
             public void ProcessingIsDone(String result) {
-                Toast.makeText(getApplicationContext(), "Successfully saved", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Successfully saved", Toast.LENGTH_SHORT).show();
             }
         });
         runDBQuery.execute();
