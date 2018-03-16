@@ -90,11 +90,12 @@ public class CreatePDF {
         viewPdf(filename + ".pdf", path);
     }
 
-    // Method for opening a pdf file
+    // Method for opening a pdf file in a new intent
+    //Params: String filename, String directory
     private void viewPdf(String file, String directory) {
 
-        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
-        pdfFile = new File(directory + "/" + file);
+       // File pdfFile = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/" + file);
+        File pdfFile = new File(directory + "/" + file);
         Uri path = Uri.fromFile(pdfFile);
 
         // Setting the intent for pdf reader
@@ -110,6 +111,9 @@ public class CreatePDF {
         }
     }
 
+    //get the logo file from the assets and returns an Image object
+    //params: None
+    //returns: Image
     public Image getLogo(){
         try {
             InputStream ims = context.getAssets().open("logo.png");
@@ -127,6 +131,9 @@ public class CreatePDF {
         return null;
     }
 
+    //create a cell from a parameter Image  with the appropiate formatting
+    //param: Image
+    //returns: PdfCell
     public static PdfPCell createImageCell(Image img) throws DocumentException, IOException {
         PdfPCell cell = new PdfPCell(img, false);
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -134,6 +141,9 @@ public class CreatePDF {
         return cell;
     }
 
+    //create a cell from a parameter text with the appropiate formatting
+    //param: String
+    //returns: PdfCell
     public static PdfPCell createTextCell(String text) throws DocumentException, IOException {
         PdfPCell cell = new PdfPCell();
         Font fontbold = FontFactory.getFont("Times-Roman", 30, Font.BOLD);
