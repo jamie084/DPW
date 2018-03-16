@@ -6,21 +6,28 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -33,8 +40,11 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 
+import java.io.File;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.gsonfire.GsonFireBuilder;
@@ -75,6 +85,9 @@ public class SeaCure extends Activity {
     private Fragment currentFragment;
     private RunDBQueryWithDialog runDBQuery;
     private DotSerail dotSerail;
+    private Uri imageUri;
+
+    private static final int REQUEST_TAKE_PHOTO = 1888;
 
 
     List<ProcedureSlide> procedureSlideList;
@@ -127,8 +140,10 @@ public class SeaCure extends Activity {
         //define a shadow (this is only for normal LTR layouts if you have a RTL app you need to define the other one
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
 
+        //url to seacure procedure db entries
         String url = Common.getUrlSeaCureProcedure() + Common.getApiKey();
 
+        //run an async method to populate the procedureslide list
         runDBQuery = new RunDBQueryWithDialog(this, url, "Connecting to the server...");
         runDBQuery.setProcessListener(new ProcessListener() {
             @Override
@@ -181,8 +196,10 @@ public class SeaCure extends Activity {
         return  gson.fromJson(result, listType);
     }
 
+    //sets the default values on the seacure job object
     public void setSeaCureJobValues(){
         seaCure_job = new SeaCure_job();
+        //if there is no loaded job
         if (loadedSeaCureJob == null) {
 
             seaCure_job.setStartDate(System.currentTimeMillis());
@@ -280,24 +297,44 @@ public class SeaCure extends Activity {
             currentFragment = fragment;
             fragment.setProcedureSlide(procedureSlide);
         }
-          //just add to the list the list in forward steps
+          //add to the list the list in forward steps
         if (addToVisited) {
             seaCure_job.getVisited().add(procedureSlide.getProcId());
         }
         childId = procedureSlide.getChildId();
         loadFragment(currentFragment);
     }
+
+    //triggered by the drawer camera btn, verifies the app permissions if granted call startCameraInent function
     public void openCamera(){
         drawer.setSelection(-1);
+        StrictMode.VmPolicy.Builder newbuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newbuilder.build());
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1888);
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_TAKE_PHOTO);
         }
         else{
-            Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, 1888);
+            startCameraIntent();
         }
 
+    }
+
+    //Start a camera intent with a default saving path (pictures dir) and filename (username and current date&time)
+    public void startCameraIntent(){
+        Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy.HH:mm");
+        String date = formatter.format(new Date());
+        String userName = user.getUserInfo().getFullName();
+        File photo = new File(path,  userName + "_" + date + ".jpg");
+        imageUri = FileProvider.getUriForFile(SeaCure.this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                photo);
+
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,  Uri.fromFile(photo));
+
+        startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -314,6 +351,8 @@ public class SeaCure extends Activity {
     public void finishProcedure(){
         super.onBackPressed();
     }
+
+    //create a db connection and uploads/updates the seacure job entry
     public void upLoadSeaCureJob(){
         drawer.setSelection(-1);
         String url = Common.getUrlSeaCureJobs() + Common.getApiKey() ;
@@ -332,22 +371,38 @@ public class SeaCure extends Activity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 1888: {
+            case REQUEST_TAKE_PHOTO: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1888);
+                        startCameraIntent();
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }
         }
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            //camera request
+            case REQUEST_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedImage = imageUri;
+                    try {
+                        Toast.makeText(this, "File saved: "+selectedImage.toString(),
+                                Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                                .show();
+                        Log.e("Camera", e.toString());
+                    }
+                }
+        }
+    }
     @Override
     public void onBackPressed()
     {
