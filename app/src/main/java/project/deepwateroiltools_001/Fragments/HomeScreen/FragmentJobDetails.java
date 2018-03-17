@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import project.deepwateroiltools_001.SeaCure;
+import project.dto.DotSerail;
 import project.helpers.PermissionManager;
 import project.deepwateroiltools_001.HomeScreen;
 import project.deepwateroiltools_001.R;
@@ -97,11 +98,11 @@ public class FragmentJobDetails extends Fragment implements View.OnClickListener
                 intent.putExtra("loadedSeaCureJob", (new Gson().toJson(seaCure_job)));
                 intent.putExtra("user", (new Gson().toJson(user)));
 
+                //put the latest serial numbers into the loadable file
+                DotSerail dotSerail = ((HomeScreen   ) this.getActivity()).getDotSerail();
+                Log.d("dotSerial from home:", dotSerail.getTool_type());
+                intent.putExtra("dotserial", (new Gson().toJson(dotSerail)));
 
-
-           //     User user = users.get(0);
-             //   Intent intentWelcome = new Intent(getApplicationContext(), HomeScreen.class);
-               // intentWelcome.putExtra("user", (new Gson()).toJson(user));
                 startActivity(intent);
                 break;
         }
