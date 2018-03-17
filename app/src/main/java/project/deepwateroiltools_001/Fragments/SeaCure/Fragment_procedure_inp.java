@@ -18,6 +18,7 @@ import java.util.List;
 
 import project.deepwateroiltools_001.R;
 import project.deepwateroiltools_001.SeaCure;
+import project.dto.DotSerail;
 import project.dto.SeaCure_job;
 import project.dto.service.ProcedureInput;
 
@@ -35,6 +36,7 @@ public class Fragment_procedure_inp extends Fragment  {
     List<String> inputTypes;
     LinearLayout linearLayout;
     SeaCure_job seaCure_job;
+    DotSerail dotSerail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +53,8 @@ public class Fragment_procedure_inp extends Fragment  {
         inputTypes = procedureInput.getInputTypes();
 
         seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
+        dotSerail = ((SeaCure) this.getActivity()).getDotSerail();
+
 
         return view;
     }
@@ -118,6 +122,40 @@ public class Fragment_procedure_inp extends Fragment  {
                     EditText et2 =(EditText)getView().findViewById(2);
                     et2.setText(seaCure_job.getRegion());
                     break;
+                case "seaCure_torque_make_up":
+                    et0.setText(seaCure_job.getTorque_SCR_TRB_end());
+                    break;
+                case "seaCure_dot_out":
+                    EditText pbr = (EditText) getView().findViewById(1);
+                    EditText inb = (EditText) getView().findViewById(2);
+                    EditText ibh = (EditText) getView().findViewById(3);
+
+                    if (seaCure_job.getSn_out_DOT_SCR_TRB() == 0) {
+                        et0.setText(String.valueOf(dotSerail.getDOT_SCR_TRB()));
+                    }
+                    else{
+                        et0.setText(String.valueOf(seaCure_job.getSn_out_DOT_SCR_TRB()));
+                    }
+                    if (seaCure_job.getSn_out_DOT_SCR_PBR() == 0) {
+
+                        pbr.setText(String.valueOf(dotSerail.getDOT_SCR_PBR()));
+                    }
+                    else{
+                        pbr.setText(String.valueOf(seaCure_job.getSn_out_DOT_SCR_PBR()));
+                    }
+                    if (seaCure_job.getSn_out_DOT_SCR_INB() == 0) {
+                        inb.setText(String.valueOf(dotSerail.getDOT_SCR_INB()));
+                    }
+                    else{
+                        inb.setText(String.valueOf(seaCure_job.getSn_out_DOT_SCR_INB()));
+                    }
+
+                    if (seaCure_job.getSn_out_DOT_SCR_IBH() == 0) {
+                        ibh.setText(String.valueOf(dotSerail.getDOT_SCR_IBH()));
+                    }
+                    else{
+                        ibh.setText(String.valueOf(seaCure_job.getSn_out_DOT_SCR_IBH()));
+                    }
             }
         }
         catch (Exception e){
@@ -184,6 +222,21 @@ public class Fragment_procedure_inp extends Fragment  {
                     EditText reg =(EditText)getView().findViewById(2);
                     seaCure_job.setRegion(reg.getText().toString());
                     break;
+                case "seaCure_torque_make_up":
+                    seaCure_job.setTorque_SCR_TRB_end(Integer.valueOf(editTextString));
+                    break;
+                case "seaCure_dot_out":
+                    seaCure_job.setSn_out_DOT_SCR_TRB(Integer.valueOf(editTextString));
+
+                    EditText pbr =(EditText)getView().findViewById(1);
+                    seaCure_job.setSn_out_DOT_SCR_PBR(Integer.valueOf(pbr.getText().toString()));
+
+                    EditText inb =(EditText)getView().findViewById(2);
+                    seaCure_job.setSn_out_DOT_SCR_INB(Integer.valueOf(inb.getText().toString()));
+
+                    EditText ibh =(EditText)getView().findViewById(3);
+                    seaCure_job.setSn_out_DOT_SCR_IBH(Integer.valueOf(ibh.getText().toString()));
+
             }
 
             Log.d("seaCureJOB: ", seaCure_job.toString()) ;
