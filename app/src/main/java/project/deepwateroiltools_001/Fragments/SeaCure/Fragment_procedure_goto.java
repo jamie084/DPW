@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import project.deepwateroiltools_001.R;
 import project.deepwateroiltools_001.SeaCure;
+import project.dto.SeaCure_job;
 import project.dto.service.ProcedureGoto;
 import project.dto.service.ProcedureSlide;
 
@@ -23,6 +24,8 @@ public class Fragment_procedure_goto extends Fragment implements  View.OnClickLi
     Button btn_goto;
     ProcedureGoto procedureSlide;
     TextView lbl_procGoto;
+    String subType;
+    SeaCure_job seaCure_job;
 
     public ProcedureGoto getProcedureSlide() {
         return procedureSlide;
@@ -45,6 +48,9 @@ public class Fragment_procedure_goto extends Fragment implements  View.OnClickLi
         lbl_procGoto = (TextView) view.findViewById(R.id.lbl_procGoto);
         lbl_procGoto.setText(procedureSlide.getTitle());
 
+        subType = procedureSlide.getSubType();
+
+        seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
 
 
         Log.d("fragmant created", "GOTO");
@@ -58,6 +64,10 @@ public class Fragment_procedure_goto extends Fragment implements  View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == btn_goto){
+            if(subType.equals("threadDamage")){
+                seaCure_job.setPin_thread_damage(true);
+            }
+
             SeaCure seaCure = (SeaCure)getActivity();
             seaCure.setChildId(this.procedureSlide.getAltChildId());
             seaCure.stepNextProcedureSlide();
