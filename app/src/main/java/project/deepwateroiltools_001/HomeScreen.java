@@ -52,7 +52,7 @@ public class HomeScreen extends Activity implements View.OnClickListener {
     public User user;
     private Button btn_startProcedure;
     private RunDBQueryWithDialog runDBQueryWithDialog;
-    private List<DotSerail> dotSerails;
+    private DotSerail dotSerail;
 
 
     @Override
@@ -70,6 +70,7 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.d("OnTouch", "vvvvvv");
                 if (crossFader.isCrossFaded()){
                     crossFader.crossFade();
                 }
@@ -132,10 +133,6 @@ public class HomeScreen extends Activity implements View.OnClickListener {
 
     }
 
-    public List<DotSerail> getDotSerails() {
-        return dotSerails;
-    }
-
     public User getUser(){
         return user;
     }
@@ -186,6 +183,14 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         }
     }
 
+
+    public DotSerail getDotSerail() {
+        return dotSerail;
+    }
+
+    public void setDotSerail(DotSerail dotSerail) {
+        this.dotSerail = dotSerail;
+    }
 
     @Override
     public void onClick(View v) {
