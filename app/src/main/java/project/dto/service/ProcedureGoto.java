@@ -7,6 +7,7 @@ package project.dto.service;
 public class ProcedureGoto extends ProcedureSlide {
     int altChildId;
     String btnLabel;
+    String subType;
 
     public String getBtnLabel() {
         return btnLabel;
@@ -22,5 +23,13 @@ public class ProcedureGoto extends ProcedureSlide {
 
     public void setAltChildId(int altChildId) {
         this.altChildId = altChildId;
+    }
+
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
     }
 }
