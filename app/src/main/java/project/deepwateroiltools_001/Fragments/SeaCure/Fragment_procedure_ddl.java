@@ -160,6 +160,24 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
 //                Spinner s4 = (Spinner) getView().findViewById(4);
 //                seaCure_job.setSn_in_DOT_SCR_IBH(Integer.valueOf(s4.getSelectedItem().toString()));
             }
+            else if (ddlType.equals("seaCurePinThreadRepair")){
+                Spinner s0 = (Spinner) getView().findViewById(0);
+                if (s0.getSelectedItem().toString().equals("Yes")){
+                    seaCure_job.setPin_thread_repaired(true);
+                }
+                else{
+                    seaCure_job.setPin_thread_repaired(false);
+                }
+            }
+            else if (ddlType.equals("seaCureBoxThreadDamage")){
+                Spinner s0 = (Spinner) getView().findViewById(0);
+                if (s0.getSelectedItem().toString().equals("Yes")){
+                    seaCure_job.setBox_thread_damage(true);
+                }
+                else{
+                    seaCure_job.setBox_thread_damage(false);
+                }
+            }
         }
         catch (Exception e){
             Log.d("DDL-Parse-Exception", e.toString());
