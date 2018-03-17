@@ -403,7 +403,9 @@ public class SeaCure_job {
         result += "Tool Type: " + this.getToolType() + "\n";
         result += "Client Operator: "  + this.clientOperator + "\n";
         result += "PO reference number: " + this.po_reference + "\n";
-        result += "Torque SCR_TRB: " + this.torque_SCR_TRB + "\n";
+
+        result += "Torque SCR_TRB (Break out): " + this.torque_SCR_TRB + "\n";
+        result += "Torque SCR_TRB (Make up): " + this.torque_SCR_TRB_end + "\n";
 
         result += "Seacure Serial: "        + this.tool_serial + "\n";
         result += "DOT-SCR-TRB Serial in: " + this.sn_in_DOT_SCR_TRB + "\n";
@@ -416,8 +418,15 @@ public class SeaCure_job {
         result += "Middle Bearing Ring replacement work order: "    + this.wo_middleBearingRing + "\n";
         result += "Lower Bearing Ring replacement work order: "     + this.wo_lowerBearingRing + "\n";
         result += "STUB Acme O-Ring replacement work order: "       + this.wo_STUB_acme_O_ring + "\n";
-        result += "Saved state: "                                   + this.savedId + "\n";
+
+        result += "Is the Pin thread damaged? "                             + this.pin_thread_damage + "\n";
+        result += "Is the Pin thread repaired? "                            + this.pin_thread_repaired + "\n";
+        result += "Is the Box thread damaged? "                             + this.box_thread_damage + "\n";
+
+
         result += "Notes: "                                         + this.getFormattedNotes() + "\n";
+
+        result += "Saved state: "                                   + this.savedId + "\n";
         result += "UserID: " + this.get_user_id();
         return result;
     }
