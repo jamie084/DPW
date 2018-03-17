@@ -60,6 +60,7 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
 
                 if (!dotSerails.isEmpty()) {
                     Log.d("serial" , dotSerails.get(0).getTool_type());
+                    ((HomeScreen) getActivity()).setDotSerail(dotSerails.get(0));
 
                 } else {
                     Log.d("jobs empty", "rrrr");
@@ -84,6 +85,7 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
             for (int i=0; i< dotSerails.size(); i++){
                 Log.d("intent in", dotSerails.get(i).getTool_type());
                 if (dotSerails.get(i).getTool_type().equals("SeaCure")){
+
                         intent.putExtra("dotserial", (new Gson().toJson(dotSerails.get(i))));
 
                 }
