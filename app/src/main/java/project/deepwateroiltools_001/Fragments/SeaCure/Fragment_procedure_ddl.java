@@ -41,7 +41,7 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
     List<List<String>> elements;
     String ddlType;
     LinearLayout linearLayout;
-    Button button;
+    //Button button;
 
 
     @Override
@@ -50,8 +50,8 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_ddl, container, false);
 
-        button  = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(this);
+//        button  = (Button) view.findViewById(R.id.button);
+//        button.setOnClickListener(this);
 
         lbl_procTitle = (TextView) view.findViewById(R.id.lbl_procTitle);
         lbl_procTitle.setText(procedureSlide.getTitle());
@@ -188,14 +188,14 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v == button){
-            if (isAllSelected()){
-                saveValues();
-                SeaCure_job seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
-
-                Log.d("Job" , seaCure_job.toString());
-            }
-        }
+//        if (v == button){
+//            if (isAllSelected()){
+//                saveValues();
+//                SeaCure_job seaCure_job = ((SeaCure) this.getActivity()).getSeaCure_job();
+//
+//                Log.d("Job" , seaCure_job.toString());
+//            }
+//        }
 
     }
 
