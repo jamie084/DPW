@@ -30,6 +30,7 @@ import com.mikepenz.materialdrawer.MiniDrawer;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,17 +67,6 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_home_screen);
 
 
-        //Touch event handling, closes the miniDrawer in case of touch event
-        findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.d("OnTouch", "vvvvvv");
-                if (crossFader.isCrossFaded()){
-                    crossFader.crossFade();
-                }
-                return true;
-            }
-        });
 
 
 
@@ -112,12 +102,17 @@ public class HomeScreen extends Activity implements View.OnClickListener {
        //define a shadow (this is only for normal LTR layouts if you have a RTL app you need to define the other one
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
 
-        //Touch event handling, closes keypad, removes focus from fields
+
         findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+                //Touch event handling, closes the drawer menu in case of touch event
+                if (crossFader.isCrossFaded()){
+                    crossFader.crossFade();
+                }
+                //Touch event handling, closes keypad, removes focus from fields
                 if (getCurrentFocus() != null) {
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 }
@@ -129,7 +124,31 @@ public class HomeScreen extends Activity implements View.OnClickListener {
             }
         });
 
-        loadFragment(new FragmentHomeScreen());
+        runDBQueryWithDialog = new RunDBQueryWithDialog(this, Common.getUrlDotSerial() + Common.getApiKey(), "");
+
+        runDBQueryWithDialog.setProcessListener(new ProcessListener() {
+            @Override
+            public void ProcessingIsDone(final String result) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<DotSerail>>() {
+                }.getType();
+                List<DotSerail> dotSerails = new ArrayList<>();
+                dotSerails = gson.fromJson(result, listType);
+
+                if (!dotSerails.isEmpty()) {
+                    setDotSerail(dotSerails.get(0));
+                    loadFragment(new FragmentHomeScreen());
+
+                } else {
+                    Log.d("jobs empty", "rrrr");
+                }
+
+
+            }
+        });
+        runDBQueryWithDialog.execute();
+
+
 
     }
 
@@ -159,8 +178,8 @@ public class HomeScreen extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         //handle the back press :D close the drawer first and if the drawer is closed close the activity
-        if (drawer != null && drawer.isDrawerOpen()) {
-            drawer.closeDrawer();
+        if (crossFader.isCrossFaded()){
+            crossFader.crossFade();
         } else {
             super.onBackPressed();
         }
