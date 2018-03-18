@@ -10,18 +10,6 @@
         android:layout_height="match_parent">
 
 
-        <Button
-            android:id="@+id/btn_history"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/mainListView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="19dp"
-            android:text="history button test"
-            android:textColor="#FFFFFF"
-            tools:text="history button test" />
-
         <TextView
             android:id="@+id/crossfade_text"
             android:layout_width="match_parent"
