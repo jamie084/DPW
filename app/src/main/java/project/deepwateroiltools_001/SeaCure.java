@@ -402,7 +402,13 @@ public class SeaCure extends Activity {
                     }
                 }
         }
+
     }
+
+    public DotSerail getDotSerail() {
+        return dotSerail;
+    }
+
     @Override
     public void onBackPressed()
     {
