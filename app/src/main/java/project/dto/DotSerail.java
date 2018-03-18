@@ -1,5 +1,7 @@
 package project.dto;
 
+import java.util.ArrayList;
+
 /**
  * Created by janos on 10/03/2018.
  */
@@ -13,6 +15,8 @@ public class DotSerail {
         int DOT_SCR_PBR;
         int DOT_SCR_INB;
         int DOT_SCR_IBH;
+
+    ArrayList<Integer> seaCureToolSerials;
 
 
 
@@ -62,5 +66,13 @@ public class DotSerail {
 
     public void setDOT_SCR_IBH(int DOT_SCR_IBH) {
         this.DOT_SCR_IBH = DOT_SCR_IBH;
+    }
+
+    public ArrayList<Integer> getSeaCureToolSerials() {
+        return seaCureToolSerials;
+    }
+
+    public void setSeaCureToolSerials(ArrayList<Integer> seaCureToolSerials) {
+        this.seaCureToolSerials = seaCureToolSerials;
     }
 }
