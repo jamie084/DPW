@@ -33,43 +33,23 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
     View view;
     Button btn_startSeaCure;
     User user;
-    List<DotSerail> dotSerails;
-    RunDBQueryWithDialog runDBQueryWithDialog;
+    DotSerail dotSerail;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home_screen, container, false);
-        Log.d("WelcomScreenFragemtn","LOADED");
+
         btn_startSeaCure = (Button) view.findViewById(R.id.btn_startSeaSecure);
         btn_startSeaCure.setOnClickListener(this);
 
-       HomeScreen homeScreen = (HomeScreen)getActivity();
-       user = homeScreen.getUser();
-
-        runDBQueryWithDialog = new RunDBQueryWithDialog(getContext(), Common.getUrlDotSerial() + Common.getApiKey(), "");
-
-        runDBQueryWithDialog.setProcessListener(new ProcessListener() {
-            @Override
-            public void ProcessingIsDone(final String result) {
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<DotSerail>>() {
-                }.getType();
-                dotSerails = gson.fromJson(result, listType);
-
-                if (!dotSerails.isEmpty()) {
-                    Log.d("serial" , dotSerails.get(0).getTool_type());
-                    ((HomeScreen) getActivity()).setDotSerail(dotSerails.get(0));
-
-                } else {
-                    Log.d("jobs empty", "rrrr");
-                }
+        HomeScreen homeScreen = (HomeScreen)getActivity();
+        user = homeScreen.getUser();
+        dotSerail = homeScreen.getDotSerail();
 
 
-            }
-        });
-        runDBQueryWithDialog.execute();
 
        return view;
 
@@ -77,21 +57,13 @@ public class FragmentHomeScreen extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), SeaCure.class);
-        intent.putExtra("user", (new Gson()).toJson(user));
+
 
         if (v == btn_startSeaCure){
-            Log.d("intent in", String.valueOf(dotSerails.size()));
-            for (int i=0; i< dotSerails.size(); i++){
-                Log.d("intent in", dotSerails.get(i).getTool_type());
-                if (dotSerails.get(i).getTool_type().equals("SeaCure")){
-
-                        intent.putExtra("dotserial", (new Gson().toJson(dotSerails.get(i))));
-
-                }
-            }
-
-        startActivity(intent);
+            Intent intent = new Intent(getActivity(), SeaCure.class);
+            intent.putExtra("user", (new Gson()).toJson(user));
+            intent.putExtra("dotserial", (new Gson().toJson(dotSerail)));
+            startActivity(intent);
         }
     }
 }
