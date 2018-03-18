@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,9 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.HTTPDataHandler;
@@ -61,8 +64,8 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_history, container, false);
-        btn_history  = (Button) view.findViewById(R.id.btn_history);
-        btn_history.setOnClickListener(this);
+//        btn_history  = (Button) view.findViewById(R.id.btn_history);
+//        btn_history.setOnClickListener(this);
 
         // Find the ListView resource.
         mainListView = (ListView)view. findViewById( R.id.mainListView );
@@ -88,18 +91,29 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                     Type listType = new TypeToken<List<SeaCure_job>>() {
                     }.getType();
                     jobs = gson.fromJson(result, listType);
+                    List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
                     if (!jobs.isEmpty()) {
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                         for (int i = 0; i < jobs.size(); i++) {
-                            jobList.add(formatter.format(new Date(jobs.get(i).getStartDate())) + " " + jobs.get(i).getClientOperator() + " " +  user.getUserInfo().getCompany());
+                            Map<String, String> datum = new HashMap<String, String>(2);
+                            datum.put("title", "Start: " + formatter.format(new Date(jobs.get(i).getStartDate())) + (jobs.get(i).isFinished() ?  " Completed" : " Not-Completed"));
+                            datum.put("date", "Operator: " + jobs.get(i).getClientOperator() + "\nCompany: " +  user.getUserInfo().getCompany());
+                            data.add(datum);
                         }
                     } else {
                         Log.d("jobs empty", "rrrr");
                     }
 
-                    listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simplerow, jobList);
-                    mainListView.setAdapter(listAdapter);
+
+                    SimpleAdapter adapter = new SimpleAdapter (getActivity(), data,
+                            android.R.layout.simple_list_item_2,
+                            new String[] {"title", "date"},
+                            new int[] {android.R.id.text1,
+                                    android.R.id.text2,
+                                    });
+
+                    mainListView.setAdapter(adapter);
 
                     //onclick listener on the jobs to load the fragment with the job detials
                     mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,10 +132,10 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
-        if (v == btn_history){
-            Toast.makeText(getActivity(), "history btn Click", Toast.LENGTH_LONG).show();
-        }
+//
+//        if (v == btn_history){
+//            Toast.makeText(getActivity(), "history btn Click", Toast.LENGTH_LONG).show();
+//        }
     }
 
     private void loadFragment(Fragment fragment) {
