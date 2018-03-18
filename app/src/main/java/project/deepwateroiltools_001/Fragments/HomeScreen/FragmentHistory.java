@@ -64,8 +64,6 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_history, container, false);
-//        btn_history  = (Button) view.findViewById(R.id.btn_history);
-//        btn_history.setOnClickListener(this);
 
         // Find the ListView resource.
         mainListView = (ListView)view. findViewById( R.id.mainListView );
