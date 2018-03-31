@@ -19,8 +19,10 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
+import com.mikepenz.materialdrawer.model.ContainerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
@@ -167,6 +169,15 @@ public class MainMenuDrawer extends Activity {
                             .color(Color.WHITE))
                             .withIconTintingEnabled(true)
                             .withIdentifier(6)
+
+            );
+            builder.addDrawerItems(
+                    new SecondaryDrawerItem().withName("Filter by user").withIcon(new IconicsDrawable(activity)
+                            //.icon(FontAwesome.Icon.faw_user_secret)
+                            .color(Color.WHITE))
+                            .withIconTintingEnabled(true)
+                            .withIdentifier(7)
+
             );
         }
         return builder;
