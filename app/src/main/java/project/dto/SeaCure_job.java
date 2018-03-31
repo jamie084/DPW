@@ -52,6 +52,7 @@ public class SeaCure_job {
     private int torque_SCR_TRB_end;
     private List<Integer> visited;
     private List<String> notes = new ArrayList<String>();
+    private boolean isFinished = false;
 
     public Id get_id() {
         return _id;
@@ -393,6 +394,13 @@ public class SeaCure_job {
         return  result;
     }
 
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
 
     @Override
     public String toString(){
