@@ -2,12 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.deepwateroiltools_001.HomeScreen">
+    tools:context="project.deepwateroiltools_001.HomeScreen"
+    android:id="@+id/crossfade_content">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/crossfade_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/btn_startSeaSecure"
@@ -29,5 +26,4 @@
             android:textSize="16sp" />
 
 
-    </RelativeLayout>
 </RelativeLayout>
