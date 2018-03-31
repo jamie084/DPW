@@ -2,9 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.deepwateroiltools_001.HomeScreen">
+    tools:context="project.deepwateroiltools_001.HomeScreen"
+    android:id="@+id/crossfade_content">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/backwithborder"
+            android:orientation="vertical">
 
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_adminTest"
@@ -17,13 +26,13 @@
             android:textColor="#FFFFFF"
             tools:text="Admin Test Button" />
 
-        <TextView
-            android:id="@+id/crossfade_text"
+        <ListView
+            android:id="@+id/mainListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/linearLayout"
+            android:background="@drawable/backwithborder"></ListView>
 
 
 
