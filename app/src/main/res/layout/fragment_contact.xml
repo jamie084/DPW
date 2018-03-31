@@ -3,12 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/crossfade_content"
     tools:context="project.deepwateroiltools_001.HomeScreen">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/crossfade_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:maxHeight="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
+
 
         <Button
             android:id="@+id/btn_contact"
@@ -21,14 +29,6 @@
             android:text="Submit Request"
             android:textColor="#FFFFFF"
             tools:text="Submit Request" />
-
-        <TextView
-            android:id="@+id/crossfade_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/inp_contact"
@@ -70,7 +70,4 @@
             android:drawableLeft="@android:drawable/sym_action_call"
             android:gravity="left|center_vertical" />
 
-
-
-    </RelativeLayout>
 </RelativeLayout>

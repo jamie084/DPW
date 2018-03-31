@@ -17,16 +17,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/drawer5" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="150dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo" />
+    <!--<ImageView-->
+        <!--android:id="@+id/logo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:maxHeight="150dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@drawable/logo" />-->
 
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
