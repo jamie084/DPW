@@ -64,8 +64,10 @@ public class Fragment_procedure_goto extends Fragment implements  View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == btn_goto){
-            if(subType.equals("threadDamage")){
-                seaCure_job.setPin_thread_damage(true);
+            if (subType != null) {
+                if (subType.equals("threadDamage")) {
+                    seaCure_job.setPin_thread_damage(true);
+                }
             }
 
             SeaCure seaCure = (SeaCure)getActivity();
