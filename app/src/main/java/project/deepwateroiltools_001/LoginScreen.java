@@ -20,11 +20,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,6 +36,7 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
     Button btn_login, btn_reg;
     EditText email, password;
     RunDBQueryWithDialog runDBQueryWithDialog;
+    List <User> users = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +76,12 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
                 return true;
             }
         });
-
-
     }
 
 
     @Override
     public void onClick(View v) {
         if (v == btn_login) {
-
             String url = Common.getUrlUser() + Common.getApiKey() + "&q={\"password\":\"" + password.getText().toString() + "\",\"user\":\"" + email.getText().toString() + "\",\"isActive\":true}";
             runDBQueryWithDialog = new RunDBQueryWithDialog(this, url, "Connecting to the server...");
             runDBQueryWithDialog.setProcessListener(new ProcessListener() {
@@ -90,35 +90,20 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
                     Gson gson = new Gson();
                     Type listType = new TypeToken<List<User>>() {
                     }.getType();
-                    List<User> users = gson.fromJson(result, listType);
+                    users = gson.fromJson(result, listType);
+                    if (users != null) {
+                        if (!users.isEmpty()) {
+                            User user = users.get(0);
+                            Intent intentWelcome = new Intent(getApplicationContext(), HomeScreen.class);
+                            intentWelcome.putExtra("user", (new Gson()).toJson(user));
+                            startActivity(intentWelcome);
 
-                    if (!users.isEmpty()) {
-                        User user = users.get(0);
-                        Intent intentWelcome = new Intent(getApplicationContext(), HomeScreen.class);
-                        intentWelcome.putExtra("user", (new Gson()).toJson(user));
-                        startActivity(intentWelcome);
-
-                    } else {
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginScreen.this, R.style.LightDialogTheme);
-                        builder1.setMessage("Email address or password is not correct.");
-                        builder1.setCancelable(true);
-
-                        builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-
-                        //position of OK button
-                        final Button positiveButton = alert11.getButton(AlertDialog.BUTTON_POSITIVE);
-                        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-                        positiveButtonLL.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                        positiveButton.setLayoutParams(positiveButtonLL);
-
-                        Log.d("User", "no entries");
-
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Email address or password is not correct", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Please verify you internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -141,6 +126,11 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
             password.setHint("password");
             password.setText("");
         }
+    }
+
+    public String testTheTest(){
+
+        return password.getText().toString();
     }
 }
 

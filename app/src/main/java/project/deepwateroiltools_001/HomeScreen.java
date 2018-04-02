@@ -45,13 +45,12 @@ import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 
 
-public class HomeScreen extends Activity implements View.OnClickListener {
+public class HomeScreen extends Activity  {
     private Drawer drawer = null;
     private MiniDrawer miniDrawer = null;
     private AccountHeader headerDrawer = null;
     private Crossfader crossFader = null;
     public User user;
-    private Button btn_startProcedure;
     private RunDBQueryWithDialog runDBQueryWithDialog;
     private DotSerail dotSerail;
 
@@ -66,10 +65,6 @@ public class HomeScreen extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.activity_home_screen);
 
-
-
-
-
         //get the user obj from previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -81,14 +76,12 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         }
 
 
-
+        //defining the menu drawer
         MainMenuDrawer mainMenuDrawer = new MainMenuDrawer(this, getApplicationContext(), user, savedInstanceState);
 
         headerDrawer = mainMenuDrawer.getHeader();
 
         DrawerBuilder builder = mainMenuDrawer.getDrawerBuilder();
-
-
 
         drawer = builder.buildView();
         miniDrawer = new MiniDrawer().withDrawer(drawer);
@@ -132,15 +125,19 @@ public class HomeScreen extends Activity implements View.OnClickListener {
                 Gson gson = new Gson();
                 Type listType = new TypeToken<List<DotSerail>>() {
                 }.getType();
-                List<DotSerail> dotSerails = new ArrayList<>();
-                dotSerails = gson.fromJson(result, listType);
+                List<DotSerail> dotSerials = gson.fromJson(result, listType);
 
-                if (!dotSerails.isEmpty()) {
-                    setDotSerail(dotSerails.get(0));
-                    loadFragment(new FragmentHomeScreen());
+                if (dotSerials != null) {
+                    if (!dotSerials.isEmpty()) {
+                        setDotSerail(dotSerials.get(0));
+                        loadFragment(new FragmentHomeScreen());
 
-                } else {
-                    Log.d("jobs empty", "rrrr");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "An error occured, please try again later", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please verify you internet connection", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -187,7 +184,6 @@ public class HomeScreen extends Activity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(HomeScreen.this, "ITEM " +  item.toString(), Toast.LENGTH_SHORT).show();
         //handle the click on the back arrow click
         switch (item.getItemId()) {
 
@@ -211,19 +207,7 @@ public class HomeScreen extends Activity implements View.OnClickListener {
         this.dotSerail = dotSerail;
     }
 
-    @Override
-    public void onClick(View v) {
-//        if (v == btn_startProcedure){
-//            if (crossFader.isCrossFaded()){
-//                Toast.makeText(HomeScreen.this,String.valueOf(crossFader.isCrossFaded()), Toast.LENGTH_SHORT).show();
-//                crossFader.crossFade();
-//            }
-//            else{
-//                Toast.makeText(HomeScreen.this, "ButtonClick", Toast.LENGTH_SHORT).show();
-//            }
-//            loadFragment(new FirstFragment());
-//        }
-    }
+
 
     private void loadFragment(Fragment fragment) {
         // create a FragmentManager
