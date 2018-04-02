@@ -1,10 +1,12 @@
 package project.deepwateroiltools_001.Fragments.HomeScreen;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +33,7 @@ import project.iTextPDF.CreatePDF;
 
 public class FragmentJobDetails extends Fragment implements View.OnClickListener{
     View view;
-    Button btn_back, btn_exportPDF, btn_load;
+    Button  btn_exportPDF, btn_load;
     SeaCure_job seaCure_job;
     User user;
     TextView crossfade_text;
@@ -45,22 +47,37 @@ public class FragmentJobDetails extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_job_details, container, false);
 
+        //pdf export uses
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        Log.d("WelcomScreenFragemtn","LOADED");
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        //btn declarations
         btn_exportPDF = (Button) view.findViewById(R.id.btn_exportPDF);
         btn_load = (Button) view.findViewById(R.id.btn_load);
 
-        btn_back.setOnClickListener(this);
+        //btn listeners
         btn_exportPDF.setOnClickListener(this);
         btn_load.setOnClickListener(this);
 
         crossfade_text = (TextView) view.findViewById(R.id.crossfade_text);
         crossfade_text.setText(seaCure_job.toString());
 
+        //get the logged in user
         user = ((HomeScreen) this.getActivity()).getUser();
+
+        //override the back key to go back to the previous fragment
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+
+                    getFragmentManager().popBackStackImmediate();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
 
@@ -69,27 +86,18 @@ public class FragmentJobDetails extends Fragment implements View.OnClickListener
     public void setSeaCure_job(SeaCure_job seaCure_job) {
         this.seaCure_job = seaCure_job;
     }
+
     @Override
     public void onClick(View v) {
-//        if (v == btn_back){
-//
-//        }
-//        else if (v == btn_exportPDF){
-//
-//        }
 
         switch(v.getId()) {
-            case R.id.btn_back:
-                getFragmentManager().popBackStackImmediate();
-                break;
-
             case R.id.btn_exportPDF:
                 permissionManager = new PermissionManager(getActivity());
                 if (permissionManager.WriteAndReadExternal()){
                     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy.HH:mm");
                     String date = formatter.format(new Date(seaCure_job.getStartDate()));
-                    createPDF = new CreatePDF(getContext(), seaCure_job.toString(), user.getUserInfo().getFullName() + "_" + date);
-                    createPDF.createandDisplayPdf();
+                    createPDF = new CreatePDF(getContext(), seaCure_job,  user.getUserInfo().getFullName() + "_" + date);
+                    createPDF.execute();
                 }
                 break;
 
@@ -100,7 +108,6 @@ public class FragmentJobDetails extends Fragment implements View.OnClickListener
 
                 //put the latest serial numbers into the loadable file
                 DotSerail dotSerail = ((HomeScreen   ) this.getActivity()).getDotSerail();
-                Log.d("dotSerial from home:", dotSerail.getTool_type());
                 intent.putExtra("dotserial", (new Gson().toJson(dotSerail)));
 
                 startActivity(intent);
