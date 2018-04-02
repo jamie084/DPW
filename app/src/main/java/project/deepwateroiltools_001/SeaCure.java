@@ -5,15 +5,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -26,8 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -46,14 +38,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import io.gsonfire.GsonFireBuilder;
 import io.gsonfire.TypeSelector;
 import project.Drawer.SeaCureMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
-import project.deepwateroiltools.HTTP.HTTPDataHandler;
 
-import project.deepwateroiltools.HTTP.PostNewJob;
+
 import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_procedure_checklist;
@@ -86,6 +78,7 @@ public class SeaCure extends Activity {
     private RunDBQueryWithDialog runDBQuery;
     private DotSerail dotSerail;
     private Uri imageUri;
+    private File photo;
 
     private static final int REQUEST_TAKE_PHOTO = 1888;
     private float x1,x2;
@@ -118,7 +111,7 @@ public class SeaCure extends Activity {
             Log.d("EEEh", "Not happening");
         }
 
-        //Touch event handling, closes the miniDrawer in case of touch event
+        //Touch event handling, closes the miniDrawer in case of touch event and motion gesture handling
         findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -134,26 +127,15 @@ public class SeaCure extends Activity {
                         x2 = event.getX();
                         float deltaX = x2 - x1;
 
-                        if (Math.abs(deltaX) > MIN_DISTANCE)
-                        {
+                        if (Math.abs(deltaX) > MIN_DISTANCE){
                             // Left to Right swipe action
-                            if (x2 > x1)
-                            {
-                                stepNextProcedureSlide();
-                                Toast.makeText(getApplicationContext(), "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show ();
-                            }
-
-                            // Right to left swipe action
-                            else
-                            {
+                            if (x2 > x1){
                                 stepPreviousProcedureSlide();
-                                Toast.makeText(getApplicationContext(), "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show ();
                             }
-
-                        }
-                        else
-                        {
-                            // consider as something else - a screen tap for example
+                            // Right to left swipe action
+                            else {
+                                stepNextProcedureSlide();
+                            }
                         }
                         break;
                 }
@@ -358,10 +340,10 @@ public class SeaCure extends Activity {
     public void startCameraIntent(){
         Intent cameraIntent = new Intent( android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy.HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy_HH_mm");
         String date = formatter.format(new Date());
-        String userName = user.getUserInfo().getFullName();
-        File photo = new File(path,  userName + "_" + date + ".jpg");
+        String userName = user.getUserInfo().getFirstName()+ user.getUserInfo().getSecondName();
+        photo = new File(path,  userName + "_" + date + ".jpg");
         imageUri = FileProvider.getUriForFile(SeaCure.this,
                 BuildConfig.APPLICATION_ID + ".provider",
                 photo);
@@ -425,14 +407,16 @@ public class SeaCure extends Activity {
             //camera request
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = imageUri;
                     try {
-                        Toast.makeText(this, "File saved: "+selectedImage.toString(),
+                        //get the photo name and save into seacure job
+                        String[] parts = photo.getName().split(Pattern.quote("."));
+                        seaCure_job.addPhotoToMap(parts[0], "");
+                        Toast.makeText(this, "File saved: "+ photo.getName(),
                                 Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
                                 .show();
-                        Log.e("Camera", e.toString());
+
                     }
                 }
         }
