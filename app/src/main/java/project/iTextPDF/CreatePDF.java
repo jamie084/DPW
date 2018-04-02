@@ -1,13 +1,17 @@
 package project.iTextPDF;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,27 +29,36 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Map;
 
 import project.deepwateroiltools_001.R;
+import project.dto.SeaCure_job;
 
 /**
  * Created by janos on 03/03/2018.
  */
 
-public class CreatePDF {
-    String text, filename;
-    Context context;
+public class CreatePDF extends AsyncTask<String, Void, String> {
+    private String text, filename;
+    private Context context;
+    private SeaCure_job seaCure_job;
+    private ProgressDialog dialog;
     public static final String IMAGE1 = "drawable/logo.png";
 
-    public CreatePDF(Context context, String text, String filename){
-        this.text = text;
+    public CreatePDF(Context context, SeaCure_job seaCure_job, String filename){
+        this.text = seaCure_job.toString();
         this.context = context;
         this.filename = filename;
+        this.seaCure_job = seaCure_job;
+        dialog = new ProgressDialog(context, R.style.DialogBoxStyle);
     }
     // Method for creating a pdf file from text, saving it then opening it for display
     public void createandDisplayPdf() {
@@ -77,6 +90,8 @@ public class CreatePDF {
 
             p1.setAlignment(Paragraph.ALIGN_LEFT);
             doc.add(p1);
+
+            addImagesToDoc(doc);
 
         } catch (DocumentException de) {
             Log.e("PDFCreator", "DocumentException:" + de);
@@ -154,4 +169,79 @@ public class CreatePDF {
         cell.setBorder(Rectangle.NO_BORDER);
         return cell;
     }
+
+    public  void addImagesToDoc(Document doc){
+       // String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        int counter = 0;
+        try {
+            Iterator it = seaCure_job.getPhotos_local_name().entrySet().iterator();
+            while (it.hasNext()){
+                Map.Entry pair = (Map.Entry)it.next();
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+            for( Object filename : seaCure_job.getPhotos_local_name().entrySet() ) {
+                Log.d("key" , filename.toString());
+
+                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() +  "/" + filename.toString() + ".jpg";
+                File imageFile = new File(path);
+
+                if(imageFile != null){
+
+                    FileInputStream mInputStream =  new FileInputStream(imageFile);
+                    Bitmap bmp = BitmapFactory.decodeStream(mInputStream);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    Image image = Image.getInstance(stream.toByteArray());
+
+                    //reduce image size to fit into the page
+                    float width = image.getWidth()/5;
+                    float height = image.getHeight()/5;
+                    image.scaleAbsoluteHeight(height);
+                    image.scaleAbsoluteWidth(width);
+                    counter +=1;
+                    //max 3 img per page
+                    if (counter %3 ==0 ){
+                        doc.newPage();
+                    }
+                    Paragraph p1 = new Paragraph(filename.toString() + "\n" );
+
+                    p1.setAlignment(Paragraph.ALIGN_LEFT);
+                    doc.add(p1);
+                    doc.add(image);
+
+                } else {
+                 //   Log.d("image", "NULL");
+                 //   Log.w(TAG, "GIF image is not available!");
+                }
+            }
+        }
+        catch (Exception ex){
+            Log.d("excepteion", ex.getMessage());
+        }
+    }
+
+    @Override
+    protected String doInBackground(String... strings) {
+        createandDisplayPdf();
+        return null;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        dialog.setMessage("Exporting...");
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        dialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+      //  processListener.ProcessingIsDone(result);
+    }
+
 }
