@@ -2,26 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.deepwateroiltools_001.HomeScreen">
+    tools:context="project.deepwateroiltools_001.HomeScreen"
+    android:id="@+id/crossfade_content">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/crossfade_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <Button
-            android:id="@+id/btn_back"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+        <ImageView
+            android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginStart="57dp"
-            android:text="Go back"
-            android:textColor="#FFFFFF"
-            tools:text="Go back" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:maxHeight="150dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
 
         <Button
             android:id="@+id/btn_exportPDF"
@@ -30,36 +23,36 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/scrollView2"
-            android:layout_marginEnd="28dp"
+            android:layout_marginEnd="44dp"
             android:text="Export to pdf" />
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_above="@+id/btn_back"
             android:layout_alignParentStart="true"
-            android:background="@drawable/backwithborder"
-            android:id="@+id/scrollView2">
+            android:layout_below="@+id/logo"
+            android:background="@drawable/backwithborder">
 
-            <TextView
-                android:id="@+id/crossfade_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:gravity="top|center"
-                android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/crossfade_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="top|center"
+                    android:singleLine="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </ScrollView>
 
         <Button
             android:id="@+id/btn_load"
-            style="@android:style/Widget.Material.Light.Button.Borderless.Colored"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/scrollView2"
-            android:layout_toStartOf="@+id/btn_exportPDF"
+            android:layout_alignStart="@+id/logo"
+            android:layout_below="@+id/scrollView2"
+            android:layout_marginStart="40dp"
             android:text="Load"
             tools:text="Load" />
 
-    </RelativeLayout>
 </RelativeLayout>
