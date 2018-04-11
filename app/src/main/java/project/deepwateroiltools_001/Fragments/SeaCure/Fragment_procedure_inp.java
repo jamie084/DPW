@@ -28,7 +28,6 @@ import project.dto.service.ProcedureInput;
 
 public class Fragment_procedure_inp extends Fragment  {
     View view;
-   // Button btn_left;
     ProcedureInput procedureInput;
     TextView lbl_procInp;
     String inputTo;
@@ -97,6 +96,9 @@ public class Fragment_procedure_inp extends Fragment  {
             String editTextString = et0.getText().toString();
             switch(inputTo) {
 
+                case "loctite_lot_number":
+                    et0.setText(seaCure_job.getLoctite_lot_number());
+                    break;
                 case "seaCure_ORing":
                     et0.setText(String.valueOf(seaCure_job.getWo_oRing()));
                     break;
@@ -190,6 +192,9 @@ public class Fragment_procedure_inp extends Fragment  {
             String editTextString = editText.getText().toString();
             switch(inputTo) {
 
+                case "loctite_lot_number":
+                    seaCure_job.setLoctite_lot_number(editTextString);
+                    break;
                 case "seaCure_ORing":
                     seaCure_job.setORingReplaced(true);
                     seaCure_job.setWo_oRing(Integer.valueOf(editTextString));
@@ -239,11 +244,11 @@ public class Fragment_procedure_inp extends Fragment  {
 
             }
 
-            Log.d("seaCureJOB: ", seaCure_job.toString()) ;
+          //  Log.d("seaCureJOB: ", seaCure_job.toString()) ;
         }
         catch (Exception e){
             //TODO errorlogger build
-            Log.d("SaveValuesEx", e.toString());
+            //Log.d("SaveValuesEx", e.toString());
         }
     }
 
