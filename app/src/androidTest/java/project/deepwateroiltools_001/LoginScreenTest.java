@@ -36,8 +36,6 @@ public class LoginScreenTest {
 
     @Test
     public void testLoginBtn(){
-
-
         //perform onclick event
         onView(withId(R.id.btn_login)).perform(click());
 
@@ -51,8 +49,6 @@ public class LoginScreenTest {
 
     @Test
     public void testRegBtn(){
-
-
         //perform onclick event
         onView(withId(R.id.btn_register)).perform(click());
 
@@ -63,6 +59,8 @@ public class LoginScreenTest {
 
         secondactivty.finish();
     }
+
+
 
     @Test
     public void onCreate() throws Exception {
@@ -84,5 +82,6 @@ public class LoginScreenTest {
     public void tearDown() throws  Exception{
         mActivity = null;
     }
+
 
 }
