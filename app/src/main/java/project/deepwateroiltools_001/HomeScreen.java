@@ -14,9 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -29,18 +26,13 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import project.Drawer.MainMenuDrawer;
 import project.deepwateroiltools.HTTP.Common;
 import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentJobDetails;
 import project.dto.DotSerail;
-import project.dto.SeaCure_job;
 import project.dto.user.User;
 import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
 
@@ -68,7 +60,7 @@ public class HomeScreen extends Activity  {
         //get the user obj from previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            user = new Gson().fromJson(extras.getString("user"), User.class);
+            setUser(new Gson().fromJson(extras.getString("user"), User.class));
         }
         else{
             //TODO error handling
@@ -94,6 +86,7 @@ public class HomeScreen extends Activity  {
 
        //define a shadow (this is only for normal LTR layouts if you have a RTL app you need to define the other one
         crossFader.getCrossFadeSlidingPaneLayout().setShadowResourceLeft(R.drawable.material_drawer_shadow_left);
+
 
 
         findViewById(R.id.crossfade_content).setOnTouchListener(new View.OnTouchListener() {
@@ -151,6 +144,10 @@ public class HomeScreen extends Activity  {
 
     public User getUser(){
         return user;
+    }
+
+    public void setUser(User user){
+        this.user= user;
     }
 
     @Override
@@ -219,4 +216,7 @@ public class HomeScreen extends Activity  {
         fragmentTransaction.commit(); // save the changes
     }
 
+    public Drawer getDrawer() {
+        return drawer;
+    }
 }
