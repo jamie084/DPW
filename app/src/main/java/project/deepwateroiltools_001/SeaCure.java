@@ -286,7 +286,7 @@ public class SeaCure extends Activity {
         if (procedureSlide.getClass().equals(ProcedureImg.class)) {
             Fragment_procedure_img fragment = new Fragment_procedure_img();
             currentFragment = fragment;
-            fragment.setProcedureImg((ProcedureImg) procedureSlide);
+            fragment.setProcedureSlide((ProcedureImg) procedureSlide);
         }
         else if (procedureSlide.getClass().equals(ProcedureInput.class)){
             Fragment_procedure_inp fragment = new Fragment_procedure_inp();
@@ -378,6 +378,10 @@ public class SeaCure extends Activity {
             @Override
             public void ProcessingIsDone(String result) {
                 Toast.makeText(getApplicationContext(), "Successfully saved", Toast.LENGTH_SHORT).show();
+                //if the method called from the last fragment
+                if (seaCure_job.isFinished()){
+                    finish();
+                }
             }
         });
         runDBQuery.execute();
