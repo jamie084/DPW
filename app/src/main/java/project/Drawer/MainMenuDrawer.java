@@ -19,7 +19,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.MiniDrawer;
-import com.mikepenz.materialdrawer.model.ContainerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
@@ -45,9 +44,9 @@ public class MainMenuDrawer extends Activity {
     Activity activity;
     User user;
     private Context context;
-    private Drawer result = null;
-    private MiniDrawer miniResult = null;
-    private AccountHeader headerResult = null;
+    private Drawer drawer = null;
+    private MiniDrawer miniDrawer = null;
+    private AccountHeader accountHeader = null;
     private Crossfader crossFader = null;
     private Bundle savedInstanceState;
 
@@ -61,10 +60,10 @@ public class MainMenuDrawer extends Activity {
 
     }
 
-    public void myMenu(){
-        new MaterializeBuilder(activity).build();
-        final IProfile profile = new ProfileDrawerItem().withName(user.getUserInfo().getFullName()).withEmail(user.getUser()).withIcon(context.getResources().getDrawable(R.drawable.logo));
-    }
+//    public void myMenu(){
+//        new MaterializeBuilder(activity).build();
+//        final IProfile profile = new ProfileDrawerItem().withName(user.getUserInfo().getFullName()).withEmail(user.getUser()).withIcon(context.getResources().getDrawable(R.drawable.logo));
+//    }
 
 
     public IProfile<ProfileDrawerItem> getProfile(){
@@ -85,10 +84,10 @@ public class MainMenuDrawer extends Activity {
                 .withSavedInstance(savedInstanceState);
 
 
-        headerResult = headerBuilder.build();
+        accountHeader = headerBuilder.build();
 
-        headerResult.setBackground(context.getResources().getDrawable(R.drawable.drawer5_vert2));
-        return headerResult;
+        accountHeader.setBackground(context.getResources().getDrawable(R.drawable.drawer5_vert2));
+        return accountHeader;
     }
 
     public DrawerBuilder getDrawerBuilder(){
@@ -155,7 +154,7 @@ public class MainMenuDrawer extends Activity {
 
                         }
                         //TODO will need this
-                        miniResult.onItemClick(drawerItem);
+                        miniDrawer.onItemClick(drawerItem);
 
                         return true;
                     }
@@ -184,8 +183,8 @@ public class MainMenuDrawer extends Activity {
     }
 
     public Crossfader getCrossFader(Drawer result, MiniDrawer miniResult){
-        this.result = result;
-        this.miniResult = miniResult;
+        this.drawer = result;
+        this.miniDrawer = miniResult;
 
         //IMPORTANT Crossfader specific implementation starts here (everything above is MaterialDrawer):
 

@@ -5,11 +5,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.View;
 
@@ -32,16 +29,8 @@ import com.mikepenz.materialize.MaterializeBuilder;
 import project.deepwateroiltools_001.Fragments.SeaCure.Fragment_note;
 import project.deepwateroiltools_001.SeaCure;
 import project.dto.user.User;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentAdminArea;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentContact;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentExport;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHistory;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentHomeScreen;
-import project.deepwateroiltools_001.Fragments.HomeScreen.FragmentSettings;
 import project.deepwateroiltools_001.R;
-import project.helpers.PermissionManager;
 
-import static java.lang.Math.toIntExact;
 /**
  * Created by janos on 05/02/2018.
  */
@@ -50,9 +39,9 @@ public class SeaCureMenuDrawer extends Activity {
     SeaCure activity;
     User user;
     private Context context;
-    private Drawer result = null;
-    private MiniDrawer miniResult = null;
-    private AccountHeader headerResult = null;
+    private Drawer drawer = null;
+    private MiniDrawer miniDrawer = null;
+    private AccountHeader accountHeader = null;
     private Crossfader crossFader = null;
     private Bundle savedInstanceState;
     private boolean validated;
@@ -72,10 +61,10 @@ public class SeaCureMenuDrawer extends Activity {
         this.savedInstanceState = savedInstanceState;
     }
 
-    public void myMenu(){
-        new MaterializeBuilder(activity).build();
-        final IProfile profile = new ProfileDrawerItem().withName(user.getUserInfo().getFullName()).withEmail(user.getUser()).withIcon(context.getResources().getDrawable(R.drawable.logo));
-    }
+//    public void myMenu(){
+//        new MaterializeBuilder(activity).build();
+//        final IProfile profile = new ProfileDrawerItem().withName(user.getUserInfo().getFullName()).withEmail(user.getUser()).withIcon(context.getResources().getDrawable(R.drawable.logo));
+//    }
 
 
     public IProfile<ProfileDrawerItem> getProfile(){
@@ -96,10 +85,10 @@ public class SeaCureMenuDrawer extends Activity {
                 .withSavedInstance(savedInstanceState);
 
 
-        headerResult = headerBuilder.build();
+        accountHeader = headerBuilder.build();
 
-        headerResult.setBackground(context.getResources().getDrawable(R.drawable.drawer5_vert2));
-        return headerResult;
+        accountHeader.setBackground(context.getResources().getDrawable(R.drawable.drawer5_vert2));
+        return accountHeader;
     }
 
     public DrawerBuilder getDrawerBuilder(){
@@ -172,7 +161,7 @@ public class SeaCureMenuDrawer extends Activity {
 
                         }
                         //TODO will need this
-                        miniResult.onItemClick(drawerItem);
+                        miniDrawer.onItemClick(drawerItem);
 
                         return true;
                     }
@@ -194,8 +183,8 @@ public class SeaCureMenuDrawer extends Activity {
     }
 
     public Crossfader getCrossFader(Drawer result, MiniDrawer miniResult){
-        this.result = result;
-        this.miniResult = miniResult;
+        this.drawer = result;
+        this.miniDrawer = miniResult;
 
         //IMPORTANT Crossfader specific implementation starts here (everything above is MaterialDrawer):
 
