@@ -21,18 +21,18 @@
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginScreen" android:screenOrientation="portrait">
+        <activity android:name="project.deepwateroiltools_001.LoginScreen" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Registration" android:screenOrientation="portrait" />
-        <activity android:name=".Registration_page2" android:screenOrientation="portrait" />
-        <activity android:name=".Registration_page3" android:screenOrientation="portrait" />
-        <activity android:name=".HomeScreen" android:screenOrientation="portrait"/>
-        <activity android:name=".SeaCure" android:screenOrientation="portrait"></activity>
+        <activity android:name="project.deepwateroiltools_001.Registration" android:screenOrientation="portrait" />
+        <activity android:name="project.deepwateroiltools_001.Registration_page2" android:screenOrientation="portrait" />
+        <activity android:name="project.deepwateroiltools_001.Registration_page3" android:screenOrientation="portrait" />
+        <activity android:name="project.deepwateroiltools_001.HomeScreen" android:screenOrientation="portrait"/>
+        <activity android:name="project.deepwateroiltools_001.SeaCure" android:screenOrientation="portrait"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

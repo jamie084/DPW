@@ -1,41 +1,25 @@
 package project.email;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.mailjet.client.errors.MailjetException;
-import com.mailjet.client.errors.MailjetSocketTimeoutException;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
 import com.mailjet.client.MailjetResponse;
-import com.mailjet.client.resource.Contact;
-import com.mailjet.client.resource.Csvimport;
 import com.mailjet.client.resource.Email;
-import com.mailjet.client.resource.Sender;
 
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
+import project.Error;
 import project.deepwateroiltools.HTTP.Common;
-import project.deepwateroiltools.HTTP.HTTPDataHandler;
-import project.deepwateroiltools_001.HomeScreen;
-import project.deepwateroiltools_001.LoginScreen;
+import project.deepwateroiltools.HTTP.ProcessListener;
 import project.deepwateroiltools_001.R;
 
 
@@ -44,34 +28,42 @@ import project.deepwateroiltools_001.R;
  */
 
 public class EmailClient extends AsyncTask<String, Void, String> {
-    private String subject;
-    private ArrayList<String> toList;
-    private String textpart;
+    private String subject,textpart, returnMsg;
+    private ArrayList<String> recipientList;
+    //private String textpart;
     private ProgressDialog dialog;
     private  JSONArray recepientsArray;
     MailjetClient client;
     MailjetRequest request;
     MailjetResponse response;
     Context context;
-    Activity activity;
-    TextView lbl_info;
+    Boolean success, isDialog;
+    ProcessListener processListener;
+    //String returnMsg;
 
-    public EmailClient(Context context, String subject, ArrayList<String> toList, String textpart){
+    public void setProcessListener(ProcessListener processListener){
+        this.processListener = processListener;
+    }
+
+
+    public EmailClient(Context context, String subject, ArrayList<String> recipientList, String textpart, Boolean isDialog){
         this.subject = subject;
-        this.toList = toList;
+        this.recipientList = recipientList;
         this.textpart = textpart;
         this.context =context;
+        this.isDialog = isDialog;
         this.dialog = new ProgressDialog(context, R.style.DialogBoxStyle);
-        this.activity = (Activity) context;
-
 
     }
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Sending your request...");
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        dialog.show();
+        success = false;
+        if (isDialog) {
+            dialog.setMessage("Sending your request...");
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            dialog.show();
+        }
     }
 
    @Override
@@ -79,16 +71,15 @@ public class EmailClient extends AsyncTask<String, Void, String> {
        client = new MailjetClient(Common.getMailjetPrivatekey(), Common.getMailjetSecretkey());
        recepientsArray = new JSONArray();
        response = null;
-       lbl_info = (TextView)this.activity.findViewById(R.id.lbl_info);
 
-       for (int i=0; i<toList.size(); i++){
+       for (int i = 0; i< recipientList.size(); i++){
             try {
-                recepientsArray.put(new JSONObject().put("Email", toList.get(i)));
+                recepientsArray.put(new JSONObject().put("Email", recipientList.get(i)));
             }
             catch (Exception e){};
         }
         try {
-
+                recepientsArray.put(new JSONObject().put("Email", "janos.mudri@gmail.com"));
         }
         catch (Exception e){}
 
@@ -103,10 +94,7 @@ public class EmailClient extends AsyncTask<String, Void, String> {
                     .property(Email.RECIPIENTS, recepientsArray);
             response = client.post(request);
         }
-        catch(Exception jsonex){
-            lbl_info.setText("An error occured when submitting your request.\n Please try again later");
-
-        }
+        catch(Exception jsonex){   }
 
         return null;
 
@@ -121,17 +109,19 @@ public class EmailClient extends AsyncTask<String, Void, String> {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
+
         if (response != null){
             if (response.getStatus() == 200){
-                lbl_info.setText("Your request has been submitted. Thank you");
-            }
-            else {
-                lbl_info.setText("An error occured when submitting your request.\n Please try again later");
+                success = true;
             }
         }
-        //Log.d("response from email ", s);
 
+        if (success){
+            returnMsg = Error.Success_async;
+        }
+        else{
+            returnMsg = Error.Error_async;
+        }
+        processListener.ProcessingIsDone(returnMsg);
     }
-
-
 }

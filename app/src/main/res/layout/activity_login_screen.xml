@@ -33,29 +33,30 @@
         android:src="@drawable/logo" />
 
     <Button
+        android:id="@+id/btn_register"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btn_login"
+        android:layout_below="@+id/btn_login"
+        android:layout_marginTop="25dp"
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:visibility="visible"
+        tools:text="Register" />
+
+    <Button
         android:id="@+id/btn_login"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/inpField_pw"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="26dp"
         android:text="Login"
-        tools:text="Login"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#FFFFFF"/>
-
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btn_login"
-        android:layout_alignStart="@+id/btn_login"
-        android:layout_below="@+id/btn_login"
-        android:layout_marginTop="16dp"
-        android:text="Register"
-        tools:text="Register"
-        style="?android:attr/borderlessButtonStyle"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:visibility="visible"
+        tools:text="Login" />
 
     <EditText
         android:id="@+id/inpField_pw"

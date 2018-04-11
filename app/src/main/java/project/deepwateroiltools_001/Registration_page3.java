@@ -39,7 +39,7 @@ public class Registration_page3 extends Activity implements View.OnClickListener
     EditText houseNumber, street, city, country, postCode;
     TextView lbl_warning;
     Context context;
-    public static Activity activity = null;
+    //public static Activity activity = null;
 
 
     @Override

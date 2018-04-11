@@ -6,20 +6,15 @@ import project.deepwateroiltools.HTTP.RunDBQueryWithDialog;
 import project.dto.user.User;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -128,10 +123,6 @@ public class LoginScreen extends Activity implements View.OnClickListener, View.
         }
     }
 
-    public String testTheTest(){
-
-        return password.getText().toString();
-    }
 }
 
 

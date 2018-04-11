@@ -60,9 +60,10 @@ public class RunDBQueryWithDialog extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if (dialog.isShowing()) {
-            dialog.dismiss();
-        }
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
         processListener.ProcessingIsDone(result);
     }
 }

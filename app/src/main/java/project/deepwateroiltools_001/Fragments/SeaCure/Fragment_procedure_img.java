@@ -22,18 +22,13 @@ import project.dto.service.ProcedureSlide;
  * Created by janos on 06/02/2018.
  */
 
-public class Fragment_procedure_img extends Fragment implements View.OnClickListener {
+public class Fragment_procedure_img extends Fragment {
     View view;
-//    Button btn_left;
     ProcedureImg procedureImg;
     ImageView imageView;
     TextView lbl_procImg;
 
-    public ProcedureImg getProcedureImg() {
-        return procedureImg;
-    }
-
-    public void setProcedureImg(ProcedureImg procedureImg) {
+    public void setProcedureSlide(ProcedureImg procedureImg) {
         this.procedureImg = procedureImg;
     }
 
@@ -42,10 +37,6 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_img, container, false);
-
-//        btn_left  = (Button) view.findViewById(R.id.btn_left);
-//        btn_left.setOnClickListener(this);
-
         lbl_procImg = (TextView) view.findViewById(R.id.lbl_procImg);
         lbl_procImg.setText(procedureImg.getTitle());
 
@@ -61,17 +52,5 @@ public class Fragment_procedure_img extends Fragment implements View.OnClickList
 
 
 
-    }
-
-    @Override
-    public void onClick(View v) {
-//
-//        if (v == btn_left){
-//            Context context = imageView.getContext();
-//            int id = context.getResources().getIdentifier(procedureImg.getImgLocalName(), "drawable", context.getPackageName());
-//            imageView.setImageResource(id);
-//            Toast.makeText(getActivity(), procedureImg.getImgURL(), Toast.LENGTH_LONG).show();
-//            procedureImg.setImgLocalName("false_img");
-//        }
     }
 }

@@ -33,7 +33,7 @@ import project.dto.service.ProcedureSlide;
 
 public class Fragment_procedure_ddl extends Fragment implements  View.OnClickListener {
     View view;
-    Button btn_left;
+    //Button btn_left;
     ProcedureDdl procedureSlide;
     TextView lbl_procTitle;
 
@@ -197,10 +197,6 @@ public class Fragment_procedure_ddl extends Fragment implements  View.OnClickLis
 //            }
 //        }
 
-    }
-
-    public ProcedureSlide getProcedureSlide() {
-        return procedureSlide;
     }
 
     public void setProcedureSlide(ProcedureDdl procedureSlide) {

@@ -221,7 +221,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
         toast.show();
     }
 
-    public static boolean isValidPassword(final String password) {
+    public boolean isValidPassword(String password) {
         Pattern pattern;
         Matcher matcher;
         //one digit, one uppercase, one lowercase, between 8-16 character
@@ -233,7 +233,7 @@ public class Registration extends Activity implements OnClickListener, View.OnFo
     }
 
     //email address validator
-    public final static boolean isValidEmail(CharSequence target) {
+    public final boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 

@@ -19,15 +19,11 @@ import project.dto.service.ProcedureSlide;
  * Created by janos on 20/02/2018.
  */
 
-public class Fragment_procedure_general  extends Fragment implements  View.OnClickListener {
+public class Fragment_procedure_general  extends Fragment {
     View view;
-    Button btn_left;
     ProcedureSlide procedureSlide;
     TextView lbl_procGeneral;
 
-    public ProcedureSlide getProcedureSlide() {
-        return procedureSlide;
-    }
 
     public void setProcedureSlide(ProcedureSlide procedureSlide) {
         this.procedureSlide = procedureSlide;
@@ -38,10 +34,6 @@ public class Fragment_procedure_general  extends Fragment implements  View.OnCli
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_procedure_general, container, false);
-
-//        btn_left  = (Button) view.findViewById(R.id.btn_left);
-//        btn_left.setOnClickListener(this);
-
         lbl_procGeneral = (TextView) view.findViewById(R.id.lbl_procGeneral);
         lbl_procGeneral.setText(procedureSlide.getTitle());
 
@@ -55,8 +47,4 @@ public class Fragment_procedure_general  extends Fragment implements  View.OnCli
 
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }

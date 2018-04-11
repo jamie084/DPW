@@ -51,11 +51,11 @@ import project.dto.user.User;
 
 public class FragmentHistory extends Fragment implements View.OnClickListener{
     private View view;
-    private Button btn_history, dialog_btn;
+    //private Button btn_history, dialog_btn;
     private List<SeaCure_job> jobs;
     private ListView mainListView ;
-    private ArrayAdapter<String> listAdapter ;
-    private ArrayList<String> jobList;
+    //private ArrayAdapter<String> listAdapter ;
+   // private ArrayList<String> jobList;
     private User user;
     private RunDBQueryWithDialog runDBQueryWithDialog;
 
@@ -69,7 +69,7 @@ public class FragmentHistory extends Fragment implements View.OnClickListener{
         mainListView = (ListView)view. findViewById( R.id.mainListView );
 
         user = ((HomeScreen) this.getActivity()).getUser();
-        jobList = new ArrayList<>();
+    //    jobList = new ArrayList<>();
 
         return view;
 
