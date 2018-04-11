@@ -17,7 +17,7 @@ public class SeaCure_job {
     private int savedId;
     private String toolType;
     private int tool_serial;
-    private String region; //locator????
+    private String region;
     private long startDate;
     private long finishDate;
     private String clientOperator;
@@ -31,7 +31,6 @@ public class SeaCure_job {
     private int sn_out_DOT_SCR_PBR;
     private int sn_out_DOT_SCR_INB;
     private int sn_out_DOT_SCR_IBH;
-    private ArrayList<HashMap> photos_local_name;
     private boolean isORingReplaced;
     private boolean isUpperBearingRingReplaced;
     private boolean isMiddelBearingRingReplaced;
@@ -53,6 +52,7 @@ public class SeaCure_job {
     private List<Integer> visited;
     private List<String> notes = new ArrayList<String>();
     private boolean isFinished = false;
+    private HashMap<String, String> photos_local_name = new HashMap<>();
 
     public Id get_id() {
         return _id;
@@ -206,12 +206,16 @@ public class SeaCure_job {
         this.sn_out_DOT_SCR_IBH = sn_out_DOT_SCR_IBH;
     }
 
-    public ArrayList<HashMap> getPhotos_local_name() {
+    public HashMap getPhotos_local_name() {
         return photos_local_name;
     }
 
-    public void setPhotos_local_name(ArrayList<HashMap> photos_local_name) {
+    public void setPhotos_local_name(HashMap photos_local_name) {
         this.photos_local_name = photos_local_name;
+    }
+
+    public void addPhotoToMap(String url, String comment){
+        photos_local_name.put(url, comment);
     }
 
     public int getWo_oRing() {
@@ -405,9 +409,10 @@ public class SeaCure_job {
     @Override
     public String toString(){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String result="";
+        String result="\n";
         result += "Start Date: " + formatter.format(new Date(this.getStartDate()))+ "\n";
         result += "Finish Date: " + formatter.format(new Date(this.getFinishDate()))+ "\n";
+        result += "-----------------------------" + "\n";
         result += "Tool Type: " + this.getToolType() + "\n";
         result += "Client Operator: "  + this.clientOperator + "\n";
         result += "PO reference number: " + this.po_reference + "\n";
@@ -416,10 +421,19 @@ public class SeaCure_job {
         result += "Torque SCR_TRB (Make up): " + this.torque_SCR_TRB_end + "\n";
 
         result += "Seacure Serial: "        + this.tool_serial + "\n";
+        result += "-----------------------------" + "\n";
         result += "DOT-SCR-TRB Serial in: " + this.sn_in_DOT_SCR_TRB + "\n";
         result += "DOT-SCR-PBR Serial in: " + this.sn_in_DOT_SCR_PBR + "\n";
         result += "DOT-SCR-INB Serial in: " + this.sn_in_DOT_SCR_INB + "\n";
         result += "DOT-SCR-IBH Serial in: " + this.sn_in_DOT_SCR_IBH + "\n";
+        result += "-----------------------------" + "\n";
+
+        result += "DOT-SCR-TRB Serial out: " + this.sn_out_DOT_SCR_TRB + "\n";
+        result += "DOT-SCR-PBR Serial out: " + this.sn_out_DOT_SCR_PBR + "\n";
+        result += "DOT-SCR-INB Serial out: " + this.sn_out_DOT_SCR_INB + "\n";
+        result += "DOT-SCR-IBH Serial out: " + this.sn_out_DOT_SCR_IBH + "\n";
+        result += "-----------------------------" + "\n";
+
 
         result += "O-Ring replacement work order: "                 + this.wo_oRing + "\n";
         result += "Upper Bearing Ring replacement work order: "     + this.wo_upperBearingRing + "\n";
@@ -427,15 +441,20 @@ public class SeaCure_job {
         result += "Lower Bearing Ring replacement work order: "     + this.wo_lowerBearingRing + "\n";
         result += "STUB Acme O-Ring replacement work order: "       + this.wo_STUB_acme_O_ring + "\n";
 
+        result += "-----------------------------" + "\n";
         result += "Is the Pin thread damaged? "                             + this.pin_thread_damage + "\n";
         result += "Is the Pin thread repaired? "                            + this.pin_thread_repaired + "\n";
         result += "Is the Box thread damaged? "                             + this.box_thread_damage + "\n";
+
+        result += "-----------------------------" + "\n";
+        result += "Loctite lot number used on grub screws: " + this.loctite_lot_number + "\n";
 
 
         result += "Notes: "                                         + this.getFormattedNotes() + "\n";
 
         result += "Saved state: "                                   + this.savedId + "\n";
-        result += "UserID: " + this.get_user_id();
+        result += "UserID: " + this.get_user_id()      + "\n";
+        result += "Photos local: " + this.photos_local_name.toString() + "\n";
         return result;
     }
 }
