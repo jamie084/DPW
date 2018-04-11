@@ -167,49 +167,45 @@ public class CreatePDF extends AsyncTask<String, Void, String> {
     }
 
     public  void addImagesToDoc(Document doc){
-       // String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        int counter = 0;
+        String defaultPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
         try {
             Iterator it = seaCure_job.getPhotos_local_name().entrySet().iterator();
+
             while (it.hasNext()){
                 Map.Entry pair = (Map.Entry)it.next();
-                System.out.println(pair.getKey() + " = " + pair.getValue());
-                it.remove(); // avoids a ConcurrentModificationException
-            }
-            for( Object filename : seaCure_job.getPhotos_local_name().entrySet() ) {
-                Log.d("key" , filename.toString());
-
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() +  "/" + filename.toString() + ".jpg";
+                //construct the file path
+                String path = defaultPath +   "/" + pair.getKey() + ".jpg";
                 File imageFile = new File(path);
 
                 if(imageFile != null){
+                    //to catch all file not found exceptions
+                    try{
+                        FileInputStream mInputStream =  new FileInputStream(imageFile);
+                        Bitmap bmp = BitmapFactory.decodeStream(mInputStream);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+                        Image image = Image.getInstance(stream.toByteArray());
 
-                    FileInputStream mInputStream =  new FileInputStream(imageFile);
-                    Bitmap bmp = BitmapFactory.decodeStream(mInputStream);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    Image image = Image.getInstance(stream.toByteArray());
-
-                    //reduce image size to fit into the page
-                    float width = image.getWidth()/5;
-                    float height = image.getHeight()/5;
-                    image.scaleAbsoluteHeight(height);
-                    image.scaleAbsoluteWidth(width);
-                    counter +=1;
-                    //max 3 img per page
-                    if (counter %3 ==0 ){
                         doc.newPage();
-                    }
-                    Paragraph p1 = new Paragraph(filename.toString() + "\n" );
+                        //reduce image size to fit into the page
+                        float width = image.getWidth()/8;
+                        float height = image.getHeight()/8;
+                        image.scaleAbsoluteHeight(height);
+                        image.scaleAbsoluteWidth(width);
 
-                    p1.setAlignment(Paragraph.ALIGN_LEFT);
-                    doc.add(p1);
-                    doc.add(image);
+                        Paragraph p1 = new Paragraph(filename.toString() + "\n" );
+                        p1.setAlignment(Paragraph.ALIGN_LEFT);
+                        doc.add(p1);
+                        doc.add(image);
+                    }
+                    catch (Exception ex){
+
+                    }
+
 
                 } else {
-                 //   Log.d("image", "NULL");
-                 //   Log.w(TAG, "GIF image is not available!");
                 }
+                it.remove(); // avoids a ConcurrentModificationException
             }
         }
         catch (Exception ex){
